@@ -1,30 +1,17 @@
 interface ButtonProps {
 	btnText: string;
-	btnVariant: 'ghost' | 'primary' | 'secondary';
 	btnType: 'submit' | 'button';
+	btnVariant?: 'ghost' | 'primary' | 'secondary';
+	classNames?: string;
 }
 
-export const Button = ({ btnText, btnVariant, btnType }: ButtonProps) =>
-	`<button type="${btnType}" class="${btnVariant}">${btnText}</button>`;
-
-export const Div = () => {
-	return `
-    <div>
-      <h1>Hello custom Div</h1>
-      ${Button({
-				btnText: 'Custom button',
-				btnType: 'submit',
-				btnVariant: 'primary',
-			})}
-    </div>
-  `;
-};
-
-export const DivInsideDiv = () => {
-	return `
-    <div>
-      ${Div()}
-      <div> This is footer</div>
-    </div>
-  `;
+export const Button = ({
+	btnText,
+	btnVariant,
+	btnType,
+	classNames,
+}: ButtonProps) => {
+	return `<button type="${btnType}" class="button ${btnVariant ?? ''} ${
+		classNames ?? ''
+	}">${btnText}</button>`;
 };
