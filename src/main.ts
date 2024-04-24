@@ -1,24 +1,13 @@
 import { Templator } from './Templater';
 import './style.css';
+import { DivInsideDiv } from './templates/button';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    Hello
+  <div class="hello">
+    Static Hello
   </div>
 `;
 
-const templateString = `
-  <div class='{{wrapper}}'>
-    <p>Privet, {{name}}</p>
-    <button>{{btnText}}</button>
-  </div>
-`;
+const templator = new Templator(DivInsideDiv, {});
 
-const templator = new Templator(templateString, {
-	wrapper: 'wrapper',
-	name: 'Dima',
-	btnText: 'Click me',
-});
-
-
-const smt = templator.compile();
+templator.compile();
