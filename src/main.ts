@@ -1,6 +1,31 @@
-import { Templator } from './Templater';
+import { Slowact } from './Templater/newVersion';
 import './style.css';
 
-// const templator = new Templator(TestDiv, {});
+const slowact = new Slowact('#app', '');
 
-// templator.compile();
+slowact.createElement('div', { className: 'wrapper' }, [
+	{
+    type: 'h1',
+    props: {
+      className: 'title',
+      children: [
+        {
+          type: 'span',
+          props: {
+            className: 'span',
+            children: 'Privet'
+          }
+        },
+        {
+          type: 'span',
+          props: {
+            className: 'secondSpan',
+            children: ', Dima'
+          }
+        }
+      ]
+    },
+  },
+]);
+
+
