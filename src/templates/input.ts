@@ -1,24 +1,4 @@
-export interface InputProps {
-	inputType: HTMLInputElement['type'];
-	inputId: string;
-	labelText: string;
-	placeholder: string;
-	defaultValue?: string;
-}
+'class for div-wwrapper "input-wrapper"'
+'class for input-label "input-label"'
+'class for input "input"'
 
-export const Input = ({
-	inputType,
-	inputId,
-	labelText,
-	placeholder,
-	defaultValue,
-}: InputProps) => {
-	return `
-    <div class="input-wrapper">
-      <label class="input-label" for="${inputId}">${labelText}</label>
-      <input class="input" type="${inputType}" id="${inputId}" placeholder="${placeholder}" ${
-		defaultValue && `value="${defaultValue}"`
-	}/>
-    </div>
-  `;
-};

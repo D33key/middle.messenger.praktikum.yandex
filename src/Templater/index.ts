@@ -1,55 +1,103 @@
-export class Templator<T> {
-	protected TEMPLATE_VARIABLE_REGEXP = /\{\{(.*?)\}\}/gi;
-	protected templateString: string;
+import { SlowactNode } from './types';
 
-	constructor(
-		templateFunc: (props?: T) => string,
-		templateProps?: Parameters<typeof templateFunc>[0],
+export class Slowact {
+	private static root: HTMLElement | null = null;
+	private static rootObj: any = {};
+
+	static createRoot(root: HTMLElement | string) {
+		if (!root) {
+			throw new Error('The root should be a HTML Element.');
+		}
+
+		if (this.root) {
+			throw new Error('Root already exists!');
+		}
+
+		if (typeof root === 'string') {
+			Slowact.root = document.querySelector(root);
+		} else {
+			Slowact.root = root;
+		}
+
+		return this;
+	}
+
+	// TODO If tag is self closing - should not include children!!!
+	static createElement<T extends keyof HTMLElementTagNameMap>(
+		type: SlowactNode<T>['type'],
+		props: Omit<SlowactNode<T>['props'], 'children'>,
+		children: SlowactNode<T>['props']['children'],
 	) {
-		this.templateString = templateFunc(templateProps);
-	}
+		this.rootObj = {
+			type,
+			props: {
+				...props,
+			},
+		};
 
-	private domParser(string: string) {
-		const parser = new DOMParser();
-
-		const result = parser.parseFromString(string, 'text/html').body.firstChild;
-
-		if (result) {
-			return result;
+		if (Array.isArray(children) && children.length > 0) {
+			this.rootObj.props.children = children.map((child) =>
+				this.createChildElement(child),
+			);
+		} else {
+			this.rootObj.props.children = children;
 		}
 
-		const errorDiv = document.createElement('div');
-		errorDiv.textContent = 'Error! Something wrong with parsed string.';
-
-		return errorDiv;
+		return this.rootObj;
 	}
 
-	private bindEvents(html: ChildNode) {
-		const elements = (html as HTMLElement).querySelectorAll('[data-event]');
-
-		elements.forEach((element) => {
-			const eventName = element.getAttribute('data-event');
-			// TODO what if there will be several funcs? onPress onClick onFocus etc
-			const eventFunc = element.getAttribute('data-event-function');
-
-			if (eventName && eventFunc) {
-				element.addEventListener(eventName, eval(eventFunc));
-			}
-		});
+	private static createChildElement<T extends keyof HTMLElementTagNameMap>({
+		type,
+		props,
+	}: SlowactNode<T>) {
+		return {
+			type,
+			props: { ...props },
+		};
 	}
 
-	public compile(whereToPlace?: string) {
-		const completeHtml = this.domParser(this.templateString);
+	private static convertObjToHtml<T extends keyof HTMLElementTagNameMap>(
+		type: SlowactNode<T>['type'],
+		props: SlowactNode<T>['props'],
+	) {
+		const node = document.createElement(type);
 
-		this.bindEvents(completeHtml);
-
-		const appDiv = document.querySelector(`${whereToPlace ?? '#app'}`);
-
-		if (appDiv) {
-			appDiv.appendChild(completeHtml);
-			return;
+		if (props?.className) {
+			const splited = props.className
+				.split(' ')
+				.filter((splitedClass) => Boolean(splitedClass));
+			node.classList.add(...splited);
+		}
+		if (props?.onClick) {
+			node.addEventListener('click', props.onClick);
 		}
 
-		throw new Error('There is no such root element.');
+		if (Array.isArray(props.children) && props.children.length > 0) {
+			props.children.forEach((child) => {
+				const childNode = this.convertObjToHtml(child.type, child.props);
+				node.append(childNode);
+			});
+		}
+
+		if (typeof props.children === 'string') {
+			node.textContent = props.children;
+		}
+
+		return node;
 	}
+
+	static render() {
+		const { type, props } = this.rootObj;
+		const headNode = this.convertObjToHtml(type, props);
+
+		this.root?.append(headNode);
+	}
+}
+
+export function createElement<T extends keyof HTMLElementTagNameMap>(
+	type: SlowactNode<T>['type'],
+	props: Omit<SlowactNode<T>['props'], 'children'>,
+	children: SlowactNode<T>['props']['children'],
+) {
+	return Slowact.createElement(type, props, children);
 }

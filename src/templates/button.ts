@@ -1,17 +1,17 @@
+import { createElement } from '../Templater';
+import { SlowactNode } from '../Templater/types';
+
 interface ButtonProps {
-	btnText: string;
-	btnType: 'submit' | 'button';
-	btnVariant?: 'ghost' | 'primary' | 'secondary';
-	classNames?: string;
+	className?: string;
+	children: SlowactNode<keyof HTMLElementTagNameMap>[] | string;
 }
 
-export const Button = ({
-	btnText,
-	btnVariant,
-	btnType,
-	classNames,
-}: ButtonProps) => {
-	return `<button type="${btnType}" class="button ${btnVariant ?? ''} ${
-		classNames ?? ''
-	}">${btnText}</button>`;
+const Button = ({ className, children }: ButtonProps) => {
+	return createElement(
+		'button',
+		{ className: `button ${className ?? ''}` },
+		children,
+	);
 };
+
+export default Button;

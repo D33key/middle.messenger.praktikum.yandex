@@ -1,13 +1,9 @@
-import { Slowact } from './Templater/newVersion';
+import { Slowact } from './Templater';
 import './style.css';
+import Button from './templates/button';
 
-const slowact = new Slowact('.app', '');
+Slowact.createRoot('.app');
 
-slowact.createElement('div', { className: 'wrapper' }, [
-	slowact.createElement('h1', { className: 'title' }, [
-		slowact.createElement('span', { className: 'spanFirst' }, 'Privet'),
-		slowact.createElement('span', { className: 'spanSecond' }, ', Dima'),
-	]),
-]);
+Button({ children: 'click me', className: 'big-button' });
 
-slowact.render();
+Slowact.render();
