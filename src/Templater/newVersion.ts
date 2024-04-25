@@ -29,11 +29,9 @@ export class Slowact {
 		};
 
 		if (Array.isArray(children) && children.length > 0) {
-			this.rootObj.props.children = [];
-			children.forEach((child) => {
-				const childObject = this.createChildElement(child);
-				this.rootObj.props.children.push(childObject);
-			});
+			this.rootObj.props.children = children.map((child) =>
+				this.createChildElement(child),
+			);
 		} else {
 			this.rootObj.props.children = children;
 		}
@@ -45,12 +43,10 @@ export class Slowact {
 		type,
 		props,
 	}: SlowactNode<T>) {
-		// TODO remove any
-		const childObj: any = {};
-		childObj.type = type;
-		childObj.props = props;
-
-		return childObj;
+		return {
+			type,
+			props: { ...props },
+		};
 	}
 
 	private convertObjToHtml<T extends keyof HTMLElementTagNameMap>(
