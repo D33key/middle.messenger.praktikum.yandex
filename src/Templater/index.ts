@@ -6,6 +6,7 @@ export class Slowact {
 		string,
 		SlowactProps<keyof HTMLElementTagNameMap> & { state?: any }
 	>();
+	private static dependencies: Map<string, Set<Function>> = new Map();
 
 	static createState<T>(componentKey: string, valueName: string, value: T) {
 		const mapElement = Slowact.rootMap.get(componentKey);
