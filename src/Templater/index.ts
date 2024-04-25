@@ -7,7 +7,25 @@ export class Slowact {
 		'children'
 	> | null = null;
 
-	
+	static state = new Map();
+
+	static createState<T>(componentKey: string, value: T) {
+		Slowact.state.set(componentKey, value);
+		const changeValue = this.changeState(componentKey);
+		return [value, changeValue] as [typeof value, typeof changeValue];
+	}
+
+	private static changeState(componentKey: string) {
+		if (!Slowact.state.has(componentKey)) {
+			throw new Error('There is no such key.');
+		}
+		const componentInState = componentKey;
+
+		return function (fn: any) {
+			const resultFromFunc = fn();
+			Slowact.state.set(componentInState, resultFromFunc);
+		};
+	}
 
 	static createRoot(root: HTMLElement | string) {
 		if (!root) {
@@ -110,4 +128,8 @@ export function createElement<T extends keyof HTMLElementTagNameMap>(
 	children: SlowactNode<T>['props']['children'],
 ) {
 	return Slowact.createElement(type, props, children);
+}
+
+export function createState<T>(componentKey: string, value: T) {
+	return Slowact.createState(componentKey, value);
 }

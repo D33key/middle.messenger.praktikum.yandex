@@ -1,4 +1,4 @@
-import { createElement } from '../Templater';
+import { createElement, createState } from '../Templater';
 import { SlowactNode } from '../Templater/types';
 
 interface ButtonProps {
@@ -7,13 +7,21 @@ interface ButtonProps {
 }
 
 const Button = ({ className, children }: ButtonProps) => {
+	const [value, changeValue] = createState<string>('button', '123');
+
 	const handleClick = (e: Event) => {
+		changeValue(() => '25');
 		console.log('Clicked!');
 	};
+
 	return createElement(
 		'button',
-		{ className: `button ${className ?? ''}`, onClick: handleClick },
-		children,
+		{
+			key: 'button',
+			className: `button ${className ?? ''}`,
+			onClick: handleClick,
+		},
+		value,
 	);
 };
 
