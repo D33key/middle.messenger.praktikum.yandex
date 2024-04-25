@@ -4,42 +4,42 @@ export class Slowact {
 	private static root: HTMLElement | null = null;
 	private static rootMap = new Map<
 		string,
-		SlowactProps<keyof HTMLElementTagNameMap>
+		SlowactProps<keyof HTMLElementTagNameMap> & { state?: any }
 	>();
 
-	static state = new Map<string, { prevState: any; newState: any }>();
+	static createState<T>(componentKey: string, valueName: string, value: T) {
+		const mapElement = Slowact.rootMap.get(componentKey);
 
-	static createState<T>(componentKey: string, value: T) {
-		Slowact.state.set(componentKey, {
-			prevState: value,
-			newState: value,
-		});
-		const changeValue = Slowact.changeState(componentKey);
-		const valueToSend = Slowact.state.get(componentKey)!;
+		if (!mapElement) throw new Error('Wrong key!');
 
-		return [valueToSend.newState, changeValue] as [
-			typeof value,
-			typeof changeValue,
-		];
+		if (!mapElement.state) {
+			mapElement.state = {};
+		}
+
+		mapElement.state[valueName] = value;
+
+		const changeState = Slowact.changeState(componentKey, valueName);
+
+		return [mapElement.state[valueName], changeState];
 	}
 
-	private static changeState(componentKey: string) {
-		if (!Slowact.state.has(componentKey)) {
+	private static changeState(componentKey: string, valueName: string) {
+		if (
+			!Slowact.rootMap.has(componentKey) &&
+			!Slowact.rootMap.get(componentKey)?.state[valueName]
+		) {
 			throw new Error('There is no such key.');
 		}
-		const componentInState = componentKey;
-		const prevState = Slowact.state.get(componentKey)?.prevState;
-
-		return function (fn: any) {
-			const resultFromFunc = fn();
-			Slowact.state.set(componentInState, {
-				prevState,
-				newState: resultFromFunc,
-			});
-		};
+		// const componentInState = componentKey;
+		// const prevState = Slowact.state.get(componentKey)?.prevState;
+		// return function (fn: any) {
+		// 	const resultFromFunc = fn();
+		// 	Slowact.state.set(componentInState, {
+		// 		prevState,
+		// 		newState: resultFromFunc,
+		// 	});
+		// };
 	}
-
-	//make rerender after changeState!
 
 	static createRoot(root: HTMLElement | string) {
 		if (this.root) {
@@ -75,16 +75,16 @@ export class Slowact {
 		return props.key;
 	}
 
-	private static findWrapper() {
+	private static findWrapperInMap(rootMap = this.rootMap) {
 		const childKeys = new Set();
-		this.rootMap.forEach((value, key) => {
+		rootMap.forEach((value) => {
 			if (value.props && value.props.children) {
 				value.props.children.forEach((childKey) => {
 					childKeys.add(childKey);
 				});
 			}
 		});
-		for (const [key] of this.rootMap) {
+		for (const [key] of rootMap) {
 			if (!childKeys.has(key)) {
 				return key;
 			}
@@ -128,7 +128,7 @@ export class Slowact {
 	}
 
 	static render() {
-		const wrapperKey = Slowact.findWrapper();
+		const wrapperKey = Slowact.findWrapperInMap();
 
 		if (!wrapperKey) {
 			throw new Error('Root element not found.');
@@ -150,8 +150,4 @@ export function createElement<T extends keyof HTMLElementTagNameMap>(
 	...children: string[]
 ) {
 	return Slowact.createElement(type, props, ...children);
-}
-
-export function createState<T>(componentKey: string, value: T) {
-	return Slowact.createState(componentKey, value);
 }

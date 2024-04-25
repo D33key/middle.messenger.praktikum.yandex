@@ -15,3 +15,6 @@ Slowact.createElement(
 );
 
 Slowact.render();
+
+console.log('RootMap in main.ts',Slowact.rootMap)
+console.log('state in main.ts', Slowact.state)

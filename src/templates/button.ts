@@ -1,4 +1,4 @@
-import { Slowact, createElement, createState } from '../Templater';
+import { Slowact } from '../Templater';
 
 interface ButtonProps {
 	className?: string;
@@ -6,22 +6,29 @@ interface ButtonProps {
 }
 
 const Button = ({ className, children }: ButtonProps) => {
-	const [value, changeValue] = createState<string>('button', '123');
-	console.log('init',Slowact.state)
+	const [value, changeValue] = Slowact.createState<string>(
+		'button',
+		'btn-value',
+		'123',
+	);
+	const [value1, changeValue1] = Slowact.createState<string>(
+		'button',
+		'title-value',
+		'Privet',
+	);
 
-	const handleClick = (e: Event) => {
+	function handleClick(e: Event) {
 		changeValue(() => '25');
-		console.log('after click', Slowact.state)
-	};
+	}
 
-	return createElement(
+	return Slowact.createElement(
 		'button',
 		{
 			key: 'button',
 			className: `button ${className ?? ''}`,
 			onClick: handleClick,
 		},
-		value,
+		'123',
 	);
 };
 
