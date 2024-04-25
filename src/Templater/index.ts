@@ -2,7 +2,12 @@ import { SlowactNode } from './types';
 
 export class Slowact {
 	private static root: HTMLElement | null = null;
-	private static rootObj: any = {};
+	private static rootObj: Omit<
+		SlowactNode<keyof HTMLElementTagNameMap>,
+		'children'
+	> | null = null;
+
+	
 
 	static createRoot(root: HTMLElement | string) {
 		if (!root) {
@@ -66,6 +71,7 @@ export class Slowact {
 			const splited = props.className
 				.split(' ')
 				.filter((splitedClass) => Boolean(splitedClass));
+
 			node.classList.add(...splited);
 		}
 		if (props?.onClick) {
@@ -87,10 +93,14 @@ export class Slowact {
 	}
 
 	static render() {
-		const { type, props } = this.rootObj;
-		const headNode = this.convertObjToHtml(type, props);
+		if (this.rootObj) {
+			const { type, props } = this.rootObj;
+			const headNode = this.convertObjToHtml(type, props);
 
-		this.root?.append(headNode);
+			this.root?.append(headNode);
+		} else {
+			throw new Error('The root element is missing.');
+		}
 	}
 }
 

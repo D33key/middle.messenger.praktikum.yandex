@@ -7,9 +7,12 @@ interface ButtonProps {
 }
 
 const Button = ({ className, children }: ButtonProps) => {
+	const handleClick = (e: Event) => {
+		console.log('Clicked!');
+	};
 	return createElement(
 		'button',
-		{ className: `button ${className ?? ''}` },
+		{ className: `button ${className ?? ''}`, onClick: handleClick },
 		children,
 	);
 };

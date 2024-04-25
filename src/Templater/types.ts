@@ -9,8 +9,9 @@ type PropsDependsOnTag<T extends keyof HTMLElementTagNameMap> =
 
 type Props = {
 	className?: string;
-	onClick?: EventListenerOrEventListenerObject;
-	children: SlowactNode<keyof HTMLElementTagNameMap>[] | string;
+	//TODO strange type
+	onClick?: EventListener;
+	children?: SlowactNode<keyof HTMLElementTagNameMap>[] | string;
 };
 
 type MergedProps<T extends keyof HTMLElementTagNameMap> = Props &
