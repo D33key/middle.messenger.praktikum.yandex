@@ -2,6 +2,7 @@ import { SlowactNode } from './types';
 
 export class Slowact {
 	private root: HTMLElement | null = null;
+	private rootObj: any = {};
 
 	constructor(root: HTMLElement | string, component: any) {
 		if (!root) {
@@ -17,41 +18,72 @@ export class Slowact {
 
 	public createElement<T extends keyof HTMLElementTagNameMap>(
 		type: SlowactNode<T>['type'],
-		props: SlowactNode<T>['props'],
+		props: Omit<SlowactNode<T>['props'], 'children'>,
 		children: SlowactNode<T>['props']['children'],
-		isChild?: boolean,
 	) {
-		const headNode = document.createElement(type);
+		this.rootObj = {
+			type,
+			props: {
+				...props,
+			},
+		};
+
+		if (Array.isArray(children) && children.length > 0) {
+			this.rootObj.props.children = [];
+			children.forEach((child) => {
+				const childObject = this.createChildElement(child);
+				this.rootObj.props.children.push(childObject);
+			});
+		} else {
+			this.rootObj.props.children = children;
+		}
+
+		return this.rootObj;
+	}
+
+	private createChildElement<T extends keyof HTMLElementTagNameMap>({
+		type,
+		props,
+	}: SlowactNode<T>) {
+		// TODO remove any
+		const childObj: any = {};
+		childObj.type = type;
+		childObj.props = props;
+
+		return childObj;
+	}
+
+	private convertObjToHtml<T extends keyof HTMLElementTagNameMap>(
+		type: SlowactNode<T>['type'],
+		props: SlowactNode<T>['props'],
+	) {
+		const node = document.createElement(type);
 
 		if (props?.className) {
-			headNode.classList.add(props.className);
+			node.classList.add(props.className);
 		}
-
 		if (props?.onClick) {
-			headNode.addEventListener('click', props.onClick);
+			node.addEventListener('click', props.onClick);
 		}
 
-		if (Array.isArray(children)) {
-			children.forEach((child) => {
-				const childNode = this.createElement(
-					child.type,
-					child.props,
-					child.props.children,
-					true,
-				);
-
-				headNode.append(childNode!);
+		if (Array.isArray(props.children) && props.children.length > 0) {
+			props.children.forEach((child) => {
+				const childNode = this.convertObjToHtml(child.type, child.props);
+				node.append(childNode);
 			});
 		}
 
-		if (typeof children === 'string') {
-			headNode.textContent = children;
+		if (typeof props.children === 'string') {
+			node.textContent = props.children;
 		}
 
-		if (isChild) {
-			return headNode;
-		} else {
-			this.root?.append(headNode);
-		}
+		return node;
+	}
+
+	public render() {
+		const { type, props } = this.rootObj;
+		const headNode = this.convertObjToHtml(type, props);
+
+		this.root?.append(headNode);
 	}
 }
