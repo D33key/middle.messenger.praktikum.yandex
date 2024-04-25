@@ -1,9 +1,8 @@
-import { createElement, createState } from '../Templater';
-import { SlowactNode } from '../Templater/types';
+import { createElement } from '../Templater';
 
 interface ButtonProps {
 	className?: string;
-	children: SlowactNode<keyof HTMLElementTagNameMap>[] | string;
+	children: string[];
 }
 
 const Button = ({ className, children }: ButtonProps) => {

@@ -1,21 +1,10 @@
-
-
-export interface SlowactNode<T extends keyof HTMLElementTagNameMap> {
+export interface SlowactProps<T extends keyof HTMLElementTagNameMap> {
 	type: T;
-	props: MergedProps<T>;
-	children?: SlowactNode<keyof HTMLElementTagNameMap>[] | string;
+	props: CreateElementProps & { children: string[] };
 }
 
-type PropsDependsOnTag<T extends keyof HTMLElementTagNameMap> =
-	SlowactNode<T> extends { type: T } ? Props : never;
-
-type Props = {
+export interface CreateElementProps {
 	key: string;
 	className?: string;
-	//TODO strange type
 	onClick?: EventListener;
-	children?: SlowactNode<keyof HTMLElementTagNameMap>[] | string;
-};
-
-type MergedProps<T extends keyof HTMLElementTagNameMap> = Props &
-	PropsDependsOnTag<T>;
+}

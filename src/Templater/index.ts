@@ -1,11 +1,11 @@
-import { SlowactNode } from './types';
+import { CreateElementProps, SlowactProps } from './types';
 
 export class Slowact {
 	private static root: HTMLElement | null = null;
-	private static rootObj: Omit<
-		SlowactNode<keyof HTMLElementTagNameMap>,
-		'children'
-	> | null = null;
+	private static rootMap = new Map<
+		string,
+		SlowactProps<keyof HTMLElementTagNameMap>
+	>();
 
 	static state = new Map();
 
@@ -28,12 +28,12 @@ export class Slowact {
 	}
 
 	static createRoot(root: HTMLElement | string) {
-		if (!root) {
-			throw new Error('The root should be a HTML Element.');
-		}
-
 		if (this.root) {
 			throw new Error('Root already exists!');
+		}
+
+		if (!root) {
+			throw new Error('The root should be a HTML Element.');
 		}
 
 		if (typeof root === 'string') {
@@ -45,91 +45,95 @@ export class Slowact {
 		return this;
 	}
 
-	// TODO If tag is self closing - should not include children!!!
 	static createElement<T extends keyof HTMLElementTagNameMap>(
-		type: SlowactNode<T>['type'],
-		props: Omit<SlowactNode<T>['props'], 'children'>,
-		children: SlowactNode<T>['props']['children'],
+		type: T,
+		props: CreateElementProps,
+		...children: string[]
 	) {
-		this.rootObj = {
+		this.rootMap.set(props.key, {
 			type,
 			props: {
 				...props,
+				children: children,
 			},
-		};
+		});
 
-		if (Array.isArray(children) && children.length > 0) {
-			this.rootObj.props.children = children.map((child) =>
-				this.createChildElement(child),
-			);
-		} else {
-			this.rootObj.props.children = children;
+		return props.key;
+	}
+
+	private static findWrapper() {
+		const childKeys = new Set();
+		this.rootMap.forEach((value, key) => {
+			if (value.props && value.props.children) {
+				value.props.children.forEach((childKey) => {
+					childKeys.add(childKey);
+				});
+			}
+		});
+		for (const [key] of this.rootMap) {
+			if (!childKeys.has(key)) {
+				return key;
+			}
+		}
+		return null;
+	}
+
+	private static createElementFromMap(key: string) {
+		const item = this.rootMap.get(key);
+
+		if (!item) {
+			return null;
 		}
 
-		return this.rootObj;
-	}
-
-	private static createChildElement<T extends keyof HTMLElementTagNameMap>({
-		type,
-		props,
-	}: SlowactNode<T>) {
-		return {
-			type,
-			props: { ...props },
-		};
-	}
-
-	private static convertObjToHtml<T extends keyof HTMLElementTagNameMap>(
-		type: SlowactNode<T>['type'],
-		props: SlowactNode<T>['props'],
-	) {
-		const node = document.createElement(type);
+		const { type, props } = item;
+		const element = document.createElement(type);
 
 		if (props?.className) {
-			const splited = props.className
-				.split(' ')
-				.filter((splitedClass) => Boolean(splitedClass));
-
-			node.classList.add(...splited);
+			element.className = props.className;
 		}
+
 		if (props?.onClick) {
-			node.addEventListener('click', props.onClick);
+			// TODO stop propagation
+			element.addEventListener('click', props.onClick);
 		}
 
-		if (Array.isArray(props.children) && props.children.length > 0) {
-			props.children.forEach((child) => {
-				const childNode = this.convertObjToHtml(child.type, child.props);
-				node.append(childNode);
+		if (props.children) {
+			props.children.forEach((childKey) => {
+				if (this.rootMap.has(childKey)) {
+					const childElement = Slowact.createElementFromMap(childKey);
+					if (childElement) {
+						element.appendChild(childElement);
+					}
+				} else {
+					element.textContent = childKey;
+				}
 			});
 		}
 
-		if (typeof props.children === 'string') {
-			node.textContent = props.children;
-		}
-
-		return node;
+		return element;
 	}
 
 	static render() {
-		if (this.rootObj) {
-			const { type, props } = this.rootObj;
-			const headNode = this.convertObjToHtml(type, props);
+		const wrapperKey = Slowact.findWrapper();
 
-			this.root?.append(headNode);
-		} else {
-			throw new Error('The root element is missing.');
+		if (!wrapperKey) {
+			throw new Error('Root element not found.');
 		}
+
+		const wrapperElement = Slowact.createElementFromMap(wrapperKey);
+
+		if (!wrapperElement) {
+			throw new Error('Cannot create wrapper element');
+		}
+
+		Slowact.root?.append(wrapperElement);
 	}
 }
 
 export function createElement<T extends keyof HTMLElementTagNameMap>(
-	type: SlowactNode<T>['type'],
-	props: Omit<SlowactNode<T>['props'], 'children'>,
-	children: SlowactNode<T>['props']['children'],
+	type: T,
+	props: CreateElementProps,
+	...children: string[]
 ) {
-	return Slowact.createElement(type, props, children);
-}
-
-export function createState<T>(componentKey: string, value: T) {
-	return Slowact.createState(componentKey, value);
+	return Slowact.createElement(type, props, ...children);
 }
