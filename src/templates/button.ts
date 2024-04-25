@@ -28,7 +28,7 @@ const Button = ({ className, children }: ButtonProps) => {
 			className: `button ${className ?? ''}`,
 			onClick: handleClick,
 		},
-		'123',
+		value,
 	);
 };
 

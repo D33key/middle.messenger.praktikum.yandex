@@ -1,17 +1,33 @@
 import { CreateElementProps, SlowactProps } from './types';
 
+// TODO replace state in other MAP?
 export class Slowact {
 	private static root: HTMLElement | null = null;
 	private static rootMap = new Map<
 		string,
 		SlowactProps<keyof HTMLElementTagNameMap> & { state?: any }
 	>();
-	private static dependencies: Map<string, Set<Function>> = new Map();
+	private static dependencies: Map<
+		string,
+		{
+			state: any;
+		}
+	> = new Map();
 
 	static createState<T>(componentKey: string, valueName: string, value: T) {
 		const mapElement = Slowact.rootMap.get(componentKey);
 
-		if (!mapElement) throw new Error('Wrong key!');
+		if (!mapElement) {
+			const anotherDeps = Slowact.dependencies.get(componentKey)?.state;
+			Slowact.dependencies.set(componentKey, {
+				state: {
+					...anotherDeps,
+					[valueName]: value,
+				},
+			});
+
+			return [value];
+		}
 
 		if (!mapElement.state) {
 			mapElement.state = {};
@@ -21,6 +37,7 @@ export class Slowact {
 
 		const changeState = Slowact.changeState(componentKey, valueName);
 
+		console.log(valueName, [mapElement.state[valueName], changeState]);
 		return [mapElement.state[valueName], changeState];
 	}
 
@@ -31,15 +48,6 @@ export class Slowact {
 		) {
 			throw new Error('There is no such key.');
 		}
-		// const componentInState = componentKey;
-		// const prevState = Slowact.state.get(componentKey)?.prevState;
-		// return function (fn: any) {
-		// 	const resultFromFunc = fn();
-		// 	Slowact.state.set(componentInState, {
-		// 		prevState,
-		// 		newState: resultFromFunc,
-		// 	});
-		// };
 	}
 
 	static createRoot(root: HTMLElement | string) {
@@ -48,7 +56,7 @@ export class Slowact {
 		}
 
 		if (!root) {
-			throw new Error('The root should be a HTML Element.');
+			throw new Error('The root should be the HTML Element.');
 		}
 
 		if (typeof root === 'string') {
@@ -72,6 +80,13 @@ export class Slowact {
 				children: children,
 			},
 		});
+
+		if (Slowact.dependencies.has(props.key)) {
+			const { state } = Slowact.dependencies.get(props.key)!;
+			Object.entries(state).map(([valueName, value]) => {
+				Slowact.createState(props.key, valueName, value);
+			});
+		}
 
 		return props.key;
 	}
