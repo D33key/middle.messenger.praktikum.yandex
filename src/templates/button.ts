@@ -1,34 +1,36 @@
 import { Slowact } from '../Templater';
+import { state } from '../Templater/State';
 
 interface ButtonProps {
 	className?: string;
 	children?: string[];
 }
 
-const Button = ({ className, children }: ButtonProps) => {
-	const [value, changeValue] = Slowact.createState<string>(
-		'button',
-		'btn-value',
-		'123',
-	);
-	const [value1, changeValue1] = Slowact.createState<string>(
-		'button',
-		'title-value',
-		'Privet',
-	);
+// {
+// 	className: {
+// 		static: 'button button-primary',
+// 		dynamic: [someVarialbes]
+// 	}
+// }
 
-	function handleClick(e: Event) {
-		changeValue(() => '25');
-	}
+const Button = ({ className, children }: ButtonProps) => {
+	// const value = Slowact.createState('Click me');
+	// const value1 = Slowact.createState('23');
+	// const func = Slowact.changeState(value, 'btn');
 
 	return Slowact.createElement(
 		'button',
 		{
-			key: 'button',
+			key: 'btn',
 			className: `button ${className ?? ''}`,
-			onClick: handleClick,
+			// onClick: () => {
+			// 	func('You clicked');
+			// }
 		},
-		value,
+		// {
+		// 	value,
+		// },
+		', Dima',
 	);
 };
 

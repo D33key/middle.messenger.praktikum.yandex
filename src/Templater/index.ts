@@ -1,53 +1,31 @@
-import { CreateElementProps, SlowactProps } from './types';
+import { StateI, effect, state } from './State';
+import { SlowactProps } from './types';
 
-// TODO replace state in other MAP?
+//TODO replace children with object ,
+//     cuz right now its complicated to add childrens
+
 export class Slowact {
 	private static root: HTMLElement | null = null;
 	private static rootMap = new Map<
 		string,
-		SlowactProps<keyof HTMLElementTagNameMap> & { state?: any }
+		SlowactProps<keyof HTMLElementTagNameMap>
 	>();
-	private static dependencies: Map<
-		string,
-		{
-			state: any;
-		}
-	> = new Map();
 
-	static createState<T>(componentKey: string, valueName: string, value: T) {
-		const mapElement = Slowact.rootMap.get(componentKey);
-
-		if (!mapElement) {
-			const anotherDeps = Slowact.dependencies.get(componentKey)?.state;
-			Slowact.dependencies.set(componentKey, {
-				state: {
-					...anotherDeps,
-					[valueName]: value,
-				},
-			});
-
-			return [value];
-		}
-
-		if (!mapElement.state) {
-			mapElement.state = {};
-		}
-
-		mapElement.state[valueName] = value;
-
-		const changeState = Slowact.changeState(componentKey, valueName);
-
-		console.log(valueName, [mapElement.state[valueName], changeState]);
-		return [mapElement.state[valueName], changeState];
+	static createState<T>(initialValue: T) {
+		return state(initialValue);
 	}
 
-	private static changeState(componentKey: string, valueName: string) {
-		if (
-			!Slowact.rootMap.has(componentKey) &&
-			!Slowact.rootMap.get(componentKey)?.state[valueName]
-		) {
-			throw new Error('There is no such key.');
-		}
+	static changeState<T>(state: StateI<T>, rootKey: string) {
+		const root = rootKey;
+		return (newValue: T) => {
+			state.value = newValue;
+			const { type, props } = this.rootMap.get(root)!;
+			const oldElement = document.querySelector(`[data-key=${root}]`);
+			const newElementKey = Slowact.createElement(type, props);
+
+			const newElement = Slowact.createElementFromMap(newElementKey);
+			oldElement?.replaceWith(newElement);
+		};
 	}
 
 	static createRoot(root: HTMLElement | string) {
@@ -70,24 +48,19 @@ export class Slowact {
 
 	static createElement<T extends keyof HTMLElementTagNameMap>(
 		type: T,
-		props: CreateElementProps,
+		props: SlowactProps<T>['props'],
 		...children: string[]
 	) {
-		this.rootMap.set(props.key, {
+		const isChildrenIncludes = children.length > 0 ? children : props.children;
+
+		const correctObj = {
 			type,
 			props: {
 				...props,
-				children: children,
+				children: isChildrenIncludes,
 			},
-		});
-
-		if (Slowact.dependencies.has(props.key)) {
-			const { state } = Slowact.dependencies.get(props.key)!;
-			Object.entries(state).map(([valueName, value]) => {
-				Slowact.createState(props.key, valueName, value);
-			});
-		}
-
+		};
+		this.rootMap.set(props.key, correctObj);
 		return props.key;
 	}
 
@@ -110,20 +83,19 @@ export class Slowact {
 
 	private static createElementFromMap(key: string) {
 		const item = this.rootMap.get(key);
-
 		if (!item) {
 			return null;
 		}
 
 		const { type, props } = item;
 		const element = document.createElement(type);
-
+		element.setAttribute('data-key', key);
+		//TODO make classNames static and dynamic?
 		if (props?.className) {
 			element.className = props.className;
 		}
 
 		if (props?.onClick) {
-			// TODO stop propagation
 			element.addEventListener('click', props.onClick);
 		}
 
@@ -135,7 +107,17 @@ export class Slowact {
 						element.appendChild(childElement);
 					}
 				} else {
-					element.textContent = childKey;
+					if (typeof childKey === 'object') {
+						if (childKey.value.value && childKey?.render) {
+							const childElementRender = Slowact.createElementFromMap(
+								childKey?.render({}),
+							)!;
+
+							element.appendChild(childElementRender);
+						}
+					} else {
+						element.append(childKey);
+					}
 				}
 			});
 		}
@@ -158,12 +140,4 @@ export class Slowact {
 
 		Slowact.root?.append(wrapperElement);
 	}
-}
-
-export function createElement<T extends keyof HTMLElementTagNameMap>(
-	type: T,
-	props: CreateElementProps,
-	...children: string[]
-) {
-	return Slowact.createElement(type, props, ...children);
 }
