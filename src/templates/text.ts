@@ -1,15 +1,15 @@
 import { Slowact } from '@/Templater/Slowact';
 import { SlowactProps } from '@/Templater/types';
 
-interface Title {
-	variant: 'h1' | 'h2' | 'h3';
+interface Text {
+	variant: 'p' | 'span' | 'strong' | 'em' | 'q';
 	key: string;
 	children: SlowactProps<'div', unknown, unknown>['props']['children'][];
 	className?: string;
 	onClick?: EventListener;
 }
 
-const Title = ({ variant, key, className, children, onClick }: Title) => {
+const Text = ({ variant, key, className, onClick, children }: Text) => {
 	return Slowact.createElement(
 		variant,
 		{
@@ -21,4 +21,4 @@ const Title = ({ variant, key, className, children, onClick }: Title) => {
 	);
 };
 
-export default Title;
+export default Text;

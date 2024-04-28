@@ -1,10 +1,10 @@
 import { Slowact } from '@/Templater/Slowact';
 import FormWrapper from '@/components/divWithHeaderAndText';
 import LabelWithInput from '@/components/labelWithInput';
+import '@/style.css';
 import Button from '@/templates/button';
 import Div from '@/templates/div';
-import '@/style.css';
-import { formInputs } from '@/utils/arrayOfElement';
+import { formRegisterInputs } from '@/utils/arrayOfElement';
 
 Slowact.createRoot('#app');
 
@@ -14,15 +14,15 @@ Div({
 	children: [
 		FormWrapper({
 			key: 'form-div-with-title',
-			className: 'form-wrapper column',
-			titleText: 'Вход',
-			textText: 'Новый участник? ',
+			className: 'form-wrapper',
+			titleText: 'Регистрация',
+			textText: 'Или у вас есть логин? ',
 			isLinkInclude: true,
-			linkText: 'Зарегистрируйся бесплатно',
-			linkHref: '/signup',
+			linkText: 'Войти в систему',
+			linkHref: '/',
 			linkLeadToNewPage: false,
 			children: [
-				...formInputs.map((input) =>
+				...formRegisterInputs.map((input) =>
 					LabelWithInput({
 						wrapper: input.wrapper,
 						label: input.label,
@@ -34,7 +34,7 @@ Div({
 					attributes: {
 						type: 'submit',
 					},
-					children: ['Войти'],
+					children: ['Зарегистрироваться'],
 				}),
 			],
 		}),

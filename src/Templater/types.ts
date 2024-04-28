@@ -1,12 +1,33 @@
-export interface SlowactProps<T extends keyof HTMLElementTagNameMap> {
-	type: T;
-	props: CreateElementProps & { children?: string[] };
+interface StateValue {
+	// remove any later
+	value: any;
+	condition?: {
+		falseStatment: string | Function;
+		trueStatment: string | Function;
+	};
 }
 
-export interface CreateElementProps {
-	key: string;
-	className?: string;
-	onClick?: EventListener;
+interface ChildrenProps {
+	children?: string | StateValue;
+}
 
-	variables?: Record<string, any>;
+export interface SlowactProps<
+	T extends keyof HTMLElementTagNameMap,
+	Variables,
+	Attributes,
+> {
+	type: T;
+	props: CreateElementProps<Variables, Attributes> & ChildrenProps;
+}
+interface DynamicClass {
+	static: string;
+	dynamic: StateValue;
+}
+
+export interface CreateElementProps<Variables, Attributes> {
+	key: string;
+	className?: string | DynamicClass;
+	onClick?: EventListener;
+	variables?: Variables;
+	attributes?: Attributes;
 }

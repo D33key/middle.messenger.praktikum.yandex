@@ -1,14 +1,11 @@
-import { StateI, effect, state } from './State';
-import { SlowactProps } from './types';
-
-//TODO replace children with object ,
-//     cuz right now its complicated to add childrens
+import { StateI, state } from '@/Templater/State';
+import { SlowactProps } from '@/Templater/types';
 
 export class Slowact {
 	private static root: HTMLElement | null = null;
 	private static rootMap = new Map<
 		string,
-		SlowactProps<keyof HTMLElementTagNameMap>
+		SlowactProps<keyof HTMLElementTagNameMap, unknown, unknown>
 	>();
 
 	static createState<T>(initialValue: T) {
@@ -24,7 +21,7 @@ export class Slowact {
 			const newElementKey = Slowact.createElement(type, props);
 
 			const newElement = Slowact.createElementFromMap(newElementKey);
-			oldElement?.replaceWith(newElement);
+			oldElement?.replaceWith(newElement!);
 		};
 	}
 
@@ -46,10 +43,10 @@ export class Slowact {
 		return this;
 	}
 
-	static createElement<T extends keyof HTMLElementTagNameMap>(
+	static createElement<T extends keyof HTMLElementTagNameMap, U, E>(
 		type: T,
-		props: SlowactProps<T>['props'],
-		...children: string[]
+		props: SlowactProps<T, U, E>['props'],
+		...children: SlowactProps<T, U, E>['props']['children'][]
 	) {
 		const isChildrenIncludes = children.length > 0 ? children : props.children;
 
@@ -60,6 +57,7 @@ export class Slowact {
 				children: isChildrenIncludes,
 			},
 		};
+		//@ts-ignore
 		this.rootMap.set(props.key, correctObj);
 		return props.key;
 	}
@@ -68,6 +66,7 @@ export class Slowact {
 		const childKeys = new Set();
 		rootMap.forEach((value) => {
 			if (value.props && value.props.children) {
+				//@ts-ignore
 				value.props.children.forEach((childKey) => {
 					childKeys.add(childKey);
 				});
@@ -90,9 +89,35 @@ export class Slowact {
 		const { type, props } = item;
 		const element = document.createElement(type);
 		element.setAttribute('data-key', key);
-		//TODO make classNames static and dynamic?
+
 		if (props?.className) {
-			element.className = props.className;
+			if (typeof props.className === 'string') {
+				element.className = props.className;
+			} else {
+				const staticValue = props.className.static;
+				const dynamicValue = props.className.dynamic.value.value;
+
+				element.className = `${staticValue} ${dynamicValue}`;
+			}
+		}
+
+		if (props.attributes) {
+			const keyVal = Object.entries(props.attributes);
+
+			keyVal.forEach(([key, value]) => {
+				if (typeof value === 'object') {
+					if (value.value.value) {
+						//@ts-ignore
+						element[key] = value.condition.trueStatement;
+					} else {
+						//@ts-ignore
+						element[key] = value.condition.falseStatement;
+					}
+				} else {
+					//@ts-ignore
+					element[key] = value;
+				}
+			});
 		}
 
 		if (props?.onClick) {
@@ -100,6 +125,7 @@ export class Slowact {
 		}
 
 		if (props.children) {
+			//@ts-ignore
 			props.children.forEach((childKey) => {
 				if (this.rootMap.has(childKey)) {
 					const childElement = Slowact.createElementFromMap(childKey);
@@ -107,22 +133,42 @@ export class Slowact {
 						element.appendChild(childElement);
 					}
 				} else {
-					if (typeof childKey === 'object') {
-						if (childKey.value.value && childKey?.render) {
-							const childElementRender = Slowact.createElementFromMap(
-								childKey?.render({}),
-							)!;
-
-							element.appendChild(childElementRender);
-						}
-					} else {
-						element.append(childKey);
-					}
+					Slowact.appendObjectOrText(childKey, element);
 				}
 			});
 		}
 
 		return element;
+	}
+
+	static appendObjectOrText(childKey: any, element: any) {
+		if (typeof childKey === 'object') {
+			if (childKey.value && childKey?.condition) {
+				if (childKey.value.value) {
+					if (typeof childKey.condition.trueStatment === 'string') {
+						element.append(childKey.condition.trueStatment);
+					} else {
+						const childElementRender = Slowact.createElementFromMap(
+							childKey.condition.trueStatment(),
+						)!;
+
+						element.appendChild(childElementRender);
+					}
+				} else {
+					if (typeof childKey.condition.falseStatment === 'string') {
+						element.append(childKey.condition.falseStatment);
+					} else {
+						const childElementRender = Slowact.createElementFromMap(
+							childKey.condition.falseStatment(),
+						)!;
+
+						element.appendChild(childElementRender);
+					}
+				}
+			}
+		} else {
+			element.append(childKey);
+		}
 	}
 
 	static render() {

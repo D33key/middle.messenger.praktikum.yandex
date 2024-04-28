@@ -1,36 +1,34 @@
-import { Slowact } from '../Templater';
-import { state } from '../Templater/State';
+import { Slowact } from '@/Templater/Slowact';
+import { SlowactProps } from '@/Templater/types';
 
 interface ButtonProps {
+	key: string;
+	children: SlowactProps<'button', unknown, unknown>['props']['children'][];
+	attributes: {
+		type: 'submit' | 'reset' | 'button';
+		name?: string;
+		value?: string;
+	};
 	className?: string;
-	children?: string[];
+	onClick?: EventListener;
 }
 
-// {
-// 	className: {
-// 		static: 'button button-primary',
-// 		dynamic: [someVarialbes]
-// 	}
-// }
-
-const Button = ({ className, children }: ButtonProps) => {
-	// const value = Slowact.createState('Click me');
-	// const value1 = Slowact.createState('23');
-	// const func = Slowact.changeState(value, 'btn');
-
+const Button = ({
+	key,
+	className,
+	attributes,
+	onClick,
+	children,
+}: ButtonProps) => {
 	return Slowact.createElement(
 		'button',
 		{
-			key: 'btn',
-			className: `button ${className ?? ''}`,
-			// onClick: () => {
-			// 	func('You clicked');
-			// }
+			key,
+			className: `button submitButton ${className ?? ''}`,
+			attributes,
+			onClick,
 		},
-		// {
-		// 	value,
-		// },
-		', Dima',
+		...children,
 	);
 };
 
