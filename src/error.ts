@@ -1,6 +1,12 @@
 import { Slowact } from './Templater/Slowact';
 import TitleWithText from './templates/titleWithText';
 
+declare global {
+	interface Window {
+		errorNumber: number;
+	}
+}
+
 Slowact.createRoot('#app');
 
 TitleWithText({
