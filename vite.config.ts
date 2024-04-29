@@ -11,13 +11,13 @@ export default defineConfig({
 			input: {
 				main: './src/pages/index.html',
 				signUp: './src/pages/signup.html',
-				notFound: './src/pages/not-found.html'
-			}
-		}
+				notFound: './src/pages/not-found.html',
+				505: './src/pages/505.html',
+			},
+		},
 	},
 	server: {
 		port: 3001,
-
 	},
 	resolve: {
 		alias: [

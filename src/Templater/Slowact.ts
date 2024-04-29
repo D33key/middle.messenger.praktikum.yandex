@@ -135,33 +135,37 @@ export class Slowact {
 		return element;
 	}
 
-	static appendObjectOrText(childKey: any, element: any) {
-		if (typeof childKey === 'object') {
-			if (childKey.value && childKey?.condition) {
-				if (childKey.value.value) {
-					if (typeof childKey.condition.trueStatment === 'string') {
-						element.append(childKey.condition.trueStatment);
-					} else {
-						const childElementRender = Slowact.createElementFromMap(
-							childKey.condition.trueStatment(),
-						)!;
+	static appendObjectOrText(childKey: any, element: HTMLElement) {
+		if (childKey) {
+			if (typeof childKey === 'object') {
+				if (childKey.value && childKey?.condition) {
+					if (childKey.value.value) {
+						if (typeof childKey.condition.trueStatment === 'string') {
+							element.append(childKey.condition.trueStatment);
+						} else {
+							const childElementRender = Slowact.createElementFromMap(
+								childKey.condition.trueStatment(),
+							)!;
 
-						element.appendChild(childElementRender);
-					}
-				} else {
-					if (typeof childKey.condition.falseStatment === 'string') {
-						element.append(childKey.condition.falseStatment);
+							element.appendChild(childElementRender);
+						}
 					} else {
-						const childElementRender = Slowact.createElementFromMap(
-							childKey.condition.falseStatment(),
-						)!;
+						if (typeof childKey.condition.falseStatment === 'string') {
+							element.append(childKey.condition.falseStatment);
+						} else {
+							const childElementRender = Slowact.createElementFromMap(
+								childKey.condition.falseStatment(),
+							)!;
 
-						element.appendChild(childElementRender);
+							element.appendChild(childElementRender);
+						}
 					}
 				}
+			} else {
+				element.append(childKey);
 			}
 		} else {
-			element.append(childKey);
+			return;
 		}
 	}
 
