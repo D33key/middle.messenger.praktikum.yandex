@@ -56,8 +56,7 @@ export class Slowact {
 				...props,
 				children: isChildrenIncludes,
 			},
-		};
-		//@ts-ignore
+		} as SlowactProps<T, U, E>;
 		this.rootMap.set(props.key, correctObj);
 		return props.key;
 	}
@@ -66,8 +65,7 @@ export class Slowact {
 		const childKeys = new Set();
 		rootMap.forEach((value) => {
 			if (value.props && value.props.children) {
-				//@ts-ignore
-				value.props.children.forEach((childKey) => {
+				(value.props.children as string[]).forEach((childKey) => {
 					childKeys.add(childKey);
 				});
 			}
@@ -107,15 +105,12 @@ export class Slowact {
 			keyVal.forEach(([key, value]) => {
 				if (typeof value === 'object') {
 					if (value.value.value) {
-						//@ts-ignore
-						element[key] = value.condition.trueStatement;
+						element.setAttribute(key, value.condition.trueStatement);
 					} else {
-						//@ts-ignore
-						element[key] = value.condition.falseStatement;
+						element.setAttribute(key, value.condition.falseStatement);
 					}
 				} else {
-					//@ts-ignore
-					element[key] = value;
+					element.setAttribute(key, value);
 				}
 			});
 		}
@@ -125,10 +120,9 @@ export class Slowact {
 		}
 
 		if (props.children) {
-			//@ts-ignore
-			props.children.forEach((childKey) => {
-				if (this.rootMap.has(childKey)) {
-					const childElement = Slowact.createElementFromMap(childKey);
+			(props.children as Array<unknown>).forEach((childKey) => {
+				if (this.rootMap.has(childKey as string)) {
+					const childElement = Slowact.createElementFromMap(childKey as string);
 					if (childElement) {
 						element.appendChild(childElement);
 					}

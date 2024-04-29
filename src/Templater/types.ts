@@ -1,14 +1,20 @@
+import { StateI } from './State';
+
 interface StateValue {
-	// remove any later
-	value: any;
+	//
+	value: StateI<string | number | boolean>;
 	condition?: {
 		falseStatment: string | Function;
 		trueStatment: string | Function;
 	};
 }
 
-interface ChildrenProps {
-	children?: string | StateValue;
+export interface ChildrenProps {
+	children?:
+		| string[]
+		| StateValue[]
+		| (string[] | StateValue[] | undefined)[]
+		| string;
 }
 
 export interface SlowactProps<
