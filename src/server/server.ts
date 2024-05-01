@@ -4,14 +4,12 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
 
-const PORT = 3001;
+const PORT = 3000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const __srcDir = path.dirname(__dirname);
 const __rootname = path.dirname(__srcDir) + '/dist/pages';
-
-console.log('WADSA', path.resolve(__srcDir, '../dist'))
 
 async function createServer() {
 	const app = express();
