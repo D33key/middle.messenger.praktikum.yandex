@@ -7,8 +7,8 @@
 		"node": ">=12.0.0"
 	},
 	"scripts": {
-		"dev": "vite",
-		"dev:server": "nodemon -I --exec node --loader ts-node/esm ./src/server/server.ts",
+		"dev": "nodemon -I --exec node --loader ts-node/esm ./src/server/server.ts",
+		"dev:noserver": "vite",
 		"start": "tsc && vite build --emptyOutDir",
 		"start:css": "postcss src/style.css --dir dest",
 		"preview": "vite preview"
