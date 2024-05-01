@@ -1,5 +1,5 @@
 import { Slowact } from './Templater/Slowact';
-import TitleWithText from './templates/titleWithText';
+import TitleWithText from './templates/titleWithText'
 
 declare global {
 	interface Window {
