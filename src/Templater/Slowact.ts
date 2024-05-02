@@ -71,6 +71,7 @@ export class Slowact {
 			}
 		});
 		for (const [key] of rootMap) {
+
 			if (!childKeys.has(key)) {
 				return key;
 			}
@@ -102,15 +103,23 @@ export class Slowact {
 		if (props.attributes) {
 			const keyVal = Object.entries(props.attributes);
 
-			keyVal.forEach(([key, value]) => {
+			keyVal.forEach(([keyOfProps, value]) => {
 				if (typeof value === 'object') {
 					if (value.value.value) {
-						element.setAttribute(key, value.condition.trueStatement);
+						if (value.condition.trueStatement) {
+							element.setAttribute(keyOfProps, value.condition.trueStatement);
+						} else {
+							element.removeAttribute(keyOfProps);
+						}
 					} else {
-						element.setAttribute(key, value.condition.falseStatement);
+						if (value.condition.falseStatement) {
+							element.setAttribute(keyOfProps, value.condition.falseStatement);
+						} else {
+							element.removeAttribute(keyOfProps);
+						}
 					}
 				} else {
-					element.setAttribute(key, value);
+					element.setAttribute(keyOfProps, value);
 				}
 			});
 		}
@@ -119,15 +128,27 @@ export class Slowact {
 			element.addEventListener('click', props.onClick);
 		}
 
+		if (props?.onChange) {
+			element.addEventListener('change', props.onChange);
+		}
+
+		if (props?.onBlur) {
+			element.addEventListener('blur', props.onBlur);
+		}
+
 		if (props.children) {
 			(props.children as Array<unknown>).forEach((childKey) => {
-				if (this.rootMap.has(childKey as string)) {
-					const childElement = Slowact.createElementFromMap(childKey as string);
-					if (childElement) {
-						element.appendChild(childElement);
+				if (childKey) {
+					if (this.rootMap.has(childKey as string)) {
+						const childElement = Slowact.createElementFromMap(
+							childKey as string,
+						);
+						if (childElement) {
+							element.appendChild(childElement);
+						}
+					} else {
+						Slowact.appendObjectOrText(childKey, element);
 					}
-				} else {
-					Slowact.appendObjectOrText(childKey, element);
 				}
 			});
 		}
@@ -147,7 +168,7 @@ export class Slowact {
 								childKey.condition.trueStatment(),
 							)!;
 
-							element.appendChild(childElementRender);
+							element.append(childElementRender);
 						}
 					} else {
 						if (typeof childKey.condition.falseStatment === 'string') {
@@ -157,7 +178,7 @@ export class Slowact {
 								childKey.condition.falseStatment(),
 							)!;
 
-							element.appendChild(childElementRender);
+							element.append(childElementRender);
 						}
 					}
 				}

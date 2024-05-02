@@ -34,6 +34,8 @@ export interface CreateElementProps<Variables, Attributes> {
 	key: string;
 	className?: string | DynamicClass;
 	onClick?: EventListener;
+	onChange?: EventListener;
+	onBlur?: EventListener;
 	variables?: Variables;
 	attributes?: Attributes;
 }

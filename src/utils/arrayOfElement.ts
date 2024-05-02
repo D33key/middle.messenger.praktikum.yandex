@@ -1,3 +1,5 @@
+import { StateI } from '@/Templater/State';
+
 export const formInputs = [
 	{
 		wrapper: {
@@ -215,6 +217,235 @@ export const formRegisterInputs = [
 				placeholder: 'Введите пароль',
 				type: 'password' as const,
 				required: true,
+			},
+		},
+	},
+];
+
+export const userInfoInputs = ({
+	isDisabled,
+	userFirstName,
+	userSecondName,
+	userEmail,
+	userNickname,
+	userPhone,
+	userLogin,
+}: {
+	isDisabled: StateI<boolean>;
+	userFirstName: string;
+	userSecondName: string;
+	userEmail: string;
+	userNickname: string;
+	userPhone: string;
+	userLogin: string;
+}) => [
+	{
+		wrapper: {
+			wrapperKey: 'label-email-user',
+			wrapperClassName: 'user-input-wrapper',
+		},
+		label: {
+			labelKey: 'email-label',
+			labelText: 'Почта',
+			labelAttributes: {
+				for: 'email',
+			},
+		},
+		input: {
+			inputKey: 'email-input',
+			inputClassname: 'email',
+			inputAttributes: {
+				name: 'email',
+				id: 'email',
+				autocomplete: true,
+				disabled: {
+					value: isDisabled,
+					condition: {
+						trueStatement: true,
+						falseStatement: false,
+					},
+				},
+				maxLength: '50',
+				minLength: '2',
+				placeholder: 'Введите почту',
+				type: 'email' as const,
+				required: true,
+				value: userEmail,
+			}
+		},
+	},
+	{
+		wrapper: {
+			wrapperKey: 'label-login-user',
+			wrapperClassName: 'user-input-wrapper',
+		},
+		label: {
+			labelKey: 'login-label',
+			labelText: 'Логин',
+			labelAttributes: {
+				for: 'login',
+			},
+		},
+		input: {
+			inputKey: 'login-input',
+			inputClassname: 'login',
+			inputAttributes: {
+				name: 'login',
+				id: 'login',
+				autocomplete: true,
+				disabled: {
+					value: isDisabled,
+					condition: {
+						trueStatement: true,
+						falseStatement: false,
+					},
+				},
+				maxLength: '50',
+				minLength: '2',
+				placeholder: 'Введите логин',
+				type: 'text' as const,
+				required: true,
+				value: userLogin,
+			},
+		},
+	},
+	{
+		wrapper: {
+			wrapperKey: 'label-name-user',
+			wrapperClassName: 'user-input-wrapper',
+		},
+		label: {
+			labelKey: 'name-label',
+			labelText: 'Имя',
+			labelAttributes: {
+				for: 'name',
+			},
+		},
+		input: {
+			inputKey: 'name-input',
+			inputClassname: 'name',
+			inputAttributes: {
+				name: 'first_name',
+				id: 'name',
+				autocomplete: true,
+				disabled: {
+					value: isDisabled,
+					condition: {
+						trueStatement: true,
+						falseStatement: false,
+					},
+				},
+				maxLength: '50',
+				minLength: '2',
+				placeholder: 'Введите имя',
+				type: 'text' as const,
+				required: true,
+				value: userFirstName,
+			},
+		},
+	},
+	{
+		wrapper: {
+			wrapperKey: 'label-secondName-user',
+			wrapperClassName: 'user-input-wrapper',
+		},
+		label: {
+			labelKey: 'secondName-label',
+			labelText: 'Фамилия',
+			labelAttributes: {
+				for: 'secondName',
+			},
+		},
+		input: {
+			inputKey: 'secondName-input',
+			inputClassname: 'secondName',
+			inputAttributes: {
+				name: 'second_name',
+				id: 'secondName',
+				autocomplete: true,
+				disabled: {
+					value: isDisabled,
+					condition: {
+						trueStatement: true,
+						falseStatement: false,
+					},
+				},
+				maxLength: '50',
+				minLength: '2',
+				placeholder: 'Введите фамилию',
+				type: 'text' as const,
+				required: true,
+				value: userSecondName,
+			},
+		},
+	},
+	{
+		wrapper: {
+			wrapperKey: 'label-nickname-user',
+			wrapperClassName: 'user-input-wrapper',
+		},
+		label: {
+			labelKey: 'nickname-label',
+			labelText: 'Имя в чате',
+			labelAttributes: {
+				for: 'nickname',
+			},
+		},
+		input: {
+			inputKey: 'nickname-input',
+			inputClassname: 'nickname',
+			inputAttributes: {
+				name: 'display_name',
+				autocomplete: true,
+				id: 'nickname',
+				disabled: {
+					value: isDisabled,
+					condition: {
+						trueStatement: true,
+						falseStatement: false,
+					},
+				},
+				maxLength: '50',
+				minLength: '2',
+				placeholder: 'Введите имя в чате',
+				type: 'text' as const,
+				required: true,
+				value: userNickname,
+			},
+		},
+	},
+	{
+		wrapper: {
+			wrapperKey: 'label-phone-user',
+			wrapperClassName: 'user-input-wrapper',
+		},
+		label: {
+			labelKey: 'phone-label',
+			labelText: 'Телефон',
+			labelAttributes: {
+				for: 'phone',
+			},
+		},
+		input: {
+			inputKey: 'phone-input',
+			inputClassname: 'phone',
+			inputAttributes: {
+				name: 'phone',
+				autocomplete: true,
+				disabled: {
+					value: isDisabled,
+					condition: {
+						trueStatement: true,
+						falseStatement: false,
+					},
+				},
+				id: 'phone',
+				maxLength: '50',
+				minLength: '2',
+				placeholder: 'Введите телефон',
+				type: 'text' as const,
+				required: true,
+				value: userPhone,
 			},
 		},
 	},

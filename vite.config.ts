@@ -13,6 +13,7 @@ export default defineConfig({
 				signUp: './src/pages/signup.html',
 				notFound: './src/pages/not-found.html',
 				505: './src/pages/505.html',
+				changeUser: './src/pages/change-user.html'
 			},
 		},
 	},

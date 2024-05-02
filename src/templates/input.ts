@@ -13,15 +13,17 @@ interface Input {
 		name: string;
 		required: boolean;
 	};
-	// onChange
-	// onBlur
+	onChange?: EventListener;
+	onBlur?: EventListener;
 }
 
-const Input = ({ key, className, attributes }: Input) => {
+const Input = ({ key, className, attributes, onChange, onBlur }: Input) => {
 	return Slowact.createElement('input', {
 		key,
 		className: `input ${className ?? ''}`,
 		attributes,
+		onChange,
+		onBlur
 	});
 };
 

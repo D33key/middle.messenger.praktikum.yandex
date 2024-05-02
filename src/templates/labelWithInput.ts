@@ -17,6 +17,7 @@ interface LabelWithInput {
 		inputKey: string;
 		inputAttributes: Input['attributes'];
 		inputClassname?: Input['className'];
+		onBlur?: Input['onBlur'];
 	};
 }
 
@@ -35,6 +36,7 @@ const LabelWithInput = ({ wrapper, label, input }: LabelWithInput) => {
 				key: input.inputKey,
 				className: input.inputClassname,
 				attributes: input.inputAttributes,
+				onBlur: input.onBlur,
 			}),
 		],
 	});
