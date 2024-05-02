@@ -32,6 +32,7 @@ Div({
 				),
 				Button({
 					key: 'submit-button',
+					className: 'submitButton',
 					attributes: {
 						type: 'submit',
 					},

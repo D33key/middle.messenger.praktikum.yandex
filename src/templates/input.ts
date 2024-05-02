@@ -4,14 +4,14 @@ interface Input {
 	key: string;
 	className?: string;
 	attributes: {
-		type: 'text' | 'password' | 'email' | 'tel' | 'number';
-		autocomplete: boolean;
-		disabled: boolean;
-		minLength: string;
-		maxLength: string;
-		placeholder: string;
+		type: 'text' | 'password' | 'email' | 'tel' | 'number' | 'file';
+		autocomplete?: boolean;
+		disabled?: boolean;
+		minLength?: string;
+		maxLength?: string;
+		placeholder?: string;
 		name: string;
-		required: boolean;
+		required?: boolean;
 	};
 	onChange?: EventListener;
 	onBlur?: EventListener;

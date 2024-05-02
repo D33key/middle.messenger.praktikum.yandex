@@ -1,4 +1,4 @@
-import { isDisabled } from '@/changeUser';
+import { isDisabled, showChangePassword } from '@/changeUser';
 import FormWrapper from '@/templates/formWrapper';
 import LabelWithInput from '@/templates/labelWithInput';
 import { userInfoInputs } from '@/utils/arrayOfElement';
@@ -31,13 +31,21 @@ const UserInfoForm = () => {
 	});
 	return FormWrapper({
 		key: 'userInfo-form',
-		className: 'userInfo-wrapper',
+		//@ts-ignore
+		className: {
+			static: 'userInfo-wrapper',
+			dynamic: {
+				value: showChangePassword,
+				trueStatement: 'show-password',
+				falseStatement: ''
+			},
+		},
 		isTitleExist: false,
 		children: [
 			...arrayOfInputs.map((item) =>
 				LabelWithInput({
 					wrapper: item.wrapper,
-          //@ts-ignore
+					//@ts-ignore
 					input: item.input,
 					label: item.label,
 				}),

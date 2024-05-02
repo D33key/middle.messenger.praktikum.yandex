@@ -103,6 +103,7 @@
 	font-weight: 600;
 	background-color: rgba(17, 17, 17, 1);
 	color: var(--button-text-color);
+	cursor: pointer;
 	border-radius: 32px;
 	-webkit-border-radius: 32px;
 	-moz-border-radius: 32px;
@@ -147,4 +148,80 @@
 	.submitButton {
 	opacity: 1;
 	pointer-events: auto;
+}
+
+.user-input-wrapper.hide {
+	display: none;
+}
+
+.show-password .user-input-wrapper.show {
+	display: none;
+}
+
+.show-password .user-input-wrapper.hide {
+	display: block;
+}
+
+.userImage {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.userImage img {
+	width: 130px;
+	height: 130px;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+}
+
+.userImage::after {
+
+	opacity: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 130px;
+	height: 130px;
+	content: 'Поменять аватар';
+	font-size: 14px;
+	color: white;
+	background-color: rgba(0, 0, 0, 0.5);
+	position: absolute;
+	z-index: 5;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transition: 0.3s ease;
+	-webkit-transition: 0.3s ease;
+	-moz-transition: 0.3s ease;
+	-ms-transition: 0.3s ease;
+	-o-transition: 0.3s ease;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+}
+
+.userImage:hover::after {
+	opacity: 1;
+}
+
+.userImage input.hide{
+	opacity: 0;
+	visibility: hidden;
+
+	position: absolute;
+	width: 0;
+	height: 0;
 }

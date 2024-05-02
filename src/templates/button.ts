@@ -24,7 +24,7 @@ const Button = ({
 		'button',
 		{
 			key,
-			className: `button submitButton ${className ?? ''}`,
+			className: `button ${className ?? ''}`,
 			attributes,
 			onClick,
 		},

@@ -71,7 +71,6 @@ export class Slowact {
 			}
 		});
 		for (const [key] of rootMap) {
-
 			if (!childKeys.has(key)) {
 				return key;
 			}
@@ -94,9 +93,17 @@ export class Slowact {
 				element.className = props.className;
 			} else {
 				const staticValue = props.className.static;
-				const dynamicValue = props.className.dynamic.value.value;
+				if (props.className.dynamic.value.value) {
+					//@ts-ignore
+					const dynamicValue = props.className.dynamic.trueStatement;
 
-				element.className = `${staticValue} ${dynamicValue}`;
+					element.className = `${staticValue} ${dynamicValue}`;
+				} else {
+					//@ts-ignore
+					const dynamicValue = props.className.dynamic.falseStatement;
+
+					element.className = `${staticValue} ${dynamicValue}`;
+				}
 			}
 		}
 

@@ -242,7 +242,7 @@ export const userInfoInputs = ({
 	{
 		wrapper: {
 			wrapperKey: 'label-email-user',
-			wrapperClassName: 'user-input-wrapper',
+			wrapperClassName: 'user-input-wrapper show',
 		},
 		label: {
 			labelKey: 'email-label',
@@ -271,13 +271,13 @@ export const userInfoInputs = ({
 				type: 'email' as const,
 				required: true,
 				value: userEmail,
-			}
+			},
 		},
 	},
 	{
 		wrapper: {
 			wrapperKey: 'label-login-user',
-			wrapperClassName: 'user-input-wrapper',
+			wrapperClassName: 'user-input-wrapper show',
 		},
 		label: {
 			labelKey: 'login-label',
@@ -312,7 +312,7 @@ export const userInfoInputs = ({
 	{
 		wrapper: {
 			wrapperKey: 'label-name-user',
-			wrapperClassName: 'user-input-wrapper',
+			wrapperClassName: 'user-input-wrapper show',
 		},
 		label: {
 			labelKey: 'name-label',
@@ -347,7 +347,7 @@ export const userInfoInputs = ({
 	{
 		wrapper: {
 			wrapperKey: 'label-secondName-user',
-			wrapperClassName: 'user-input-wrapper',
+			wrapperClassName: 'user-input-wrapper show',
 		},
 		label: {
 			labelKey: 'secondName-label',
@@ -382,7 +382,7 @@ export const userInfoInputs = ({
 	{
 		wrapper: {
 			wrapperKey: 'label-nickname-user',
-			wrapperClassName: 'user-input-wrapper',
+			wrapperClassName: 'user-input-wrapper show',
 		},
 		label: {
 			labelKey: 'nickname-label',
@@ -417,7 +417,7 @@ export const userInfoInputs = ({
 	{
 		wrapper: {
 			wrapperKey: 'label-phone-user',
-			wrapperClassName: 'user-input-wrapper',
+			wrapperClassName: 'user-input-wrapper show',
 		},
 		label: {
 			labelKey: 'phone-label',
@@ -446,6 +446,60 @@ export const userInfoInputs = ({
 				type: 'text' as const,
 				required: true,
 				value: userPhone,
+			},
+		},
+	},
+	{
+		wrapper: {
+			wrapperKey: 'label-oldPassword-user',
+			wrapperClassName: 'user-input-wrapper hide',
+		},
+		label: {
+			labelKey: 'oldPassword-label',
+			labelText: 'Старый пароль',
+			labelAttributes: {
+				for: 'oldPassword',
+			},
+		},
+		input: {
+			inputKey: 'oldPassword-input',
+			inputClassname: 'oldPassword',
+			inputAttributes: {
+				name: 'oldPassword',
+				autocomplete: true,
+				id: 'oldPassword',
+				maxLength: '50',
+				minLength: '2',
+				placeholder: 'Введите старый пароль',
+				type: 'text' as const,
+				required: true,
+			},
+		},
+	},
+	{
+		wrapper: {
+			wrapperKey: 'label-newPassword-user',
+			wrapperClassName: 'user-input-wrapper hide',
+		},
+		label: {
+			labelKey: 'newPassword-label',
+			labelText: 'Новый пароль',
+			labelAttributes: {
+				for: 'newPassword',
+			},
+		},
+		input: {
+			inputKey: 'newPassword-input',
+			inputClassname: 'newPassword',
+			inputAttributes: {
+				name: 'newPassword',
+				autocomplete: true,
+				id: 'newPassword',
+				maxLength: '50',
+				minLength: '2',
+				placeholder: 'Введите новый пароль',
+				type: 'text' as const,
+				required: true,
 			},
 		},
 	},
