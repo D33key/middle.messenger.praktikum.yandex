@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					Div({
 						key: 'image-wrapper',
 						className: 'userImage',
-						onClick: function (e) {
+						onClick: function () {
 							//@ts-ignore
 							this.querySelector('input').click();
 						},
