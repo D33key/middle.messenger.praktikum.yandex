@@ -25,8 +25,7 @@ P.S.S. Изначально я делал шаблонизатор а-ля че�
 
 5. Чтобы запустить проект:
 - yarn
-- yarn start (сформировать папку dist)
-- yarn dev:server
+- yarn start 
 
 6. Ссылки из Netlify
 - Login Page - https://deploy--resilient-profiterole-7280c9.netlify.app/pages/index.html
