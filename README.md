@@ -26,10 +26,10 @@ P.S.S. Изначально я делал шаблонизатор а-ля че�
 5. Чтобы запустить проект:
 - yarn
 - yarn start (сформировать папку dist)
-- yarn dev:server
 
 6. Ссылки из Netlify
 - Login Page - https://deploy--resilient-profiterole-7280c9.netlify.app/pages/index.html
 - Signup Page - https://deploy--resilient-profiterole-7280c9.netlify.app/pages/signup.html
 - 404 - https://deploy--resilient-profiterole-7280c9.netlify.app/pages/not-found.html
 - 505 - https://deploy--resilient-profiterole-7280c9.netlify.app/pages/505.html
+- Изменить пользователя - https://deploy--resilient-profiterole-7280c9.netlify.app/pages/change-user.html

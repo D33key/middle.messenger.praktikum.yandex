@@ -40,7 +40,6 @@ const FormWrapper = ({
 			className: 'login-link',
 			children: [linkText],
 		});
-
 	const addTextAndTitle = () => {
 		if (isTitleExist) {
 			const array = [
@@ -55,7 +54,7 @@ const FormWrapper = ({
 					variant: 'p',
 					className: '',
 					//@ts-ignore
-					children: [textText, addLink()],
+					children: [textText, addLink],
 				}),
 			];
 			return array;

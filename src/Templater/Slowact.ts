@@ -61,21 +61,27 @@ export class Slowact {
 		return props.key;
 	}
 
-	private static findWrapperInMap(rootMap = this.rootMap) {
-		const childKeys = new Set();
-		rootMap.forEach((value) => {
+	private static findWrapperInMap(map = this.rootMap) {
+		let rootElement: string | null = null;
+
+		for (const [key, value] of map) {
 			if (value.props && value.props.children) {
 				(value.props.children as string[]).forEach((childKey) => {
-					childKeys.add(childKey);
+					if (map.has(childKey)) {
+						rootElement = null;
+					} else if (!rootElement) {
+						rootElement = key;
+					}
 				});
 			}
-		});
-		for (const [key] of rootMap) {
-			if (!childKeys.has(key)) {
-				return key;
+			if (value.props && value.props.isChild) {
+				rootElement = null;
+			} else if (!rootElement) {
+				rootElement = key;
 			}
 		}
-		return null;
+
+		return rootElement;
 	}
 
 	private static createElementFromMap(key: string) {
@@ -211,5 +217,9 @@ export class Slowact {
 		}
 
 		Slowact.root?.append(wrapperElement);
+	}
+
+	static destroy() {
+		this.rootMap.clear();
 	}
 }

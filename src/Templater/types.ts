@@ -38,4 +38,5 @@ export interface CreateElementProps<Variables, Attributes> {
 	onBlur?: EventListener;
 	variables?: Variables;
 	attributes?: Attributes;
+	isChild?: boolean;
 }
