@@ -17,7 +17,6 @@ interface FormWrapper {
 	children?: Div['children'];
 }
 
-
 const FormWrapper = ({
 	key,
 	className,
@@ -30,7 +29,7 @@ const FormWrapper = ({
 	linkLeadToNewPage,
 	children,
 }: FormWrapper) => {
-	const addLink =
+	const addLink = () =>
 		isLinkInclude &&
 		Link({
 			key: 'login-link',
@@ -42,21 +41,27 @@ const FormWrapper = ({
 			children: [linkText],
 		});
 
-	const addTextAndTitle =
-		isTitleExist &&
-		`${Title({
-			key: 'form-title',
-			className: 'title',
-			variant: 'h2',
-			children: [titleText],
-		})},
-	${Text({
-		key: 'form-text',
-		variant: 'p',
-		className: '',
-		//@ts-ignore
-		children: [textText, addLink],
-	})}`;
+	const addTextAndTitle = () => {
+		if (isTitleExist) {
+			const array = [
+				Title({
+					key: 'form-title',
+					className: 'title',
+					variant: 'h2',
+					children: [titleText],
+				}),
+				Text({
+					key: 'form-text',
+					variant: 'p',
+					className: '',
+					//@ts-ignore
+					children: [textText, addLink()],
+				}),
+			];
+			return array;
+		}
+		return [];
+	};
 	return Slowact.createElement(
 		'form',
 		{
@@ -64,7 +69,7 @@ const FormWrapper = ({
 			className,
 		},
 		//@ts-ignore
-		addTextAndTitle,
+		...addTextAndTitle(),
 		...(children as string[]),
 	);
 };

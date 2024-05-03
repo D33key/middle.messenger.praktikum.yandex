@@ -19,7 +19,6 @@ export const formInputs = [
 			inputAttributes: {
 				name: 'email',
 				autocomplete: true,
-				disabled: false,
 				maxLength: '50',
 				minLength: '2',
 				placeholder: 'Введите email',
@@ -46,7 +45,6 @@ export const formInputs = [
 			inputAttributes: {
 				name: 'password',
 				autocomplete: true,
-				disabled: false,
 				maxLength: '100',
 				minLength: '3',
 				placeholder: 'Введите пароль',
@@ -76,7 +74,6 @@ export const formRegisterInputs = [
 			inputAttributes: {
 				name: 'email',
 				autocomplete: true,
-				disabled: false,
 				maxLength: '50',
 				minLength: '2',
 				placeholder: 'Введите email',
@@ -103,7 +100,6 @@ export const formRegisterInputs = [
 			inputAttributes: {
 				name: 'login',
 				autocomplete: true,
-				disabled: false,
 				maxLength: '100',
 				minLength: '3',
 				placeholder: 'Введите логин',
@@ -130,7 +126,6 @@ export const formRegisterInputs = [
 			inputAttributes: {
 				name: 'first_name',
 				autocomplete: true,
-				disabled: false,
 				maxLength: '100',
 				minLength: '3',
 				placeholder: 'Введите имя',
@@ -157,7 +152,6 @@ export const formRegisterInputs = [
 			inputAttributes: {
 				name: 'second_name',
 				autocomplete: true,
-				disabled: false,
 				maxLength: '100',
 				minLength: '3',
 				placeholder: 'Введите фамилию',
@@ -184,7 +178,6 @@ export const formRegisterInputs = [
 			inputAttributes: {
 				name: 'phone',
 				autocomplete: true,
-				disabled: false,
 				maxLength: '100',
 				minLength: '8',
 				placeholder: 'Введите номер',
@@ -211,7 +204,6 @@ export const formRegisterInputs = [
 			inputAttributes: {
 				name: 'password',
 				autocomplete: true,
-				disabled: false,
 				maxLength: '100',
 				minLength: '3',
 				placeholder: 'Введите пароль',

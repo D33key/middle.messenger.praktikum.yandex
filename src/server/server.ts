@@ -30,6 +30,7 @@ async function createServer() {
 				'utf-8',
 			);
 
+
 			template = await vite.transformIndexHtml(url, template);
 
 			res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
