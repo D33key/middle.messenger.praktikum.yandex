@@ -1,6 +1,6 @@
 import { Slowact } from '@/Templater/Slowact';
-import FormWrapper from '@/components/divWithHeaderAndText';
-import LabelWithInput from '@/components/labelWithInput';
+import FormWrapper from '@/templates/formWrapper';
+import LabelWithInput from '@/templates/labelWithInput';
 import Button from '@/templates/button';
 import Div from '@/templates/div';
 import '@/style.css';
@@ -15,6 +15,7 @@ Div({
 		FormWrapper({
 			key: 'form-div-with-title',
 			className: 'form-wrapper column',
+			isTitleExist: true,
 			titleText: 'Вход',
 			textText: 'Новый участник? ',
 			isLinkInclude: true,
@@ -31,6 +32,7 @@ Div({
 				),
 				Button({
 					key: 'submit-button',
+					className: 'submitButton',
 					attributes: {
 						type: 'submit',
 					},

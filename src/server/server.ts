@@ -11,8 +11,6 @@ const __dirname = path.dirname(__filename);
 const __srcDir = path.dirname(__dirname);
 const __rootname = path.dirname(__srcDir) + '/dist/pages';
 
-console.log('WADSA', path.resolve(__srcDir, '../dist'))
-
 async function createServer() {
 	const app = express();
 	const vite = await createViteServer({
@@ -31,6 +29,7 @@ async function createServer() {
 				path.resolve(__rootname, htmlName),
 				'utf-8',
 			);
+
 
 			template = await vite.transformIndexHtml(url, template);
 

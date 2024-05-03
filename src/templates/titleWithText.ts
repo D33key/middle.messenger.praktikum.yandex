@@ -17,7 +17,6 @@ interface TitleWithText {
 
 const TitleWithText = ({
 	key,
-	className,
 	titleText,
 	textText,
 	isLinkInclude,

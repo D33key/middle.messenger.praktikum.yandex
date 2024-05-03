@@ -7,9 +7,10 @@ import Title from '@/templates/title';
 interface FormWrapper {
 	key: string;
 	className: string;
-	titleText: string;
-	textText: string;
-	isLinkInclude: boolean;
+	isTitleExist: boolean;
+	titleText?: string;
+	textText?: string;
+	isLinkInclude?: boolean;
 	linkText?: string;
 	linkHref?: string;
 	linkLeadToNewPage?: boolean;
@@ -19,6 +20,7 @@ interface FormWrapper {
 const FormWrapper = ({
 	key,
 	className,
+	isTitleExist,
 	titleText,
 	textText,
 	isLinkInclude,
@@ -27,7 +29,7 @@ const FormWrapper = ({
 	linkLeadToNewPage,
 	children,
 }: FormWrapper) => {
-	const addLink =
+	const addLink = () =>
 		isLinkInclude &&
 		Link({
 			key: 'login-link',
@@ -38,25 +40,36 @@ const FormWrapper = ({
 			className: 'login-link',
 			children: [linkText],
 		});
+
+	const addTextAndTitle = () => {
+		if (isTitleExist) {
+			const array = [
+				Title({
+					key: 'form-title',
+					className: 'title',
+					variant: 'h2',
+					children: [titleText],
+				}),
+				Text({
+					key: 'form-text',
+					variant: 'p',
+					className: '',
+					//@ts-ignore
+					children: [textText, addLink()],
+				}),
+			];
+			return array;
+		}
+		return [];
+	};
 	return Slowact.createElement(
 		'form',
 		{
 			key,
 			className,
 		},
-		Title({
-			key: 'form-title',
-			className: 'title',
-			variant: 'h2',
-			children: [titleText],
-		}),
-		Text({
-			key: 'form-text',
-			variant: 'p',
-			className: '',
-			//@ts-ignore
-			children: [textText, addLink],
-		}),
+		//@ts-ignore
+		...addTextAndTitle(),
 		...(children as string[]),
 	);
 };
