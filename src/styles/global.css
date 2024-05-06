@@ -1,0 +1,59 @@
+:root {
+	--secondary-color: #666666;
+	--primary-color: #111111;
+
+	--button-text-color: white;
+
+	--border: 1px solid var(--secondary-color);
+
+	--highlight-color: #3369f3;
+
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+	font-weight: 400;
+
+	color: #333333;
+	background-color: #f9f9f9;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-size: 16px;
+	color: #666666;
+}
+
+#app {
+	width: 100dvw;
+	height: 100dvh;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.button {
+	width: 100%;
+	height: 56px;
+	font-size: 22px;
+	font-weight: 600;
+	background-color: rgba(17, 17, 17, 1);
+	color: var(--button-text-color);
+	cursor: pointer;
+	border-radius: 32px;
+	-webkit-border-radius: 32px;
+	-moz-border-radius: 32px;
+	-ms-border-radius: 32px;
+	-o-border-radius: 32px;
+}
+
+.ghost {
+	background-color: rgba(17, 17, 17, 0.25);
+}

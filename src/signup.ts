@@ -1,45 +1,29 @@
-import { Slowact } from '@/Templater/Slowact';
-import FormWrapper from '@/templates/formWrapper';
-import LabelWithInput from '@/templates/labelWithInput';
-import '@/style.css';
-import Button from '@/templates/button';
-import Div from '@/templates/div';
-import { formRegisterInputs } from '@/utils/arrayOfElement';
+import '@/styles/login.css';
+import Shaft from '@/Templater/Shaft';
+import { InputWrapper } from '@/templates/input/inputWrapper';
+import { FormTitle } from '@/templates/titleAndText/titleAndText';
+import { Button } from '@/templates/button/button';
+import { signupInputArray } from './utils/signupInputArray';
 
-Slowact.createRoot('#app');
+const template = new Shaft(`
+	<div class='login-wrapper'>
+	${FormTitle({
+		formTitle: 'Регистрация',
+		formText: 'Все же есть логин? ',
+		linkHref: '/',
+		linkText: 'Вернуться на форму входа',
+	})}
+		<form class='form-wrapper'>
+			${Shaft.convertArrayToString(signupInputArray, InputWrapper)}
+			${Button({
+				btnText: 'Зарегистрироваться',
+				className: 'submitButton',
+				type: 'submit',
+			})}
+		</form>
+	</div>
+`);
 
-Div({
-	key: 'login-wrapper',
-	className: 'login-wrapper',
-	children: [
-		FormWrapper({
-			key: 'form-div-with-title',
-			className: 'form-wrapper',
-			isTitleExist: true,
-			titleText: 'Регистрация',
-			textText: 'Или у вас есть логин? ',
-			isLinkInclude: true,
-			linkText: 'Войти в систему',
-			linkHref: '/',
-			linkLeadToNewPage: false,
-			children: [
-				...formRegisterInputs.map((input) =>
-					LabelWithInput({
-						wrapper: input.wrapper,
-						label: input.label,
-						input: input.input,
-					}),
-				),
-				Button({
-					key: 'submit-button',
-					attributes: {
-						type: 'submit',
-					},
-					children: ['Зарегистрироваться'],
-				}),
-			],
-		}),
-	],
+document.addEventListener('DOMContentLoaded', () => {
+	template.render('#app');
 });
-
-Slowact.render();

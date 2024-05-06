@@ -1,46 +1,43 @@
-import { Slowact } from '@/Templater/Slowact';
-import FormWrapper from '@/templates/formWrapper';
-import LabelWithInput from '@/templates/labelWithInput';
-import Button from '@/templates/button';
-import Div from '@/templates/div';
-import '@/style.css';
-import { formInputs } from '@/utils/arrayOfElement';
+import '@/styles/login.css';
+import Shaft from '@/Templater/Shaft';
+import { InputWrapper } from '@/templates/input/inputWrapper';
+import { FormTitle } from '@/templates/titleAndText/titleAndText';
+import { Button } from '@/templates/button/button';
 
-Slowact.createRoot('#app');
+const template = new Shaft(`
+	<div class='login-wrapper'>
+	${FormTitle({
+		formTitle: 'Вход',
+		formText: 'Новый участник? ',
+		linkHref: '/signup',
+		linkText: 'Зарегистрируйся бесплатно',
+	})}
+		<form class='form-wrapper'>
+			${InputWrapper({
+				className: 'email',
+				labelFor: 'email',
+				inputType: 'email',
+				labelText: 'Email',
+				placeholder: 'Введите почту',
+				required: true,
+			})}
+			${InputWrapper({
+				className: 'password',
+				labelFor: 'password',
+				placeholder: 'Введите пароль',
+				inputType: 'password',
+				labelText: 'Пароль',
+				required: true,
+			})}
+			${Button({
+				btnText: 'Войти',
+				className: 'submitButton',
+				type: 'submit',
+			})}
+		</form>
+	</div>
+`);
 
-Div({
-	key: 'login-wrapper',
-	className: 'login-wrapper',
-	children: [
-		FormWrapper({
-			key: 'form-div-with-title',
-			className: 'form-wrapper column',
-			isTitleExist: true,
-			titleText: 'Вход',
-			textText: 'Новый участник? ',
-			isLinkInclude: true,
-			linkText: 'Зарегистрируйся бесплатно',
-			linkHref: '/signup',
-			linkLeadToNewPage: false,
-			children: [
-				...formInputs.map((input) =>
-					LabelWithInput({
-						wrapper: input.wrapper,
-						label: input.label,
-						input: input.input,
-					}),
-				),
-				Button({
-					key: 'submit-button',
-					className: 'submitButton',
-					attributes: {
-						type: 'submit',
-					},
-					children: ['Войти'],
-				}),
-			],
-		}),
-	],
+document.addEventListener('DOMContentLoaded', () => {
+	template.render('#app');
 });
-
-Slowact.render();
