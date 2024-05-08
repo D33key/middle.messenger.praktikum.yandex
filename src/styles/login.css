@@ -44,15 +44,16 @@
 }
 
 .form-title {
-	margin: 0 auto;
 	font-size: 40px;
 	font-weight: 500;
 	color: #333333;
 }
-
+.form-title-wrapper {
+	text-align: center;
+}
 
 .form-text {
-  margin: 0 auto;
+	margin: 0 auto;
 }
 
 .login-link {
@@ -60,7 +61,7 @@
 }
 
 .input {
-  color: black;
+	color: black;
 	height: 56px;
 	padding: 0 24px;
 	border: var(--border);
@@ -81,7 +82,6 @@
 .input-label {
 	color: var(--secondary-color);
 }
-
 
 .submitButton {
 	opacity: 0.5;

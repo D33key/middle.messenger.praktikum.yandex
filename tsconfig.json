@@ -20,9 +20,12 @@
 
 		/* Linting */
 		"strict": true,
+		"sourceMap": true,
+		"strictNullChecks": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitAny": true
 	},
 	"include": ["src", "src/server/server.ts", "src/main.ts"],
 	"ts-node": {

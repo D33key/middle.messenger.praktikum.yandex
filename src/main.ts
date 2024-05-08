@@ -1,43 +1,46 @@
 import '@/styles/login.css';
-import Shaft from '@/Templater/Shaft';
-import { InputWrapper } from '@/templates/input/inputWrapper';
-import { FormTitle } from '@/templates/titleAndText/titleAndText';
-import { Button } from '@/templates/button/button';
+import Button from '@/templates/button/button';
+import LoginForm from '@/components/form';
+import { render } from '@/utils/render';
+import TitleWithText from '@/components/titleWithText';
+import InputWrapper from '@/templates/input/inputWrapper';
 
-const template = new Shaft(`
-	<div class='login-wrapper'>
-	${FormTitle({
+const loginForm = new LoginForm({
+	submitButton: new Button({
+		type: 'button',
+		child: 'Войти',
+		className: '',
+		events: {
+			click: (event) => console.log('HELLO'),
+		},
+	}),
+	formTitle: new TitleWithText({
 		formTitle: 'Вход',
 		formText: 'Новый участник? ',
 		linkHref: '/signup',
 		linkText: 'Зарегистрируйся бесплатно',
-	})}
-		<form class='form-wrapper'>
-			${InputWrapper({
-				className: 'email',
-				labelFor: 'email',
-				inputType: 'email',
-				labelText: 'Email',
-				placeholder: 'Введите почту',
-				required: true,
-			})}
-			${InputWrapper({
-				className: 'password',
-				labelFor: 'password',
-				placeholder: 'Введите пароль',
-				inputType: 'password',
-				labelText: 'Пароль',
-				required: true,
-			})}
-			${Button({
-				btnText: 'Войти',
-				className: 'submitButton',
-				type: 'submit',
-			})}
-		</form>
-	</div>
-`);
+		events: {
+			click: (e) => console.log('Click on title')
+		}
+	}),
+	emailInput: new InputWrapper({
+		className: 'email',
+		labelFor: 'email',
+		inputType: 'email',
+		labelText: 'Email',
+		placeholder: 'Введите почту',
+		required: true,
+	}),
+	passwordInput: new InputWrapper({
+		className: 'password',
+		labelFor: 'password',
+		placeholder: 'Введите пароль',
+		inputType: 'password',
+		labelText: 'Пароль',
+		required: true,
+	}),
+});
 
 document.addEventListener('DOMContentLoaded', () => {
-	template.render('#app');
+	render('#app', loginForm);
 });
