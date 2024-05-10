@@ -16,8 +16,7 @@ const template = /*html*/ `<div class='form-title-wrapper'>
 
 export default class TitleWithText extends Block<TitleWithTextProps> {
 	constructor(props: TitleWithTextProps) {
-		// TODO useless firstArg
-		super('div', props);
+		super(props);
 	}
 
 	render() {

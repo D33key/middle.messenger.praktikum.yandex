@@ -7,7 +7,7 @@ export function render<T extends Block<any>>(query: string, block: T) {
 
 	root.appendChild(block.getContent()!);
 
-	// block.dispatchComponentDidMount();
+	block.dispatchComponentDidMount();
 
 	return root;
 }

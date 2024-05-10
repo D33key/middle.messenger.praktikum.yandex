@@ -3,8 +3,7 @@ import Shaft from '@/Templater/Shaft';
 import { v4 as uniqueKey } from 'uuid';
 
 interface Meta<Props> {
-	tagName: keyof HTMLElementTagNameMap;
-	props: Props;
+	props: Props & { events?: BlockEvents };
 }
 
 export type BlockEvents = Partial<{
@@ -25,13 +24,9 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 	protected meta: Meta<Props> | null = null;
 	protected props: Meta<Props>['props'];
 	protected eventBus: () => EventBus;
-	//TODO remove any
-	protected children: Record<string, any>;
+	protected children: Record<string, Block<object>>;
 
-	constructor(
-		tagName: Meta<Props>['tagName'] = 'div',
-		rawProps: Meta<Props>['props'] = {} as Props,
-	) {
+	constructor(rawProps: Meta<Props>['props'] = {} as Props) {
 		const eventBus = new EventBus();
 
 		const { children, props } = this.getChildren(rawProps);
@@ -39,7 +34,6 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 		this.children = children;
 
 		this.meta = {
-			tagName,
 			props,
 		};
 
@@ -53,9 +47,8 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 	}
 
 	protected getChildren(propsAndChildren: Meta<Props>['props']) {
-		//TODO REPLACE any
-		const children: Record<string, any> = {};
-		const props: Props = {} as Props;
+		const children: Record<string, Block<object>> = {};
+		const props = {} as Meta<Props>['props'];
 
 		Object.entries(propsAndChildren).forEach(([key, value]) => {
 			if (value instanceof Block) {
@@ -68,36 +61,11 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 		return { children, props };
 	}
 
-	// TODO: create fragment like <></>
-	compile(template: string, props: Meta<Props>['props']) {
-		const propsAndStubs = { ...props };
-
-		Object.entries(this.children).forEach(([key, child]) => {
-			propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
-		});
-
-		const fragment = this.createDocumentElement(
-			'template',
-		) as HTMLTemplateElement;
-
-		fragment.innerHTML = Shaft.compile(template, propsAndStubs);
-
-		Object.values(this.children).forEach((child) => {
-			const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
-			stub?.replaceWith(child.getContent());
-		});
-
-		this.element = fragment.content.firstElementChild;
-		this.addEvents();
-
-		return fragment.content;
-	}
-
 	private registerEvents(eventBus: EventBus) {
 		eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
-		eventBus.on(Block.EVENTS.FLOW_RENDER, this.render.bind(this));
-		// eventBus.on(Block.EVENTS.FLOW_CDM, this.componentDidMount.bind(this));
-		// eventBus.on(Block.EVENTS.FLOW_CDU, this.componentDidUpdate.bind(this));
+		eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+		eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+		eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
 	}
 
 	private makePropsProxy(props: Meta<Props>['props']) {
@@ -120,32 +88,119 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 		});
 	}
 
-	private createDocumentElement(tagName: Meta<Props>['tagName']) {
-		return document.createElement(tagName);
-	}
-
-	private createResources() {
-		if (this.meta) {
-			const { tagName } = this.meta;
-			this.element = this.createDocumentElement(tagName);
-		} else {
-			throw new Error('Problem with execution meta');
-		}
-	}
-
 	protected addEvents() {
 		const { events = {} } = this.props;
+
 		Object.keys(events).forEach((eventName) => {
-			this.element?.addEventListener(eventName, events[eventName]);
+			const eventHandler = events[eventName as keyof typeof events];
+
+			// TODO Костыль
+			if (eventHandler && eventName !== 'blur') {
+				this.element?.addEventListener(
+					eventName,
+					eventHandler as EventListenerOrEventListenerObject,
+				);
+			} else if (eventHandler && eventName === 'blur') {
+				this.element?.addEventListener(
+					eventName,
+					eventHandler as EventListenerOrEventListenerObject,
+					true,
+				);
+			}
 		});
 	}
 
-	protected createKey() {}
+	protected removeEvents() {
+		const { events = {} } = this.props;
+
+		Object.keys(events).forEach((eventName) => {
+			const eventHandler = events[eventName as keyof typeof events];
+			this.element?.removeEventListener(
+				eventName,
+				eventHandler as EventListenerOrEventListenerObject,
+			);
+		});
+	}
+
+	protected _componentDidMount() {
+		this.componentDidMount();
+
+		Object.values(this.children).forEach((child) => {
+			child.dispatchComponentDidMount();
+		});
+
+		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+	}
+
+	componentDidMount() {}
+
+	private _componentDidUpdate(
+		newProps?: Meta<Props>['props'],
+	) {
+		this.componentDidUpdate(newProps);
+		this._render();
+		// const isUpdate = this.componentDidUpdate(this.props, newProps);
+		// console.log('in didUpdate', this.element, oldProps, newProps)
+		// if (isUpdate) {
+		// 	this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+		// }
+	}
+
+	componentDidUpdate(
+		newProps?: Meta<Props>['props'],
+	) {
+		return true;
+	}
+
+	dispatchComponentDidMount() {
+		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+	}
+
+	setProps = (nextProps: Partial<Meta<Props>['props']>) => {
+		if (!nextProps) {
+			return;
+		}
+
+		Object.assign(this.props, nextProps);
+	};
+
+	// TODO: create fragment like <></>
+	compile(template: string, props: Meta<Props>['props']) {
+		const propsAndStubs = { ...props };
+
+		Object.entries(this.children).forEach(([key, child]) => {
+			propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
+		});
+
+		const fragment = document.createElement('template');
+
+		fragment.innerHTML = Shaft.compile(template, propsAndStubs);
+
+		Object.values(this.children).forEach((child) => {
+			const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
+			const getElement = child.getContent();
+
+			if (getElement) {
+				stub?.replaceWith(getElement);
+			} else {
+				throw new Error('Cannot create child element');
+			}
+		});
+
+		this.element = fragment.content.firstElementChild;
+
+		this.addEvents();
+
+		return fragment.content;
+	}
+
+	protected _render() {
+		this.render();
+	}
 
 	render() {}
 
 	protected init() {
-		this.createResources();
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
 	}
 

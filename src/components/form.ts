@@ -1,27 +1,20 @@
 import { Block } from '@/Block';
-import Button from '@/templates/button/button';
 import TitleWithText from '@/components/titleWithText';
-import InputWrapper from '@/templates/input/inputWrapper';
+import Form from '@/templates/form';
 
-interface FormProps {
-	submitButton: Button;
+interface FormWrapperProps {
 	formTitle: TitleWithText;
-	passwordInput: InputWrapper;
-	emailInput: InputWrapper;
+	form: Form;
 }
 
 const template = /*html*/ `<div class='login-wrapper'>
 {{ formTitle }}
-<form class='form-wrapper'>
-	{{ emailInput }}
-	{{ passwordInput }}
-	{{ submitButton }}
-</form>
+{{form}}
 </div>`;
 
-export default class LoginForm extends Block<FormProps> {
-	constructor(props: FormProps) {
-		super('div', props);
+export default class FormWrapper extends Block<FormWrapperProps> {
+	constructor(props: FormWrapperProps) {
+		super(props);
 	}
 
 	render() {

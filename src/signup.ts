@@ -1,29 +1,46 @@
 import '@/styles/login.css';
-import Shaft from '@/Templater/Shaft';
-import { InputWrapper } from '@/templates/input/inputWrapper';
-import { FormTitle } from '@/templates/titleAndText/titleAndText';
-import { Button } from '@/templates/button/button';
-import { signupInputArray } from './utils/signupInputArray';
+import FormWrapper from './components/form';
+import TitleWithText from './components/titleWithText';
+import { render } from './utils/render';
+import LoginForm from './templates/form';
+import Button from './templates/button/button';
+import { signupInputObj } from './utils/signupInputArray';
+import { getDataFromForm } from './templates/form/utils';
 
-const template = new Shaft(`
-	<div class='login-wrapper'>
-	${FormTitle({
+const btn = new Button({
+	type: 'submit',
+	className: 'submitButton',
+	child: 'Зарегистрироваться',
+});
+
+const signUpForm = new FormWrapper({
+	formTitle: new TitleWithText({
 		formTitle: 'Регистрация',
 		formText: 'Все же есть логин? ',
 		linkHref: '/',
 		linkText: 'Вернуться на форму входа',
-	})}
-		<form class='form-wrapper'>
-			${Shaft.convertArrayToString(signupInputArray, InputWrapper)}
-			${Button({
-				btnText: 'Зарегистрироваться',
-				className: 'submitButton',
-				type: 'submit',
-			})}
-		</form>
-	</div>
-`);
+	}),
+	form: new LoginForm({
+		type: 'signup',
+		btnText: 'Зарегистрироваться',
+		...signupInputObj,
+		events: {
+			submit: getDataFromForm,
+			blur: (e) => {
+				if (e.target instanceof HTMLInputElement && e.target.value) {
+					e.target.setAttribute('value', e.target.value);
+				}
+			},
+		},
+	}),
+});
 
 document.addEventListener('DOMContentLoaded', () => {
-	template.render('#app');
+	render('#app', signUpForm);
+
+	setTimeout(() => {
+		btn.setProps({
+			child: 'Время вышло',
+		});
+	}, 1000);
 });

@@ -15,15 +15,14 @@ interface InputWrapperProps extends EventsProps {
 
 const template = /*html*/ `
 <div class="input-wrapper">
-	<label for="{{labelFor}}" class="input-label">{{labelText}}</label>
-	<input class='input {{className}}' id="{{labelFor}}" type="{{inputType}}" required="{{required}}" minlength="{{minLength}}" placeholder="{{placeholder}}" autocomplete="{{autocomplete}}" />
+	<label for="{{labelFor}}"  class="input-label">{{labelText}}</label>
+	<input name={{labelFor}} class='input {{className}}' id="{{labelFor}}" type="{{inputType}}" required="{{required}}" placeholder="{{placeholder}}" />
 </div>
 `;
 
 export default class InputWrapper extends Block<InputWrapperProps> {
 	constructor(props: InputWrapperProps) {
-		// TODO useless firstArg
-		super('div', props);
+		super(props);
 	}
 
 	render() {

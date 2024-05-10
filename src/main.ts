@@ -1,27 +1,19 @@
 import '@/styles/login.css';
 import Button from '@/templates/button/button';
-import LoginForm from '@/components/form';
+import FormWrapper from '@/components/form';
 import { render } from '@/utils/render';
 import TitleWithText from '@/components/titleWithText';
 import InputWrapper from '@/templates/input/inputWrapper';
+import LoginForm from './templates/form';
+import { getDataFromForm } from './templates/form/utils';
 
-const loginForm = new LoginForm({
+const form = new LoginForm({
+	justText: 'Text',
+	type: 'login',
 	submitButton: new Button({
-		type: 'button',
+		type: 'submit',
+		className: 'submitButton',
 		child: 'Войти',
-		className: '',
-		events: {
-			click: (event) => console.log('HELLO'),
-		},
-	}),
-	formTitle: new TitleWithText({
-		formTitle: 'Вход',
-		formText: 'Новый участник? ',
-		linkHref: '/signup',
-		linkText: 'Зарегистрируйся бесплатно',
-		events: {
-			click: (e) => console.log('Click on title')
-		}
 	}),
 	emailInput: new InputWrapper({
 		className: 'email',
@@ -39,8 +31,32 @@ const loginForm = new LoginForm({
 		labelText: 'Пароль',
 		required: true,
 	}),
+	events: {
+		submit: getDataFromForm,
+		blur: (e) => {
+			if (e.target instanceof HTMLInputElement && e.target.value) {
+				e.target.setAttribute('value', e.target.value);
+			}
+		},
+	},
+});
+
+const loginForm = new FormWrapper({
+	form,
+	formTitle: new TitleWithText({
+		formTitle: 'Вход',
+		formText: 'Новый участник? ',
+		linkHref: '/signup',
+		linkText: 'Зарегистрируйся бесплатно',
+	}),
 });
 
 document.addEventListener('DOMContentLoaded', () => {
 	render('#app', loginForm);
+
+	setTimeout(() => {
+		form.setProps({
+			justText: 'Changed'
+		})
+	}, 1000);
 });
