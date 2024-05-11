@@ -39,7 +39,7 @@ const templateSignup = /*html*/ `
 
 const templateLogin = /*html*/ `
 <form class='form-wrapper'>
-	{{justText}}
+	{{ justText }}
 	{{ emailInput }}
 	{{ passwordInput }}
 	{{ submitButton }}
@@ -52,12 +52,13 @@ export default class LoginForm extends Block<Form> {
 	}
 
 	componentDidUpdate(newProps) {
+		console.log('Updated')
 		return true;
 	}
 
 	render() {
 		if (this.props.type === 'login') {
-			console.log('Render');
+			console.log('Render with props', this.props);
 			return this.compile(templateLogin, this.props);
 		} else {
 			return this.compile(templateSignup, this.props);

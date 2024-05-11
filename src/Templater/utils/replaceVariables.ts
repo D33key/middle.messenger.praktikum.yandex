@@ -6,6 +6,6 @@ export default function replaceVariables<T extends object>(
 		const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
 		template = template.replace(regex, String(value));
 	}
-
+	
 	return template;
 }

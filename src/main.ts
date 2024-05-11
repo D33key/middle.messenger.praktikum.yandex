@@ -7,14 +7,17 @@ import InputWrapper from '@/templates/input/inputWrapper';
 import LoginForm from './templates/form';
 import { getDataFromForm } from './templates/form/utils';
 
+
+const btn = new Button({
+	type: 'submit',
+	className: 'submitButton',
+	child: 'Войти',
+});
+
 const form = new LoginForm({
-	justText: 'Text',
+	justText: 'Old',
 	type: 'login',
-	submitButton: new Button({
-		type: 'submit',
-		className: 'submitButton',
-		child: 'Войти',
-	}),
+	submitButton: btn,
 	emailInput: new InputWrapper({
 		className: 'email',
 		labelFor: 'email',
@@ -56,7 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	setTimeout(() => {
 		form.setProps({
-			justText: 'Changed'
+			justText: 'NEW WHOIOOAO',
+		});
+		btn.setProps({
+			child: 'ПОЗДНО'
 		})
 	}, 1000);
 });

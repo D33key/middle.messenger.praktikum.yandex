@@ -128,27 +128,17 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 		Object.values(this.children).forEach((child) => {
 			child.dispatchComponentDidMount();
 		});
-
-		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
 	}
 
 	componentDidMount() {}
 
-	private _componentDidUpdate(
-		newProps?: Meta<Props>['props'],
-	) {
+	private _componentDidUpdate(newProps?: Meta<Props>['props']) {
 		this.componentDidUpdate(newProps);
-		this._render();
-		// const isUpdate = this.componentDidUpdate(this.props, newProps);
-		// console.log('in didUpdate', this.element, oldProps, newProps)
-		// if (isUpdate) {
-		// 	this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
-		// }
+
+		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
 	}
 
-	componentDidUpdate(
-		newProps?: Meta<Props>['props'],
-	) {
+	componentDidUpdate(newProps?: Meta<Props>['props']) {
 		return true;
 	}
 
@@ -160,11 +150,9 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 		if (!nextProps) {
 			return;
 		}
-
 		Object.assign(this.props, nextProps);
 	};
 
-	// TODO: create fragment like <></>
 	compile(template: string, props: Meta<Props>['props']) {
 		const propsAndStubs = { ...props };
 
@@ -176,10 +164,11 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 
 		fragment.innerHTML = Shaft.compile(template, propsAndStubs);
 
+		const newElement = fragment.content.firstElementChild!;
+
 		Object.values(this.children).forEach((child) => {
 			const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
 			const getElement = child.getContent();
-
 			if (getElement) {
 				stub?.replaceWith(getElement);
 			} else {
@@ -187,11 +176,11 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 			}
 		});
 
-		this.element = fragment.content.firstElementChild;
-
+		this.element?.replaceWith(newElement);
+		this.element = newElement;
 		this.addEvents();
 
-		return fragment.content;
+		return newElement;
 	}
 
 	protected _render() {
