@@ -1,6 +1,7 @@
-import { EventBus } from '@/EventBus';
-import Shaft from '@/Templater/Shaft';
+import { EventBus } from '@/core/EventBus';
+
 import { v4 as uniqueKey } from 'uuid';
+import Shaft from '../Templater';
 
 interface Meta<Props> {
 	props: Props & { events?: BlockEvents };
@@ -24,14 +25,14 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 	protected meta: Meta<Props> | null = null;
 	protected props: Meta<Props>['props'];
 	protected eventBus: () => EventBus;
-	protected children: Record<string, Block<object>>;
+	public children: Record<string, Block<object>>;
 
 	constructor(rawProps: Meta<Props>['props'] = {} as Props) {
 		const eventBus = new EventBus();
 
 		const { children, props } = this.getChildren(rawProps);
 
-		this.children = children;
+		this.children = this.makePropsProxy(children);
 
 		this.meta = {
 			props,
@@ -90,10 +91,8 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 
 	protected addEvents() {
 		const { events = {} } = this.props;
-
 		Object.keys(events).forEach((eventName) => {
 			const eventHandler = events[eventName as keyof typeof events];
-
 			// TODO Костыль
 			if (eventHandler && eventName !== 'blur') {
 				this.element?.addEventListener(
@@ -133,9 +132,11 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 	componentDidMount() {}
 
 	private _componentDidUpdate(newProps?: Meta<Props>['props']) {
-		this.componentDidUpdate(newProps);
+		const isUpdated = this.componentDidUpdate(newProps);
 
-		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+		if (isUpdated) {
+			this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+		}
 	}
 
 	componentDidUpdate(newProps?: Meta<Props>['props']) {
@@ -150,8 +151,20 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 		if (!nextProps) {
 			return;
 		}
+
 		Object.assign(this.props, nextProps);
 	};
+
+	setChildren = (nextChild: any) => {
+		if (!nextChild) {
+			return;
+		}
+		Object.assign(this.children, nextChild);
+	};
+
+	getProps() {
+		return this.props;
+	}
 
 	compile(template: string, props: Meta<Props>['props']) {
 		const propsAndStubs = { ...props };
@@ -178,6 +191,7 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 
 		this.element?.replaceWith(newElement);
 		this.element = newElement;
+
 		this.addEvents();
 
 		return newElement;
@@ -195,5 +209,19 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 
 	getContent() {
 		return this.element;
+	}
+
+	show() {
+		const getElement = this.getContent() as HTMLElement;
+		if (getElement) {
+			getElement.style.display = 'block';
+		}
+	}
+
+	hide() {
+		const getElement = this.getContent() as HTMLElement;
+		if (getElement) {
+			getElement.style.display = 'none';
+		}
 	}
 }

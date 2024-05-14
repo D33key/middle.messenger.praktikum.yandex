@@ -1,8 +1,9 @@
-import { Block } from '@/Block';
-import TitleWithText from '@/components/titleWithText';
+import { Block } from '@/core/Block';
+import { EventsProps } from '@/templates/button';
+import TitleWithText from './titleWithText';
 import Form from '@/templates/form';
 
-interface FormWrapperProps {
+export interface LoginPageProps extends EventsProps {
 	formTitle: TitleWithText;
 	form: Form;
 }
@@ -12,8 +13,8 @@ const template = /*html*/ `<div class='login-wrapper'>
 {{form}}
 </div>`;
 
-export default class FormWrapper extends Block<FormWrapperProps> {
-	constructor(props: FormWrapperProps) {
+export default class FormWrapper extends Block<LoginPageProps> {
+	constructor(props: LoginPageProps) {
 		super(props);
 	}
 

@@ -1,29 +1,5 @@
-import { Block } from '@/Block';
-import Button, { EventsProps } from '../button/button';
-import InputWrapper from '../input/inputWrapper';
-
-type BaseFormProps = {
-	type: 'login' | 'signup';
-	submitButton: Button;
-} & EventsProps;
-
-type LoginFormProps = {
-	type: 'login';
-	passwordInput: InputWrapper;
-	emailInput: InputWrapper;
-} & BaseFormProps;
-
-type Signup = {
-	type: 'signup';
-	passwordInput: InputWrapper;
-	emailInput: InputWrapper;
-	loginInput: InputWrapper;
-	firstNameInput: InputWrapper;
-	secondNameInput: InputWrapper;
-	phoneInput: InputWrapper;
-} & BaseFormProps;
-
-type Form = LoginFormProps | Signup;
+import { Block } from '@/core/Block';
+import { FormProps } from './type';
 
 const templateSignup = /*html*/ `
 <form class='form-wrapper'>
@@ -39,26 +15,19 @@ const templateSignup = /*html*/ `
 
 const templateLogin = /*html*/ `
 <form class='form-wrapper'>
-	{{ justText }}
 	{{ emailInput }}
 	{{ passwordInput }}
 	{{ submitButton }}
 </form>
 `;
 
-export default class LoginForm extends Block<Form> {
-	constructor(props: Form) {
+export default class Form extends Block<FormProps> {
+	constructor(props: FormProps) {
 		super(props);
-	}
-
-	componentDidUpdate(newProps) {
-		console.log('Updated')
-		return true;
 	}
 
 	render() {
 		if (this.props.type === 'login') {
-			console.log('Render with props', this.props);
 			return this.compile(templateLogin, this.props);
 		} else {
 			return this.compile(templateSignup, this.props);

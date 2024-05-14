@@ -9,11 +9,11 @@ export default defineConfig({
 		outDir: resolve(__dirname, 'dist'),
 		rollupOptions: {
 			input: {
-				main: './src/pages/index.html',
-				signUp: './src/pages/signup.html',
-				notFound: './src/pages/not-found.html',
-				505: './src/pages/505.html',
-				changeUser: './src/pages/change-user.html'
+				login: './src/pages/Login/index.html',
+				signup: './src/pages/Signup/signup.html',
+				404: './src/pages/404/404.html',
+				505: './src/pages/505/505.html',
+				profile: './src/pages/profile.html',
 			},
 		},
 	},

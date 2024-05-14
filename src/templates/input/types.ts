@@ -1,4 +1,6 @@
-export interface InputWrapperProps {
+import { EventsProps } from '../button';
+
+export interface InputWrapperProps extends EventsProps {
 	labelFor: string;
 	labelText: string;
 	required: boolean;
@@ -6,6 +8,10 @@ export interface InputWrapperProps {
 	minLength?: string;
 	maxLength?: string;
 	placeholder?: string;
-	autocomplete?: 'on' | 'off';
 	className?: string;
+	classNameInput?: string;
+	errorText?: string;
+	value?: string;
+	validationPattern?: RegExp;
+	validationErrorText?: string;
 }

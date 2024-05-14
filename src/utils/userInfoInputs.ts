@@ -1,7 +1,8 @@
 import InputWrapper from '@/templates/input';
 
-export const signupInputObj = {
-	emailInput: new InputWrapper({
+export const userInfoInputsObj = {
+	email: new InputWrapper({
+		classNameInput: 'userinfo',
 		className: 'email',
 		labelFor: 'email',
 		inputType: 'email',
@@ -13,7 +14,8 @@ export const signupInputObj = {
 		),
 		validationErrorText: 'Не валидная почта',
 	}),
-	loginInput: new InputWrapper({
+	login: new InputWrapper({
+		classNameInput: 'userinfo',
 		className: 'login',
 		labelFor: 'login',
 		inputType: 'text',
@@ -26,7 +28,8 @@ export const signupInputObj = {
 		validationErrorText:
 			'Логин должен содержать от 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, без пробелов, без спецсимволов (допустимы дефис и нижнее подчёркивание)',
 	}),
-	firstNameInput: new InputWrapper({
+	firstName: new InputWrapper({
+		classNameInput: 'userinfo',
 		className: 'firstName',
 		labelFor: 'firstName',
 		inputType: 'text',
@@ -36,7 +39,8 @@ export const signupInputObj = {
 		validationPattern: new RegExp(/^[A-ZА-ЯЁa-zа-яё]+(?:-[A-ZА-ЯЁa-zа-яё]+)*$/),
 		validationErrorText: 'Имя содержит недопустимый символ',
 	}),
-	secondNameInput: new InputWrapper({
+	secondName: new InputWrapper({
+		classNameInput: 'userinfo',
 		className: 'secondName',
 		labelFor: 'secondName',
 		inputType: 'text',
@@ -46,7 +50,19 @@ export const signupInputObj = {
 		validationPattern: new RegExp(/^[A-ZА-ЯЁa-zа-яё]+(?:-[A-ZА-ЯЁa-zа-яё]+)*$/),
 		validationErrorText: 'Фамилия содержит недопустимый символ',
 	}),
-	phoneInput: new InputWrapper({
+	nickname: new InputWrapper({
+		classNameInput: 'userinfo',
+		className: 'usernickname',
+		labelFor: 'username',
+		inputType: 'text',
+		labelText: 'Имя в чате',
+		placeholder: 'Введите имя в чате',
+		required: true,
+		validationPattern: new RegExp(/^[A-ZА-ЯЁa-zа-яё]+(?:-[A-ZА-ЯЁa-zа-яё]+)*$/),
+		validationErrorText: 'Имя в чате содержит недопустимый символ',
+	}),
+	phone: new InputWrapper({
+		classNameInput: 'userinfo',
 		className: 'phone',
 		labelFor: 'phone',
 		inputType: 'tel',
@@ -55,16 +71,5 @@ export const signupInputObj = {
 		required: true,
 		validationPattern: new RegExp(/^\+?\d{10,15}$/),
 		validationErrorText: 'Не валидный номер',
-	}),
-	passwordInput: new InputWrapper({
-		className: 'password',
-		labelFor: 'password',
-		placeholder: 'Введите пароль',
-		inputType: 'password',
-		labelText: 'Пароль',
-		required: true,
-		validationPattern: new RegExp(/^(?=.*[A-Z])(?=.*\d).{8,40}$/),
-		validationErrorText:
-			'Пароль должен быть от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
 	}),
 };

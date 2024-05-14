@@ -1,7 +1,7 @@
-import { Block } from '@/Block';
-import { EventsProps } from '@/templates/button/button';
+import { Block } from '@/core/Block';
+import { EventsProps } from '@/templates/button';
 
-interface TitleWithTextProps extends EventsProps {
+export interface TitleWithTextProps extends EventsProps {
 	formTitle: string;
 	formText: string;
 	linkHref: string;

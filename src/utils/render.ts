@@ -1,4 +1,4 @@
-import { Block } from '@/Block';
+import { Block } from '@/core/Block';
 
 export function render<T extends Block<any>>(query: string, block: T) {
 	const root = document.querySelector(query);
