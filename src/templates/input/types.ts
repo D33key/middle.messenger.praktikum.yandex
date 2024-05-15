@@ -1,9 +1,9 @@
-import { EventsProps } from '../button';
+import Button, { EventsProps } from '../button';
 
 export interface InputWrapperProps extends EventsProps {
 	labelFor: string;
-	labelText: string;
-	required: boolean;
+	labelText?: string;
+	required?: boolean;
 	inputType: 'text' | 'password' | 'email' | 'tel' | 'number' | 'file';
 	minLength?: string;
 	maxLength?: string;
@@ -14,4 +14,6 @@ export interface InputWrapperProps extends EventsProps {
 	value?: string;
 	validationPattern?: RegExp;
 	validationErrorText?: string;
+	addResetBtn?: boolean;
+	button?: Button;
 }

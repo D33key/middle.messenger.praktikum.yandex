@@ -13,7 +13,9 @@ export type BlockEvents = Partial<{
 	) => void;
 }>;
 
-export abstract class Block<Props extends object & { events?: BlockEvents }> {
+export abstract class Block<
+	Props extends Record<string, any> & { events?: BlockEvents },
+> {
 	static EVENTS = {
 		INIT: 'init',
 		FLOW_CDM: 'flow:component-did-mount',
@@ -52,10 +54,24 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 		const props = {} as Meta<Props>['props'];
 
 		Object.entries(propsAndChildren).forEach(([key, value]) => {
-			if (value instanceof Block) {
-				children[key] = value;
+			if (Array.isArray(value)) {
+				const propsFromArray = [];
+				const childrenFromArray = [];
+				value.forEach((val) => {
+					if (val instanceof Block) {
+						childrenFromArray.push(val);
+					} else {
+						propsFromArray.push(val);
+					}
+				});
+				children[key] = childrenFromArray;
+				props[key] = propsFromArray;
 			} else {
-				props[key] = value;
+				if (value instanceof Block) {
+					children[key] = value;
+				} else {
+					props[key] = value;
+				}
 			}
 		});
 
@@ -102,7 +118,7 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 			} else if (eventHandler && eventName === 'blur') {
 				this.element?.addEventListener(
 					eventName,
-					eventHandler as EventListenerOrEventListenerObject,
+					(eventHandler as EventListenerOrEventListenerObject).bind(this),
 					true,
 				);
 			}
@@ -125,7 +141,9 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 		this.componentDidMount();
 
 		Object.values(this.children).forEach((child) => {
-			child.dispatchComponentDidMount();
+			if (Array.isArray(child)) {
+				child.forEach((item) => item.dispatchComponentDidMount());
+			} else child.dispatchComponentDidMount();
 		});
 	}
 
@@ -170,7 +188,14 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 		const propsAndStubs = { ...props };
 
 		Object.entries(this.children).forEach(([key, child]) => {
-			propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
+			if (Array.isArray(child)) {
+				const mappedChild = child.map(
+					(item) => `<div data-id="${item.id}"></div>`,
+				);
+				propsAndStubs[key] = mappedChild.join('');
+			} else {
+				propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
+			}
 		});
 
 		const fragment = document.createElement('template');
@@ -180,15 +205,26 @@ export abstract class Block<Props extends object & { events?: BlockEvents }> {
 		const newElement = fragment.content.firstElementChild!;
 
 		Object.values(this.children).forEach((child) => {
-			const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
-			const getElement = child.getContent();
-			if (getElement) {
-				stub?.replaceWith(getElement);
+			if (Array.isArray(child)) {
+				child.forEach((item) => {
+					const stub = fragment.content.querySelector(`[data-id="${item.id}"]`);
+					const getElement = item.getContent();
+					if (getElement) {
+						stub?.replaceWith(getElement);
+					} else {
+						throw new Error('Cannot create child element');
+					}
+				});
 			} else {
-				throw new Error('Cannot create child element');
+				const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
+				const getElement = child.getContent();
+				if (getElement) {
+					stub?.replaceWith(getElement);
+				} else {
+					throw new Error('Cannot create child element');
+				}
 			}
 		});
-
 		this.element?.replaceWith(newElement);
 		this.element = newElement;
 

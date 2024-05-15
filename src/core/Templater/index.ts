@@ -1,3 +1,4 @@
+import replaceEachBlocks from './utils/replaceArray';
 import replaceConditions from './utils/replaceConditions';
 import replaceVariables from './utils/replaceVariables';
 
@@ -17,6 +18,7 @@ class Shaft {
 		if (variables) {
 			template = replaceVariables(template, variables);
 			template = replaceConditions(template, variables);
+			template = replaceEachBlocks(template, variables);
 		}
 		return template;
 	}

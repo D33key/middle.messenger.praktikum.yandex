@@ -5,16 +5,16 @@ import AvatarWithName from '@/components/avatarWithName';
 import ButtonsWrapper from '@/components/changeButtons';
 import ChangePassword from '@/components/userChangePassword';
 import UserInfo from '@/components/userInfo';
+import UserInfoInputs from '@/components/userinfoInputs';
 import { Block } from '@/core/Block';
 import defaultUseravatar from '@/public/defaultUserImg.png';
 import Avatar from '@/templates/avatar';
 import Button from '@/templates/button';
-import { getDataFromForm, getDataFromObject } from '@/templates/form/utils';
+import { getDataFromObject } from '@/templates/form/utils';
 import getCookie from '@/utils/getCookie';
 import { render } from '@/utils/render';
 import { changePasswordInput } from './../../utils/changePasswordInputs';
 import { userInfoInputsObj } from './../../utils/userInfoInputs';
-import UserInfoInputs from '@/components/userinfoInputs';
 
 interface ProfilePageProps {
 	userAvatar: AvatarWithName;

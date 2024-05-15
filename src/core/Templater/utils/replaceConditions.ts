@@ -1,4 +1,6 @@
 import evalCondition from './evalCondition';
+import replaceEachBlocks from './replaceArray';
+import replaceVariables from './replaceVariables';
 
 export default function replaceConditions<T extends object>(
 	template: string,
@@ -9,15 +11,12 @@ export default function replaceConditions<T extends object>(
 
 	let match: string = '';
 
-	let isReplacementFound = false;
+	if (typeof template === 'object') return template;
 
-	if(typeof template === 'object') return template;
-
-	const [matches] = [...template.matchAll(CONDITION_REGEXP)].map((match) => {
+	const matches = [...template.matchAll(CONDITION_REGEXP)].map((match) => {
 		const elseIfBlocks = match[3].split(/(?=\{\{else\sif\s)|(?=\{\{else\}\})/);
 		const elseIfStatements = elseIfBlocks.map((block) => {
 			const parts = block.match(/\{\{else\sif\s(.*?)\}\}([\s\S]*)/);
-
 			if (!parts) return;
 
 			return {
@@ -42,33 +41,41 @@ export default function replaceConditions<T extends object>(
 		};
 	});
 
-	if (!matches) return template;
+	if (matches.length === 0) return template;
 
-	while (!isReplacementFound) {
-		if (evalCondition(matches.ifCondition, variables)) {
-			match = matches.ifContent;
-			isReplacementFound = true;
-			break;
-		} else if (matches.elseIfStatements.length > 0) {
-			for (let item of matches.elseIfStatements) {
-				if (item && evalCondition(item.condition, variables)) {
-					match = item.content;
-					isReplacementFound = true;
-					break;
+	matches.forEach((matchItem) => {
+		let isReplacementFound = false;
+		while (!isReplacementFound) {
+			if (evalCondition(matchItem.ifCondition, variables)) {
+				match = matchItem.ifContent;
+				isReplacementFound = true;
+				break;
+			} else if (matchItem.elseIfStatements.length > 0) {
+				for (let item of matchItem.elseIfStatements) {
+					if (item && evalCondition(item.condition, variables)) {
+						match = item.content;
+						isReplacementFound = true;
+						break;
+					}
 				}
-			}
-			if (!isReplacementFound) {
-				match = matches.elseContent;
+				if (!isReplacementFound) {
+					match = matchItem.elseContent;
+					isReplacementFound = true;
+				}
+				break;
+			} else {
+				match = matchItem.elseContent;
 				isReplacementFound = true;
 			}
-			break;
-		} else {
-			match = matches.elseContent;
-			isReplacementFound = true;
 		}
-	}
-
-	template = template.replace(matches.fullCondition, match);
+		const isIncludeVariables = match.match(/{{[^}]+}}/g);
+		if (isIncludeVariables) {
+			template = replaceVariables(match, variables);
+			template = replaceEachBlocks(match, variables);
+		} else {
+			template = template.replace(matchItem.fullCondition, match);
+		}
+	});
 
 	return template;
 }
