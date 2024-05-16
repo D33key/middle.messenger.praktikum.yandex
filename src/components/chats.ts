@@ -4,8 +4,8 @@ import InputWrapper from '@/templates/input';
 import Chat from './availableChats';
 
 export interface ChatsProps extends EventsProps {
-	searchChat: InputWrapper;
-	existingChats?: Chat | string;
+  searchChat: InputWrapper;
+  existingChats?: Chat | string;
 }
 
 const template = /*html*/ `
@@ -16,12 +16,12 @@ const template = /*html*/ `
   </div>`;
 
 export default class Chats extends Block<ChatsProps> {
-	constructor(props: ChatsProps) {
-		props.existingChats = props.existingChats ?? 'Нет доступных чатов';
-		super(props);
-	}
+  constructor(props: ChatsProps) {
+    props.existingChats = props.existingChats ?? 'Нет доступных чатов';
+    super(props);
+  }
 
-	render() {
-		return this.compile(template, this.props);
-	}
+  render() {
+    return this.compile(template, this.props);
+  }
 }

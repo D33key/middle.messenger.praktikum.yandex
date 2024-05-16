@@ -17,19 +17,19 @@ const template = /*html*/ `
 `;
 
 export default class InputWrapper extends Block<InputWrapperProps> {
-	constructor(props: InputWrapperProps) {
-		props.labelText = props.labelText ?? '';
-		props.labelFor = props.labelFor ?? '';
-		props.errorText = props.errorText ?? '';
-		props.value = props.value ?? '';
-		props.required = props.required ?? false;
-		props.classNameInput = props.classNameInput ?? '';
-		props.addResetBtn = props.addResetBtn ?? false;
+  constructor(props: InputWrapperProps) {
+    props.labelText = props.labelText ?? '';
+    props.labelFor = props.labelFor ?? '';
+    props.errorText = props.errorText ?? '';
+    props.value = props.value ?? '';
+    props.required = props.required ?? false;
+    props.classNameInput = props.classNameInput ?? '';
+    props.addResetBtn = props.addResetBtn ?? false;
 
-		super(props);
-	}
+    super(props);
+  }
 
-	render() {
-		return this.compile(template, this.props);
-	}
+  render() {
+    return this.compile(template, this.props);
+  }
 }

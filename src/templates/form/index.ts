@@ -22,15 +22,14 @@ const templateLogin = /*html*/ `
 `;
 
 export default class Form extends Block<FormProps> {
-	constructor(props: FormProps) {
-		super(props);
-	}
+  constructor(props: FormProps) {
+    super(props);
+  }
 
-	render() {
-		if (this.props.type === 'login') {
-			return this.compile(templateLogin, this.props);
-		} else {
-			return this.compile(templateSignup, this.props);
-		}
-	}
+  render() {
+    if (this.props.type === 'login') {
+      return this.compile(templateLogin, this.props);
+    }
+    return this.compile(templateSignup, this.props);
+  }
 }

@@ -2,10 +2,10 @@ import { Block } from '@/core/Block';
 import { EventsProps } from '@/templates/button';
 
 export interface TitleWithTextProps extends EventsProps {
-	formTitle: string;
-	formText: string;
-	linkHref: string;
-	linkText: string;
+  formTitle: string;
+  formText: string;
+  linkHref: string;
+  linkText: string;
 }
 
 const template = /*html*/ `<div class='form-title-wrapper'>
@@ -15,11 +15,11 @@ const template = /*html*/ `<div class='form-title-wrapper'>
 `;
 
 export default class TitleWithText extends Block<TitleWithTextProps> {
-	constructor(props: TitleWithTextProps) {
-		super(props);
-	}
+  constructor(props: TitleWithTextProps) {
+    super(props);
+  }
 
-	render() {
-		return this.compile(template, this.props);
-	}
+  render() {
+    return this.compile(template, this.props);
+  }
 }

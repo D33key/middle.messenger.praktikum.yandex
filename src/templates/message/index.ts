@@ -2,8 +2,8 @@ import { Block } from '@/core/Block';
 import { EventsProps } from '../button';
 
 interface MessageProps extends EventsProps {
-	className: string;
-	text: string;
+  className: string;
+  text: string;
 }
 
 const template = /* html */ `
@@ -11,11 +11,11 @@ const template = /* html */ `
 `;
 
 export default class MessageSpan extends Block<MessageProps> {
-	constructor(props: MessageProps) {
-		super(props);
-	}
+  constructor(props: MessageProps) {
+    super(props);
+  }
 
-	render() {
-		return this.compile(template, this.props);
-	}
+  render() {
+    return this.compile(template, this.props);
+  }
 }

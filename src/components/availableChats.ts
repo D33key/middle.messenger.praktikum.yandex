@@ -3,7 +3,7 @@ import { EventsProps } from '@/templates/button';
 import Chat from './chat';
 
 export interface AvailableChatsProps extends EventsProps {
-	chatArray: Chat[];
+  chatArray: Chat[];
 }
 
 const template = /*html*/ `
@@ -14,11 +14,11 @@ const template = /*html*/ `
   </div>`;
 
 export default class AvailableChats extends Block<AvailableChatsProps> {
-	constructor(props: AvailableChatsProps) {
-		super(props);
-	}
+  constructor(props: AvailableChatsProps) {
+    super(props);
+  }
 
-	render() {
-		return this.compile(template, this.props);
-	}
+  render() {
+    return this.compile(template, this.props);
+  }
 }

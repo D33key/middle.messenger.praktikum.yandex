@@ -3,11 +3,11 @@ import { EventsProps } from '@/templates/button';
 
 export interface ChatProps extends EventsProps {
   chatId: number;
-	userImg: string | null;
-	userName: string;
-	userLastMessage: string;
-	lastMessageDate: string;
-	isNewMessage?: string | false;
+  userImg: string | null;
+  userName: string;
+  userLastMessage: string;
+  lastMessageDate: string;
+  isNewMessage?: string | false;
 }
 
 const template = /*html*/ `
@@ -28,11 +28,11 @@ const template = /*html*/ `
   </div>`;
 
 export default class Chat extends Block<ChatProps> {
-	constructor(props: ChatProps) {
-		super(props);
-	}
+  constructor(props: ChatProps) {
+    super(props);
+  }
 
-	render() {
-		return this.compile(template, this.props);
-	}
+  render() {
+    return this.compile(template, this.props);
+  }
 }

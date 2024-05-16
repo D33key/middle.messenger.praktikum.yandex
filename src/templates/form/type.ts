@@ -2,24 +2,24 @@ import Button, { EventsProps } from '../button';
 import InputWrapper from '../input';
 
 type BaseFormProps = {
-	type: 'login' | 'signup';
-	submitButton: Button;
+  type: 'login' | 'signup';
+  submitButton: Button;
 } & EventsProps;
 
 type LoginFormProps = {
-	type: 'login';
-	passwordInput: InputWrapper;
-	emailInput: InputWrapper;
+  type: 'login';
+  passwordInput: InputWrapper;
+  emailInput: InputWrapper;
 } & BaseFormProps;
 
 type Signup = {
-	type: 'signup';
-	passwordInput: InputWrapper;
-	emailInput: InputWrapper;
-	loginInput: InputWrapper;
-	firstNameInput: InputWrapper;
-	secondNameInput: InputWrapper;
-	phoneInput: InputWrapper;
+  type: 'signup';
+  passwordInput: InputWrapper;
+  emailInput: InputWrapper;
+  loginInput: InputWrapper;
+  firstNameInput: InputWrapper;
+  secondNameInput: InputWrapper;
+  phoneInput: InputWrapper;
 } & BaseFormProps;
 
 export type FormProps = LoginFormProps | Signup;

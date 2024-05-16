@@ -4,10 +4,10 @@ import ChangePassword from './userChangePassword';
 import UserInfoInputs from './userinfoInputs';
 
 export interface UserInfoProps extends EventsProps {
-	className: string;
-	userInfoInputs: UserInfoInputs;
-	changePassword: ChangePassword;
-	saveButton: Button;
+  className: string;
+  userInfoInputs: UserInfoInputs;
+  changePassword: ChangePassword;
+  saveButton: Button;
 }
 
 const template = /*html*/ `<form class='userinfo-wrapper {{ className }}' novalidate>
@@ -17,11 +17,11 @@ const template = /*html*/ `<form class='userinfo-wrapper {{ className }}' novali
 </form>`;
 
 export default class UserInfo extends Block<UserInfoProps> {
-	constructor(props: UserInfoProps) {
-		super(props);
-	}
+  constructor(props: UserInfoProps) {
+    super(props);
+  }
 
-	render() {
-		return this.compile(template, this.props);
-	}
+  render() {
+    return this.compile(template, this.props);
+  }
 }

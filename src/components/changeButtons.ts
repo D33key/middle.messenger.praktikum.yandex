@@ -2,9 +2,9 @@ import { Block } from '@/core/Block';
 import Button from '@/templates/button';
 
 interface ButtonsWrapperProps {
-	changeInfo: Button;
-	changePassword: Button | null;
-	Logout: Button | null;
+  changeInfo: Button;
+  changePassword: Button | null;
+  Logout: Button | null;
 }
 
 const template = /*html*/ `<div class='userinfo-buttons'>
@@ -14,11 +14,11 @@ const template = /*html*/ `<div class='userinfo-buttons'>
 </div>`;
 
 export default class ButtonsWrapper extends Block<ButtonsWrapperProps> {
-	constructor(props: ButtonsWrapperProps) {
-		super(props);
-	}
+  constructor(props: ButtonsWrapperProps) {
+    super(props);
+  }
 
-	render() {
-		return this.compile(template, this.props);
-	}
+  render() {
+    return this.compile(template, this.props);
+  }
 }

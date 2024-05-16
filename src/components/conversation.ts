@@ -1,15 +1,16 @@
 import { Block } from '@/core/Block';
 import SendFileIcon from '@/public/sendFile.png';
 import { EventsProps } from '@/templates/button';
+import MessageSpan from '@/templates/message';
 
 export interface ConversationProps extends EventsProps {
-	dialog:
-		| {
-				userImg: string;
-				userName: string;
-        messages: any[]
-		  }
-		| false;
+  dialog:
+    | {
+        userImg: string;
+        userName: string;
+        messages: MessageSpan[][];
+      }
+    | false;
 }
 
 const template = /*html*/ `
@@ -39,10 +40,11 @@ const template = /*html*/ `
 `;
 
 export class Conversation extends Block<ConversationProps> {
-	constructor(props: ConversationProps) {
-		super(props);
-	}
-	render() {
-		return this.compile(template, this.props);
-	}
+  constructor(props: ConversationProps) {
+    super(props);
+  }
+
+  render() {
+    return this.compile(template, this.props);
+  }
 }

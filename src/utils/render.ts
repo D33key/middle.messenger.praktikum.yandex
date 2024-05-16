@@ -1,13 +1,13 @@
 import { Block } from '@/core/Block';
 
 export function render<T extends Block<any>>(query: string, block: T) {
-	const root = document.querySelector(query);
+  const root = document.querySelector(query);
 
-	if (!root) throw new Error('There is no such root');
+  if (!root) throw new Error('There is no such root');
 
-	root.appendChild(block.getContent()!);
+  root.append(block.getContent()!);
 
-	block.dispatchComponentDidMount();
+  block.dispatchComponentDidMount();
 
-	return root;
+  return root;
 }
