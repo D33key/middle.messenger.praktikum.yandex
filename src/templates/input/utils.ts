@@ -1,10 +1,9 @@
 import checkValidity from '@/utils/checkValidity';
 import InputWrapper from '.';
-import { Block } from '@/core/Block';
 
-export const checkInput = (
+export const checkInput = <T extends Record<string, any>>(
 	event: FocusEvent,
-	formChildren: Record<string, Block<object>>,
+	formChildren: T,
 ) => {
 	const target = event.target as HTMLInputElement;
 	const inputName = target?.getAttribute('name');

@@ -9,8 +9,9 @@ import AvailableChats from '@/components/availableChats';
 import Chat from '@/components/chat';
 import DefaultImg from '@/public/defaultUserImg.png';
 import { conversationWithUser, testChatsArray } from './testChats';
-import { Conversation } from '@/components/conversation';
+import { Conversation, ConversationProps } from '@/components/conversation';
 import MessageSpan from '@/templates/message';
+import { InputWrapperProps } from '@/templates/input/types';
 
 interface ChatPageProps {
 	chats: Chats;
@@ -42,7 +43,10 @@ class ChatPage extends Block<ChatPageProps> {
 						type: 'button',
 						events: {
 							click: () => {
-								this.children.chats.children.searchChat.setProps({
+								(
+									(this.children.chats as Block<any>).children
+										.searchChat as Block<InputWrapperProps>
+								).setProps({
 									value: '',
 								});
 							},
@@ -127,7 +131,7 @@ class ChatPage extends Block<ChatPageProps> {
 			}
 		});
 
-		this.children.conversation.setProps({
+		(this.children.conversation as Block<ConversationProps>).setProps({
 			dialog: {
 				userImg: getChatInfo?.userImg ?? DefaultImg,
 				userName: getChatInfo?.userName,

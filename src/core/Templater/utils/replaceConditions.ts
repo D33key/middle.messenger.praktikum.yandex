@@ -71,7 +71,7 @@ export default function replaceConditions<T extends object>(
 		const isIncludeVariables = match.match(/{{[^}]+}}/g);
 		if (isIncludeVariables) {
 			template = replaceVariables(match, variables);
-			template = replaceEachBlocks(match, variables);
+			template = replaceEachBlocks(match);
 		} else {
 			template = template.replace(matchItem.fullCondition, match);
 		}

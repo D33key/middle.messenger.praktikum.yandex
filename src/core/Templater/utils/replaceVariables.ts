@@ -1,3 +1,5 @@
+import { Block } from '@/core/Block';
+
 export default function replaceVariables<T extends object>(
 	template: string,
 	variables: T,
@@ -10,16 +12,18 @@ export default function replaceVariables<T extends object>(
 		}
 		if (typeof value === 'object' && key !== 'events') {
 			const regex = new RegExp(`{{\\s*${key}\\.(\\w+)\\s*}}`, 'g');
-			const varInKey = [...template.matchAll(regex)].forEach((item) => {
+			[...template.matchAll(regex)].forEach((item) => {
 				const valueFromReg = item[1];
 				if (Array.isArray(value[valueFromReg])) {
-					const mapedValue = value[valueFromReg].map((item) => {
-						const innerArray = item.map(
-							(innerItem) => innerItem.getContent().outerHTML,
-						);
-						return innerArray.join('');
-					});
-					
+					const mapedValue = value[valueFromReg].map(
+						(item: Block<object>[]) => {
+							const innerArray = item.map(
+								(innerItem) => innerItem.getContent()?.outerHTML,
+							);
+							return innerArray.join('');
+						},
+					);
+
 					template = template.replace(item[0], mapedValue.join(''));
 				} else {
 					template = template.replace(item[0], String(value[valueFromReg]));

@@ -1,7 +1,4 @@
-export default function replaceEachBlocks<T extends object>(
-	template: string,
-	variables: T,
-) {
+export default function replaceEachBlocks(template: string) {
 	const EACH_REGEXP = /\{\{each\s(.*?)\}\}([\s\S]*?)\{\{endeach\}\}/gs;
 
 	if (typeof template === 'object') return template;
@@ -17,8 +14,11 @@ export default function replaceEachBlocks<T extends object>(
 	if (matches.length === 0) return template;
 
 	matches.forEach((matchItem) => {
-		template = template.replace(matchItem.fullBlock, matchItem.content.replace(',', ''));
+		template = template.replace(
+			matchItem.fullBlock,
+			matchItem.content.replace(',', ''),
+		);
 	});
-	
+
 	return template;
 }

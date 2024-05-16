@@ -50,12 +50,12 @@ export const conversationWithUser = [
 		userName: 'Вася',
 		messages: [
 			{
-				user: ['Привет!', 'Давно не виделись! Как дела?']
+				user: ['Привет!', 'Давно не виделись! Как дела?'],
 			},
 			{
 				other: ['Привет! Все круто, ты как?'],
-			}
-		]
+			},
+		],
 	},
 	{
 		chatId: 2,
@@ -63,12 +63,12 @@ export const conversationWithUser = [
 		userName: 'Женя',
 		messages: [
 			{
-				user: ['Привет!', 'Что делаешь?']
+				user: ['Привет!', 'Что делаешь?'],
 			},
 			{
 				other: ['Привет! Собираюсь пойти гулять', 'А ты?', 'Ау, чего молчишь?'],
-			}
-		]
+			},
+		],
 	},
 	{
 		chatId: 3,
@@ -77,8 +77,8 @@ export const conversationWithUser = [
 		messages: [
 			{
 				other: ['Привет!', 'Занят?'],
-			}
-		]
+			},
+		],
 	},
 	{
 		chatId: 4,
@@ -86,9 +86,9 @@ export const conversationWithUser = [
 		userName: 'Маша',
 		messages: [
 			{
-				other: ['Приветулики']
-			}
-		]
+				other: ['Приветулики'],
+			},
+		],
 	},
 	{
 		chatId: 5,
@@ -96,8 +96,8 @@ export const conversationWithUser = [
 		userName: 'Гриша',
 		messages: [
 			{
-				user: ['Покачурики']
-			}
-		]
+				user: ['Покачурики'],
+			},
+		],
 	},
-]
+];

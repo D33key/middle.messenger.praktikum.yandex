@@ -4,7 +4,7 @@ import '@/styles/profile.css';
 import AvatarWithName from '@/components/avatarWithName';
 import ButtonsWrapper from '@/components/changeButtons';
 import ChangePassword from '@/components/userChangePassword';
-import UserInfo from '@/components/userInfo';
+import UserInfo, { UserInfoProps } from '@/components/userInfo';
 import UserInfoInputs from '@/components/userinfoInputs';
 import { Block } from '@/core/Block';
 import defaultUseravatar from '@/public/defaultUserImg.png';
@@ -84,14 +84,23 @@ class ProfilePage extends Block<ProfilePageProps> {
 
 							getDataFromObject(getInputsVal);
 
-							this.children.userInfo.setProps({
+							(this.children.userInfo as Block<UserInfoProps>).setProps({
 								className: 'pointer-none',
 							});
-							this.children.changeButtons.show();
-							this.children.userInfo.children.userInfoInputs.show();
+							(this.children.changeButtons as Block<any>).show();
+							(
+								(this.children.userInfo as Block<UserInfoProps>).children
+									.userInfoInputs as Block<any>
+							).show();
 
-							this.children.userInfo.children.saveButton.hide();
-							this.children.userInfo.children.changePassword.hide();
+							(
+								(this.children.userInfo as Block<UserInfoProps>).children
+									.saveButton as Block<any>
+							).hide();
+							(
+								(this.children.userInfo as Block<UserInfoProps>).children
+									.changePassword as Block<any>
+							).hide();
 						},
 					},
 				}),
@@ -103,12 +112,15 @@ class ProfilePage extends Block<ProfilePageProps> {
 					className: 'changeButton',
 					events: {
 						click: () => {
-							this.children.userInfo.setProps({
+							(this.children.userInfo as Block<UserInfoProps>).setProps({
 								className: '',
 							});
-							this.children.changeButtons.hide();
+							(this.children.changeButtons as Block<any>).hide();
 
-							this.children.userInfo.children.saveButton.show();
+							(
+								(this.children.userInfo as Block<UserInfoProps>).children
+									.saveButton as Block<any>
+							).show();
 						},
 					},
 				}),
@@ -118,14 +130,23 @@ class ProfilePage extends Block<ProfilePageProps> {
 					className: 'changeButton',
 					events: {
 						click: () => {
-							this.children.userInfo.setProps({
+							(this.children.userInfo as Block<UserInfoProps>).setProps({
 								className: '',
 							});
-							this.children.changeButtons.hide();
-							this.children.userInfo.children.userInfoInputs.hide();
+							(this.children.changeButtons as Block<any>).hide();
+							(
+								(this.children.userInfo as Block<UserInfoProps>).children
+									.userInfoInputs as Block<any>
+							).hide();
 
-							this.children.userInfo.children.changePassword.show();
-							this.children.userInfo.children.saveButton.show();
+							(
+								(this.children.userInfo as Block<UserInfoProps>).children
+									.changePassword as Block<any>
+							).show();
+							(
+								(this.children.userInfo as Block<UserInfoProps>).children
+									.saveButton as Block<any>
+							).show();
 						},
 					},
 				}),

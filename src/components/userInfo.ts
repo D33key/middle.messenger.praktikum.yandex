@@ -3,7 +3,7 @@ import Button, { EventsProps } from '@/templates/button';
 import ChangePassword from './userChangePassword';
 import UserInfoInputs from './userinfoInputs';
 
-interface UserInfoProps extends EventsProps {
+export interface UserInfoProps extends EventsProps {
 	className: string;
 	userInfoInputs: UserInfoInputs;
 	changePassword: ChangePassword;

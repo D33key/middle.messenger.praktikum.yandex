@@ -2,7 +2,7 @@ import { Block } from '@/core/Block';
 import SendFileIcon from '@/public/sendFile.png';
 import { EventsProps } from '@/templates/button';
 
-interface ConversationProps extends EventsProps {
+export interface ConversationProps extends EventsProps {
 	dialog:
 		| {
 				userImg: string;

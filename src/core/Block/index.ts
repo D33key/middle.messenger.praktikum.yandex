@@ -1,9 +1,8 @@
 import { EventBus } from '@/core/EventBus';
-
 import { v4 as uniqueKey } from 'uuid';
 import Shaft from '../Templater';
 
-interface Meta<Props> {
+interface Meta<Props extends Record<string, any>> {
 	props: Props & { events?: BlockEvents };
 }
 
@@ -27,7 +26,7 @@ export abstract class Block<
 	protected meta: Meta<Props> | null = null;
 	protected props: Meta<Props>['props'];
 	protected eventBus: () => EventBus;
-	public children: Record<string, Block<object>>;
+	public children: Record<string, Block<any> | Block<any>[]>;
 
 	constructor(rawProps: Meta<Props>['props'] = {} as Props) {
 		const eventBus = new EventBus();
@@ -50,13 +49,13 @@ export abstract class Block<
 	}
 
 	protected getChildren(propsAndChildren: Meta<Props>['props']) {
-		const children: Record<string, Block<object>> = {};
-		const props = {} as Meta<Props>['props'];
+		const children: Record<string, Block<any> | Block<any>[]> = {};
+		const props = {} as Record<string, any>;
 
 		Object.entries(propsAndChildren).forEach(([key, value]) => {
 			if (Array.isArray(value)) {
-				const propsFromArray = [];
-				const childrenFromArray = [];
+				const propsFromArray: Props[] = [];
+				const childrenFromArray: Block<object>[] = [];
 				value.forEach((val) => {
 					if (val instanceof Block) {
 						childrenFromArray.push(val);
@@ -75,7 +74,10 @@ export abstract class Block<
 			}
 		});
 
-		return { children, props };
+		return { children, props } as {
+			children: Record<string, Block<any> | Block<any>[]>;
+			props: Meta<Props>['props'];
+		};
 	}
 
 	private registerEvents(eventBus: EventBus) {
@@ -85,16 +87,16 @@ export abstract class Block<
 		eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
 	}
 
-	private makePropsProxy(props: Meta<Props>['props']) {
+	private makePropsProxy<T extends object>(props: T) {
 		const self = this;
 
 		return new Proxy(props, {
 			get(target, prop) {
-				const value = target[prop as keyof Props];
+				const value = target[prop as keyof T];
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
 			set(target, prop, value) {
-				target[prop as keyof Props] = value;
+				target[prop as keyof T] = value;
 
 				self.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
 				return true;
@@ -118,7 +120,7 @@ export abstract class Block<
 			} else if (eventHandler && eventName === 'blur') {
 				this.element?.addEventListener(
 					eventName,
-					(eventHandler as EventListenerOrEventListenerObject).bind(this),
+					eventHandler as EventListenerOrEventListenerObject,
 					true,
 				);
 			}
@@ -149,7 +151,7 @@ export abstract class Block<
 
 	componentDidMount() {}
 
-	private _componentDidUpdate(newProps?: Meta<Props>['props']) {
+	private _componentDidUpdate<T>(newProps?: T) {
 		const isUpdated = this.componentDidUpdate(newProps);
 
 		if (isUpdated) {
@@ -157,7 +159,10 @@ export abstract class Block<
 		}
 	}
 
-	componentDidUpdate(newProps?: Meta<Props>['props']) {
+	componentDidUpdate<T>(newProps?: T) {
+		if(newProps) {
+			return true;
+		}
 		return true;
 	}
 
@@ -184,7 +189,7 @@ export abstract class Block<
 		return this.props;
 	}
 
-	compile(template: string, props: Meta<Props>['props']) {
+	compile(template: string, props: Record<string, any>) {
 		const propsAndStubs = { ...props };
 
 		Object.entries(this.children).forEach(([key, child]) => {

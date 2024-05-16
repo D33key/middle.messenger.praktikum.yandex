@@ -18,7 +18,7 @@ class Shaft {
 		if (variables) {
 			template = replaceVariables(template, variables);
 			template = replaceConditions(template, variables);
-			template = replaceEachBlocks(template, variables);
+			template = replaceEachBlocks(template);
 		}
 		return template;
 	}

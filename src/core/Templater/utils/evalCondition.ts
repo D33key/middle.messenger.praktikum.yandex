@@ -10,7 +10,7 @@ export default function evalCondition<T extends object>(
 			if (allowedVariables.includes(match)) {
 				// Костыль
 				if (typeof variables![match as keyof T] === 'object') {
-					return true;
+					return true as unknown as string;
 				}
 				return JSON.stringify(variables![match as keyof T]);
 			}

@@ -9,6 +9,7 @@ import { checkInput } from '@/templates/input/utils';
 import { render } from '@/utils/render';
 import { template } from './template';
 import { getDataFromForm } from '@/templates/form/utils';
+import { FormProps } from '@/templates/form/type';
 
 class LoginPage extends Block<LoginPageProps> {
 	constructor() {
@@ -51,7 +52,8 @@ class LoginPage extends Block<LoginPageProps> {
 				}),
 				events: {
 					blur: (event) => {
-						const formChildren = this.children.form.children;
+						const formChildren = (this.children.form as Block<FormProps>)
+							.children;
 						checkInput(event, formChildren);
 					},
 					submit: getDataFromForm,
