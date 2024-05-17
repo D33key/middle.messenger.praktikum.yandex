@@ -1,6 +1,6 @@
 import InputWrapper from '@/templates/input';
 
-export const changePasswordInput = {
+export const changePasswordInputTmpl = {
   password: new InputWrapper({
     classNameInput: 'userinfo',
     className: 'password',

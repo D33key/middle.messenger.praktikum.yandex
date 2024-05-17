@@ -1,22 +1,58 @@
-import '@/styles/global.css';
 import '@/styles/chat.css';
+import '@/styles/global.css';
 import AvailableChats from '@/components/availableChats';
 import Chat from '@/components/chat';
 import Chats from '@/components/chats';
-import { Conversation, ConversationProps } from '@/components/conversation';
+import { Conversation } from '@/components/conversation';
 import { Block } from '@/core/Block';
 import DefaultImg from '@/public/defaultUserImg.png';
 import Button from '@/templates/button';
 import InputWrapper from '@/templates/input';
-import { InputWrapperProps } from '@/templates/input/types';
 import MessageSpan from '@/templates/message';
 import { render } from '@/utils/render';
 import { conversationWithUser, testChatsArray } from './testChats';
+import { ChatPageProps } from './types';
 
-interface ChatPageProps {
-  chats: Chats;
-  conversation: Conversation;
-}
+const conversation = new Conversation({
+  dialog: false,
+  events: {
+    submit: (event) => {
+      event.preventDefault();
+
+      if (event.target && event.target instanceof HTMLFormElement) {
+        console.log(event.target.querySelector('input')?.getAttribute('value'));
+      }
+    },
+    input: (event) => {
+      (event.target as HTMLInputElement).setAttribute(
+        'value',
+        (event.target as HTMLInputElement).value,
+      );
+    },
+  },
+});
+
+const searchChat = new InputWrapper({
+  classNameInput: 'chat-search-input',
+  placeholder: 'Поиск...',
+  labelFor: 'search',
+  className: 'search-input',
+  inputType: 'text',
+  addResetBtn: true,
+
+  button: new Button({
+    className: 'clear-result',
+    child: 'X',
+    type: 'button',
+    events: {
+      click: () => {
+        searchChat.setProps({
+          value: '',
+        });
+      },
+    },
+  }),
+});
 
 const template = /*html*/ `
   <div class='chat-page'>
@@ -29,30 +65,7 @@ class ChatPage extends Block<ChatPageProps> {
   constructor() {
     super({
       chats: new Chats({
-        searchChat: new InputWrapper({
-          classNameInput: 'chat-search-input',
-          placeholder: 'Поиск...',
-          labelFor: 'search',
-          className: 'search-input',
-          inputType: 'text',
-          addResetBtn: true,
-
-          button: new Button({
-            className: 'clear-result',
-            child: 'X',
-            type: 'button',
-            events: {
-              click: () => {
-                (
-                  (this.children.chats as Block<any>).children
-                    .searchChat as Block<InputWrapperProps>
-                ).setProps({
-                  value: '',
-                });
-              },
-            },
-          }),
-        }),
+        searchChat,
         existingChats: new AvailableChats({
           chatArray: testChatsArray.map(
             ({
@@ -79,26 +92,7 @@ class ChatPage extends Block<ChatPageProps> {
           ),
         }),
       }),
-      conversation: new Conversation({
-        dialog: false,
-        events: {
-          submit: (event) => {
-            event.preventDefault();
-
-            if (event.target && event.target instanceof HTMLFormElement) {
-              console.log(
-                event.target.querySelector('input')?.getAttribute('value'),
-              );
-            }
-          },
-          input: (event) => {
-            (event.target as HTMLInputElement).setAttribute(
-              'value',
-              (event.target as HTMLInputElement).value,
-            );
-          },
-        },
-      }),
+      conversation,
     });
   }
 
@@ -134,7 +128,7 @@ class ChatPage extends Block<ChatPageProps> {
       return messagesArray;
     });
 
-    (this.children.conversation as Block<ConversationProps>).setProps({
+    conversation.setProps({
       dialog: {
         userImg: getChatInfo.userImg ?? DefaultImg,
         userName: getChatInfo.userName,

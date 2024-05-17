@@ -6,13 +6,13 @@ import UserInfoInputs from './userinfoInputs';
 export interface UserInfoProps extends EventsProps {
   className: string;
   userInfoInputs: UserInfoInputs;
-  changePassword: ChangePassword;
+  changePasswordInput: ChangePassword;
   saveButton: Button;
 }
 
 const template = /*html*/ `<form class='userinfo-wrapper {{ className }}' novalidate>
 {{ userInfoInputs }}
-{{ changePassword }}
+{{ changePasswordInput }}
 {{ saveButton }}
 </form>`;
 

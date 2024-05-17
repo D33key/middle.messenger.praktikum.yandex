@@ -27,7 +27,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true
   },
-	
+
   "include": ["src", "src/server/server.ts", "src/pages/Login/login.ts"],
   "ts-node": {
     "esm": true,

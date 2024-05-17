@@ -4,12 +4,28 @@ import TitleWithText from '@/components/titleWithText';
 import { Block } from '@/core/Block';
 import Button from '@/templates/button';
 import Form from '@/templates/form';
-import { FormProps } from '@/templates/form/type';
 import { getDataFromForm } from '@/templates/form/utils';
 import { checkInput } from '@/templates/input/utils';
 import { render } from '../../utils/render';
 import { signupInputObj } from '../../utils/signupInputArray';
 import { template } from '../Login/template';
+
+const form = new Form({
+  type: 'signup',
+  ...signupInputObj,
+  submitButton: new Button({
+    child: 'Регистрация',
+    type: 'submit',
+    className: 'submitButton',
+  }),
+  events: {
+    blur: (event) => {
+      const formChildren = form.children;
+      checkInput(event, formChildren);
+    },
+    submit: getDataFromForm,
+  },
+});
 
 class SingupPage extends Block<LoginPageProps> {
   constructor() {
@@ -20,23 +36,7 @@ class SingupPage extends Block<LoginPageProps> {
         linkHref: '/login',
         linkText: 'Войти в систему',
       }),
-      form: new Form({
-        type: 'signup',
-        ...signupInputObj,
-        submitButton: new Button({
-          child: 'Регистрация',
-          type: 'submit',
-          className: 'submitButton',
-        }),
-        events: {
-          blur: (event) => {
-            const formChildren = (this.children.form as Block<FormProps>)
-              .children;
-            checkInput(event, formChildren);
-          },
-          submit: getDataFromForm,
-        },
-      }),
+      form,
     });
   }
 

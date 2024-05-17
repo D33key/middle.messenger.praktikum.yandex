@@ -35,7 +35,7 @@ async function createServer() {
       res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
     } catch (error) {
       let template = fs.readFileSync(
-        path.resolve(__rootname, 'not-found.html'),
+        path.resolve(__rootname, '404/404.html'),
         'utf-8',
       );
       template = await vite.transformIndexHtml(url, template);
