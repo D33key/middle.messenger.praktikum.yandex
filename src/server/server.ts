@@ -9,7 +9,7 @@ const PORT = 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const __srcDir = path.dirname(__dirname);
-const __rootname = path.dirname(__srcDir) + '/dist/pages';
+const __rootname = path.dirname(__srcDir) + '/dist';
 
 async function createServer() {
   const app = express();
@@ -23,7 +23,8 @@ async function createServer() {
 
   app.use('*', async (req, res) => {
     const url = req.originalUrl;
-    const htmlName = url === '/' ? 'index.html' : url.slice(1) + '.html';
+    console.log(url)
+    const htmlName = url === '/' ? 'login.html' : url.slice(1) + '.html';
     try {
       let template = fs.readFileSync(
         path.resolve(__rootname, htmlName),
@@ -35,7 +36,7 @@ async function createServer() {
       res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
     } catch (error) {
       let template = fs.readFileSync(
-        path.resolve(__rootname, '404/404.html'),
+        path.resolve(__rootname, '404.html'),
         'utf-8',
       );
       template = await vite.transformIndexHtml(url, template);
