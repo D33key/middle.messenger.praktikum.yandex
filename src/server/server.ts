@@ -6,10 +6,10 @@ import { createServer as createViteServer } from 'vite';
 
 const PORT = 3000;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const __srcDir = path.dirname(__dirname);
-const __rootname = path.dirname(__srcDir) + '/dist';
+const _filename = fileURLToPath(import.meta.url);
+const _dirname = path.dirname(_filename);
+const _srcDir = path.dirname(_dirname);
+const _rootname = path.dirname(_srcDir) + '/dist';
 
 async function createServer() {
   const app = express();
@@ -19,15 +19,15 @@ async function createServer() {
   });
 
   app.use(vite.middlewares);
-  app.use(express.static(path.resolve(__srcDir, '../dist')));
+  app.use(express.static(path.resolve(_srcDir, '../dist')));
 
   app.use('*', async (req, res) => {
     const url = req.originalUrl;
-    console.log(url)
+    console.log(url);
     const htmlName = url === '/' ? 'login.html' : url.slice(1) + '.html';
     try {
       let template = fs.readFileSync(
-        path.resolve(__rootname, htmlName),
+        path.resolve(_rootname, htmlName),
         'utf-8',
       );
 
@@ -36,7 +36,7 @@ async function createServer() {
       res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
     } catch (error) {
       let template = fs.readFileSync(
-        path.resolve(__rootname, '404.html'),
+        path.resolve(_rootname, '404.html'),
         'utf-8',
       );
       template = await vite.transformIndexHtml(url, template);

@@ -13,10 +13,10 @@ import { template } from '../Login/template';
 const form = new Form({
   type: 'signup',
   ...signupInputObj,
-  submitButton: new Button({
+  submit-button: new Button({
     child: 'Регистрация',
     type: 'submit',
-    className: 'submitButton',
+    className: 'submit-button',
   }),
   events: {
     blur: (event) => {

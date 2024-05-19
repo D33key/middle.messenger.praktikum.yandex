@@ -1,7 +1,7 @@
 import InputWrapper from '@/templates/input';
 
 export const changePasswordInputTmpl = {
-  password: new InputWrapper({
+  passwordInput: new InputWrapper({
     classNameInput: 'userinfo',
     className: 'password',
     labelFor: 'password',
@@ -17,17 +17,18 @@ export const changePasswordInputTmpl = {
         if ((event.target as HTMLInputElement).value === '') {
           return;
         }
-        const getWrapper = (event.target as HTMLInputElement).closest(
+
+        const wrapper = (event.target as HTMLInputElement).closest(
           '.userinfo-wrapper',
         );
 
-        const getSubmitButton = getWrapper?.querySelector('.submitButton');
+        const submit-button = wrapper?.querySelector('.submit-button');
 
-        getSubmitButton?.classList.add('reject');
+        submit-button?.classList.add('reject');
       },
     },
   }),
-  repeatPassword: new InputWrapper({
+  repeatPasswordInput: new InputWrapper({
     classNameInput: 'userinfo',
     className: 'password',
     labelFor: 'password-repeat',
@@ -41,23 +42,23 @@ export const changePasswordInputTmpl = {
     events: {
       blur: (event) => {
         const passwordValue = (event.target as HTMLInputElement).value;
-        const getInputsWrapper = (event.target as HTMLInputElement).closest(
+        const inputsWrapper = (event.target as HTMLInputElement).closest(
           '.userinfo-change-password',
         );
 
-        if (getInputsWrapper) {
-          const password = getInputsWrapper.querySelector('#password');
+        if (inputsWrapper) {
+          const password = inputsWrapper.querySelector('#password');
 
           if (password && password instanceof HTMLInputElement) {
             const isSimilar = passwordValue === password.value;
 
-            const getSubmitButton =
-              getInputsWrapper.parentElement?.querySelector('.submitButton');
+            const submit-button =
+              inputsWrapper.parentElement?.querySelector('.submit-button');
 
             if (!isSimilar) {
-              getSubmitButton?.classList.add('reject');
+              submit-button?.classList.add('reject');
             } else {
-              getSubmitButton?.classList.remove('reject');
+              submit-button?.classList.remove('reject');
             }
           }
         }

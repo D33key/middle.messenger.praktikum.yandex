@@ -18,7 +18,7 @@ const template = /*html*/ `
       <div class='conversation'>
         <div class='user-info-chat'>
           <img src="{{dialog.userImg}}" alt="Аватар {{dialog.userName}}"/>
-          <p class="userFullname">{{dialog.userName}}</p>
+          <p class="user-fullname">{{dialog.userName}}</p>
           <span>*</span>
         </div>
         <div class='chat-tape'>

@@ -13,10 +13,6 @@
     width: 130px;
     height: 130px;
     border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
     cursor: pointer;
   }
 
@@ -30,26 +26,14 @@
     content: 'Поменять аватар';
     font-size: 14px;
     color: white;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0 0 0/ 50%);
     position: absolute;
     z-index: 5;
     top: 0;
     left: 50%;
     transform: translate(-50%, 0);
-    -webkit-transform: translate(-50%, 0);
-    -moz-transform: translate(-50%, 0);
-    -ms-transform: translate(-50%, 0);
-    -o-transform: translate(-50%, 0);
     transition: 0.3s ease;
-    -webkit-transition: 0.3s ease;
-    -moz-transition: 0.3s ease;
-    -ms-transition: 0.3s ease;
-    -o-transition: 0.3s ease;
     border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
   }
 
   .avatar:hover::after {
@@ -59,7 +43,6 @@
   .avatar-wrapper input.hide {
     opacity: 0;
     visibility: hidden;
-
     position: absolute;
     width: 0;
     height: 0;
@@ -79,27 +62,23 @@
     z-index: -1;
   }
 
-  .changeButton,
-  .logoutButton {
+  .change-button,
+  .logout-button {
     font-weight: 500;
     font-size: 16px;
     text-align: left;
     background-color: transparent;
     border: none;
     border-radius: 0;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    -ms-border-radius: 0;
-    -o-border-radius: 0;
   }
 
-  .changeButton {
+  .change-button {
     color: #3369f3;
     border-bottom: 1px solid #eaeaea;
   }
 
-  .logoutButton {
-    color: #ff0000;
+  .logout-button {
+    color: #f00;
   }
 
   .userinfo-wrapper {
@@ -126,12 +105,12 @@
     pointer-events: none;
   }
 
-  .profile-page .submitButton {
+  .submit-button {
     opacity: 1;
     pointer-events: auto;
   }
 
-  .profile-page .reject {
+  .reject {
     opacity: 0.5;
     pointer-events: none;
   }

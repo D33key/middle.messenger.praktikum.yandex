@@ -1,4 +1,4 @@
-#app {
+#app.app-chat {
   justify-content: space-between;
   align-items: stretch;
 }
@@ -37,10 +37,6 @@
     right: 10px;
     z-index: 2;
     transform: translate(0, -50%);
-    -webkit-transform: translate(0, -50%);
-    -moz-transform: translate(0, -50%);
-    -ms-transform: translate(0, -50%);
-    -o-transform: translate(0, -50%);
   }
 
   .chat-link {
@@ -59,10 +55,6 @@
   .search-input {
     padding-left: 16px;
     border-radius: 6px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    -ms-border-radius: 6px;
-    -o-border-radius: 6px;
   }
 
   .available-chats {
@@ -75,7 +67,6 @@
     justify-content: space-between;
     padding: 12px 0;
     border-top: 1px solid #e1dcdc;
-
     cursor: pointer;
   }
 
@@ -90,6 +81,7 @@
     margin-right: auto;
     margin-left: 10px;
   }
+
   .chat-username,
   .last-message {
     font-size: 13px;
@@ -106,10 +98,6 @@
     color: white;
     text-align: center;
     border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
   }
 
   .message-time {
@@ -142,10 +130,6 @@
         margin: 5px 0;
         color: white;
         border-radius: 5px;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        -ms-border-radius: 5px;
-        -o-border-radius: 5px;
 
         &.user {
           margin-left: auto;
@@ -160,11 +144,13 @@
 
     .message-input {
       display: flex;
+
       input {
         width: 100%;
       }
     }
   }
+
   .user-info-chat {
     display: flex;
     justify-content: space-between;
@@ -176,7 +162,7 @@
       height: 50px;
     }
 
-    .userFullname {
+    .user-fullname {
       margin-right: auto;
     }
   }

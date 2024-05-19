@@ -1,7 +1,7 @@
 import '@/styles/global.css';
 import '@/styles/profile.css';
 import AvatarWithName from '@/components/avatarWithName';
-import ButtonsWrapper from '@/components/changeButtons';
+import ButtonsWrapper from '@/components/change-buttons';
 import ChangePassword from '@/components/userChangePassword';
 import UserInfo from '@/components/userInfo';
 import UserInfoInputs from '@/components/userinfoInputs';
@@ -10,6 +10,7 @@ import defaultUseravatar from '@/public/defaultUserImg.png';
 import Avatar from '@/templates/avatar';
 import Button from '@/templates/button';
 import { getDataFromObject } from '@/templates/form/utils';
+import { checkInput } from '@/templates/input/utils';
 import getCookie from '@/utils/getCookie';
 import { render } from '@/utils/render';
 import { changePasswordInputTmpl } from '../../utils/changePasswordInputs';
@@ -19,12 +20,18 @@ import { ProfilePageProps } from './types';
 
 const changePasswordInput = new ChangePassword({
   ...changePasswordInputTmpl,
+  events: {
+    blur: (event) => {
+      const formChildren = changePasswordInput.children;
+      checkInput(event, formChildren);
+    },
+  },
 });
 
 const changePassword = new Button({
   child: 'Изменить пароль',
   type: 'button',
-  className: 'changeButton',
+  className: 'change-button',
   events: {
     click: () => {
       userInfo.setProps({
@@ -32,25 +39,25 @@ const changePassword = new Button({
       });
 
       signupPage.hideAndShow(
-        [changeButtons, userInfoInputs],
+        [change-buttons, userInfoInputs],
         [changePasswordInput, saveButton],
       );
     },
   },
 });
 
-const changeButtons = new ButtonsWrapper({
+const change-buttons = new ButtonsWrapper({
   changeInfo: new Button({
     child: 'Изменить данные',
     type: 'button',
-    className: 'changeButton',
+    className: 'change-button',
     events: {
       click: () => {
         userInfo.setProps({
           className: '',
         });
 
-        signupPage.hideAndShow([changeButtons], [saveButton]);
+        signupPage.hideAndShow([change-buttons], [saveButton]);
       },
     },
   }),
@@ -58,18 +65,24 @@ const changeButtons = new ButtonsWrapper({
   Logout: new Button({
     child: 'Выйти',
     type: 'button',
-    className: 'logoutButton',
+    className: 'logout-button',
   }),
 });
 
 const userInfoInputs = new UserInfoInputs({
   ...userInfoInputsObj,
+  events: {
+    blur: (event) => {
+      const formChildren = userInfoInputs.children;
+      checkInput(event, formChildren);
+    },
+  },
 });
 
 const saveButton = new Button({
   child: 'Сохранить',
   type: 'button',
-  className: 'submitButton',
+  className: 'submit-button',
   isHide: true,
   events: {
     click: (event) => {
@@ -97,7 +110,7 @@ const saveButton = new Button({
 
       signupPage.hideAndShow(
         [saveButton, changePasswordInput],
-        [changeButtons, userInfoInputs],
+        [change-buttons, userInfoInputs],
       );
     },
   },
@@ -130,7 +143,7 @@ class ProfilePage extends Block<ProfilePageProps> {
         username: getUsername,
       }),
       userInfo,
-      changeButtons,
+      change-buttons,
     });
   }
 
