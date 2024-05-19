@@ -1,7 +1,7 @@
 import '@/styles/global.css';
 import '@/styles/profile.css';
 import AvatarWithName from '@/components/avatarWithName';
-import ButtonsWrapper from '@/components/change-buttons';
+import ButtonsWrapper from '@/components/changeButtons';
 import ChangePassword from '@/components/userChangePassword';
 import UserInfo from '@/components/userInfo';
 import UserInfoInputs from '@/components/userinfoInputs';
@@ -39,14 +39,14 @@ const changePassword = new Button({
       });
 
       signupPage.hideAndShow(
-        [change-buttons, userInfoInputs],
+        [changeButtons, userInfoInputs],
         [changePasswordInput, saveButton],
       );
     },
   },
 });
 
-const change-buttons = new ButtonsWrapper({
+const changeButtons = new ButtonsWrapper({
   changeInfo: new Button({
     child: 'Изменить данные',
     type: 'button',
@@ -57,7 +57,7 @@ const change-buttons = new ButtonsWrapper({
           className: '',
         });
 
-        signupPage.hideAndShow([change-buttons], [saveButton]);
+        signupPage.hideAndShow([changeButtons], [saveButton]);
       },
     },
   }),
@@ -110,7 +110,7 @@ const saveButton = new Button({
 
       signupPage.hideAndShow(
         [saveButton, changePasswordInput],
-        [change-buttons, userInfoInputs],
+        [changeButtons, userInfoInputs],
       );
     },
   },
@@ -143,7 +143,7 @@ class ProfilePage extends Block<ProfilePageProps> {
         username: getUsername,
       }),
       userInfo,
-      change-buttons,
+      changeButtons,
     });
   }
 

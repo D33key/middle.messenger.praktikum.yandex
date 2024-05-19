@@ -22,9 +22,9 @@ export const changePasswordInputTmpl = {
           '.userinfo-wrapper',
         );
 
-        const submit-button = wrapper?.querySelector('.submit-button');
+        const submitButton = wrapper?.querySelector('.submit-button');
 
-        submit-button?.classList.add('reject');
+        submitButton?.classList.add('reject');
       },
     },
   }),
@@ -52,13 +52,13 @@ export const changePasswordInputTmpl = {
           if (password && password instanceof HTMLInputElement) {
             const isSimilar = passwordValue === password.value;
 
-            const submit-button =
+            const submitButton =
               inputsWrapper.parentElement?.querySelector('.submit-button');
 
             if (!isSimilar) {
-              submit-button?.classList.add('reject');
+              submitButton?.classList.add('reject');
             } else {
-              submit-button?.classList.remove('reject');
+              submitButton?.classList.remove('reject');
             }
           }
         }

@@ -13,7 +13,7 @@ import { template } from '../Login/template';
 const form = new Form({
   type: 'signup',
   ...signupInputObj,
-  submit-button: new Button({
+  submitButton: new Button({
     child: 'Регистрация',
     type: 'submit',
     className: 'submit-button',

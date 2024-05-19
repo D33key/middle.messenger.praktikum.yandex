@@ -9,7 +9,7 @@ const templateSignup = /*html*/ `
 	{{ secondNameInput }}
 	{{ phoneInput }}
 	{{ passwordInput }}
-	{{ submit-button }}
+	{{ submitButton }}
 </form>
 `;
 
@@ -17,7 +17,7 @@ const templateLogin = /*html*/ `
 <form class='form-wrapper'>
 	{{ emailInput }}
 	{{ passwordInput }}
-	{{ submit-button }}
+	{{ submitButton }}
 </form>
 `;
 

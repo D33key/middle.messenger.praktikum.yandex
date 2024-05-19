@@ -45,7 +45,7 @@ class LoginPage extends Block<LoginPageProps> {
           validationErrorText:
             'Пароль должен содержать от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
         }),
-        submit-button: new Button({
+        submitButton: new Button({
           child: 'Вход',
           type: 'submit',
           className: 'submit-button',

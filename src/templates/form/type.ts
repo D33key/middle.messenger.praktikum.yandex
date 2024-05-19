@@ -3,7 +3,7 @@ import InputWrapper from '../input';
 
 type BaseFormProps = {
   type: 'login' | 'signup';
-  submit-button: Button;
+  submitButton: Button;
 } & EventsProps;
 
 type LoginFormProps = {
