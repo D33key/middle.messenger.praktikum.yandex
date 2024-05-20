@@ -11,6 +11,7 @@ import InputWrapper from '@/templates/input';
 import MessageSpan from '@/templates/message';
 import { render } from '@/utils/render';
 import { conversationWithUser, testChatsArray } from './testChats';
+import { template } from './tmpl';
 import { ChatPageProps } from './types';
 
 const conversation = new Conversation({
@@ -53,13 +54,6 @@ const searchChat = new InputWrapper({
     },
   }),
 });
-
-const template = /*html*/ `
-  <div class='chat-page'>
-    {{chats}}
-    {{ conversation }}
-  </div>
-`;
 
 class ChatPage extends Block<ChatPageProps> {
   constructor() {
