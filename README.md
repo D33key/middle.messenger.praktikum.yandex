@@ -6,7 +6,7 @@
 
 - utils — различные функции и объекты/массивы для инпутов.
 - templates — переиспользуемые компоненты.
-- styles — стили, разделенные на несколько файлов. 
+- styles — стили, разделенные на несколько файлов.
 - server — остался без изменений.
 - pages — содержит TypeScript файлы для каждой страницы.
 - core — классы шаблонизатора, блока, автобуса и xhr.
@@ -19,11 +19,12 @@
 4. Также, я оставил дополнительную проверку полей на событие blur при смене пароля. Сейчас это реализовано через три обработчика: на враппер и на инпуты. Понимаю, что это не самое оптимальное решение, но пока оно работает таким образом.
 
 5. Ссылки из Netlify
-- Login Page - https://deploy--resilient-profiterole-7280c9.netlify.app/pages/index.html
-- Signup Page - https://deploy--resilient-profiterole-7280c9.netlify.app/pages/signup.html
-- 404 - https://deploy--resilient-profiterole-7280c9.netlify.app/pages/not-found.html
-- 505 - https://deploy--resilient-profiterole-7280c9.netlify.app/pages/505.html
-- Изменить пользователя - https://deploy--resilient-profiterole-7280c9.netlify.app/pages/change-user.html
+- Login Page - https://deploy--resilient-profiterole-7280c9.netlify.app/login
+- Signup Page - https://deploy--resilient-profiterole-7280c9.netlify.app/signup
+- 404 - https://deploy--resilient-profiterole-7280c9.netlify.app/404
+- 505 - https://deploy--resilient-profiterole-7280c9.netlify.app/505
+- Изменить пользователя - https://deploy--resilient-profiterole-7280c9.netlify.app/profile
+- Чаты - https://deploy--resilient-profiterole-7280c9.netlify.app/chat
 
 6. Вопросы:
 1) Как лучше типизировать children у Block? Полагаю, что это нужно сделать с помощью дженериков, но пока не нашел правильного подхода. Был бы рад получить рекомендации или наводки по этому вопросу.
