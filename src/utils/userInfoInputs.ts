@@ -31,7 +31,7 @@ export const userInfoInputsObj = {
   firstNameInput: new InputWrapper({
     classNameInput: 'userinfo',
     className: 'firstName',
-    labelFor: 'firstName',
+    labelFor: 'first_name',
     inputType: 'text',
     labelText: 'Имя',
     placeholder: 'Введите имя',
@@ -42,7 +42,7 @@ export const userInfoInputsObj = {
   secondNameInput: new InputWrapper({
     classNameInput: 'userinfo',
     className: 'secondName',
-    labelFor: 'secondName',
+    labelFor: 'second_name',
     inputType: 'text',
     labelText: 'Фамилия',
     placeholder: 'Введите фамилию',
@@ -53,7 +53,7 @@ export const userInfoInputsObj = {
   nicknameInput: new InputWrapper({
     classNameInput: 'userinfo',
     className: 'usernickname',
-    labelFor: 'username',
+    labelFor: 'display_name',
     inputType: 'text',
     labelText: 'Имя в чате',
     placeholder: 'Введите имя в чате',

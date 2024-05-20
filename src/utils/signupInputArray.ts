@@ -28,7 +28,7 @@ export const signupInputObj = {
   }),
   firstNameInput: new InputWrapper({
     className: 'firstName',
-    labelFor: 'firstName',
+    labelFor: 'first_name',
     inputType: 'text',
     labelText: 'Имя',
     placeholder: 'Введите имя',
@@ -38,7 +38,7 @@ export const signupInputObj = {
   }),
   secondNameInput: new InputWrapper({
     className: 'secondName',
-    labelFor: 'secondName',
+    labelFor: 'second_name',
     inputType: 'text',
     labelText: 'Фамилия',
     placeholder: 'Введите фамилию',

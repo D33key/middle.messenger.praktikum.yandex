@@ -10,7 +10,7 @@ interface AvatarWithNameProps extends EventsProps {
 const template = /*html*/ `<div class='avatar-wrapper'>
 {{ avatar }}
 <p class='username'>{{ username }}</p>
-<input type='file' class='avatar-input'/>
+<input name="avatar" type='file' class='avatar-input'/>
 </div>`;
 
 export default class AvatarWithName extends Block<AvatarWithNameProps> {
