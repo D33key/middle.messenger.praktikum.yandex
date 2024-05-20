@@ -1,32 +1,55 @@
 import { METHOD, Options } from './type';
 import { queryStringify } from './utils';
 
+type HTTPMethod = (url: string, options?: Options) => Promise<XMLHttpRequest>;
+
 export class HTTPTransport {
-  get(url: string, options: Options['data'] = {}): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHOD.GET });
-  }
+  get: HTTPMethod = (url, options = {}) => {
+    return this.request(
+      url,
+      { ...options, method: METHOD.GET },
+      options.timeout,
+    );
+  };
 
-  post(url: string, options: Options['data'] = {}): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHOD.POST });
-  }
+  post: HTTPMethod = (url, options = {}) => {
+    return this.request(
+      url,
+      { ...options, method: METHOD.POST },
+      options.timeout,
+    );
+  };
 
-  put(url: string, options: Options['data'] = {}): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHOD.PUT });
-  }
+  put: HTTPMethod = (url, options = {}) => {
+    return this.request(
+      url,
+      { ...options, method: METHOD.PUT },
+      options.timeout,
+    );
+  };
 
-  patch(url: string, options: Options['data'] = {}): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHOD.PATCH });
-  }
+  patch: HTTPMethod = (url, options = {}) => {
+    return this.request(
+      url,
+      { ...options, method: METHOD.PATCH },
+      options.timeout,
+    );
+  };
 
-  delete(url: string, options: Options['data'] = {}): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHOD.DELETE });
-  }
+  delete: HTTPMethod = (url, options = {}) => {
+    return this.request(
+      url,
+      { ...options, method: METHOD.DELETE },
+      options.timeout,
+    );
+  };
 
   private request(
     url: string,
     options: Options = { method: METHOD.GET },
+    timeout: number = 5000 as number,
   ): Promise<XMLHttpRequest> {
-    const { method, data, headers = {}, timeout = 5000 } = options;
+    const { method, data, headers = {} } = options;
 
     const isGet = method === METHOD.GET;
 
@@ -34,7 +57,7 @@ export class HTTPTransport {
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open(method, url + query);
+      xhr.open(method!, url + query);
 
       Object.entries(headers).forEach(([key, value]) => {
         xhr.setRequestHeader(key, value);

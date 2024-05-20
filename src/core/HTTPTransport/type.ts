@@ -9,7 +9,7 @@ export const METHOD = {
 export type MethodKeys = (typeof METHOD)[keyof typeof METHOD];
 
 export interface Options {
-  method: MethodKeys;
+  method?: MethodKeys;
   timeout?: number;
   headers?: Record<string, string>;
   data?: Record<string, string | number>;
