@@ -1,0 +1,117 @@
+.profile-page {
+  width: 510px;
+
+  .avatar-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .avatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .avatar::after {
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    height: 130px;
+    content: 'Поменять аватар';
+    font-size: 14px;
+    color: white;
+    background-color: rgba(0 0 0/ 50%);
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    transition: 0.3s ease;
+    border-radius: 50%;
+  }
+
+  .avatar:hover::after {
+    opacity: 1;
+  }
+
+  .avatar-wrapper input.hide {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+
+  .username {
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  .avatar-input {
+    width: 0;
+    height: 0;
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    z-index: -1;
+  }
+
+  .change-button,
+  .logout-button {
+    font-weight: 500;
+    font-size: 16px;
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  .change-button {
+    color: #3369f3;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  .logout-button {
+    color: #f00;
+  }
+
+  .userinfo-wrapper {
+    margin: 60px 0;
+  }
+
+  .userinfo {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .input-label {
+    flex: 1 0 auto;
+  }
+
+  .input {
+    text-align: right;
+    border: 0;
+    background-color: transparent;
+    outline: 0;
+  }
+
+  .pointer-none {
+    pointer-events: none;
+  }
+
+  .submit-button {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .reject {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
