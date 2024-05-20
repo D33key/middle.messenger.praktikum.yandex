@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "vite",
     "dev:server": "nodemon -I --exec node --loader ts-node/esm ./src/server/server.ts",
-    "start": "vite build --emptyOutDir && nodemon -I --exec node --loader ts-node/esm ./src/server/server.ts",
+    "start": "vite build --emptyOutDir",
     "start:css": "postcss src/style.css --dir dest",
     "preview": "vite preview",
     "lint": "eslint \"src/**/*.{js,mjs,cjs,ts,mts}\"",
