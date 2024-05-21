@@ -1,31 +1,32 @@
-import { defineConfig } from 'vite';
 import path, { resolve } from 'path';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-	root: resolve(__dirname, 'src'),
-	build: {
-		minify: true,
-		target: 'modules',
-		outDir: resolve(__dirname, 'dist'),
-		rollupOptions: {
-			input: {
-				main: './src/pages/index.html',
-				signUp: './src/pages/signup.html',
-				notFound: './src/pages/not-found.html',
-				505: './src/pages/505.html',
-				changeUser: './src/pages/change-user.html'
-			},
-		},
-	},
-	server: {
-		port: 3000,
-	},
-	resolve: {
-		alias: [
-			{
-				find: '@',
-				replacement: path.resolve(__dirname, 'src'),
-			},
-		],
-	},
+  root: resolve(__dirname, 'src'),
+  build: {
+    minify: true,
+    target: 'modules',
+    outDir: resolve(__dirname, 'dist'),
+    rollupOptions: {
+      input: {
+        login: resolve(__dirname, 'src/login.html'),
+        signup: resolve(__dirname, 'src/signup.html'),
+        notFound: resolve(__dirname, 'src/404.html'),
+        serverError: resolve(__dirname, 'src/505.html'),
+        profile: resolve(__dirname, 'src/profile.html'),
+        chat: resolve(__dirname, 'src/chat.html'),
+      },
+    },
+  },
+  server: {
+    port: 3000,
+  },
+  resolve: {
+    alias: [
+      {
+        find: '@',
+        replacement: path.resolve(__dirname, 'src'),
+      },
+    ],
+  },
 });

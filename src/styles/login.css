@@ -1,0 +1,13 @@
+@import url('@/styles/global.css');
+
+.login-link {
+  color: #111;
+}
+
+.form-wrapper:has(.email-error:empty):has(.password-error:empty):has(
+    .email:not(:placeholder-shown)
+  ):has(.password:not(:placeholder-shown))
+  .submit-button {
+  opacity: 1;
+  pointer-events: auto;
+}
