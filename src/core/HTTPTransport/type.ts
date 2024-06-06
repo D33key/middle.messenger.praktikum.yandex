@@ -13,4 +13,5 @@ export interface Options {
   timeout?: number;
   headers?: Record<string, string>;
   data?: Record<string, string | number>;
+  withCredentials?: boolean;
 }

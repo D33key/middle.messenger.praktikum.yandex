@@ -12,7 +12,6 @@ import Button from '@/templates/button';
 import { getDataFromObject } from '@/templates/form/utils';
 import { checkInput } from '@/templates/input/utils';
 import getCookie from '@/utils/getCookie';
-import { render } from '@/utils/render';
 import { changePasswordInputTmpl } from '../../utils/changePasswordInputs';
 import { userInfoInputsObj } from '../../utils/userInfoInputs';
 import { template } from './tmpl';
@@ -123,7 +122,7 @@ const userInfo = new UserInfo({
   saveButton,
 });
 
-class ProfilePage extends Block<ProfilePageProps> {
+export class ProfilePage extends Block<ProfilePageProps> {
   constructor() {
     const getUserAvatar = getCookie('avatar') ?? defaultUseravatar;
     const getUsername = getCookie('username') ?? 'Аноним';
@@ -158,7 +157,3 @@ class ProfilePage extends Block<ProfilePageProps> {
 }
 
 const signupPage = new ProfilePage();
-
-document.addEventListener('DOMContentLoaded', () => {
-  render('#app', signupPage);
-});

@@ -4,12 +4,13 @@ import AvailableChats from '@/components/availableChats';
 import Chat from '@/components/chat';
 import Chats from '@/components/chats';
 import { Conversation } from '@/components/conversation';
+import Link from '@/components/link';
 import { Block } from '@/core/Block';
 import DefaultImg from '@/public/defaultUserImg.png';
 import Button from '@/templates/button';
 import InputWrapper from '@/templates/input';
 import MessageSpan from '@/templates/message';
-import { render } from '@/utils/render';
+import { router } from '../router';
 import { conversationWithUser, testChatsArray } from './testChats';
 import { template } from './tmpl';
 import { ChatPageProps } from './types';
@@ -55,10 +56,19 @@ const searchChat = new InputWrapper({
   }),
 });
 
-class ChatPage extends Block<ChatPageProps> {
+const chatLink = new Link({
+  linkClass: 'chat-link',
+  linkText: 'Профиль',
+  events: {
+    click: () => router.go('/profile'),
+  },
+});
+
+export class ChatPage extends Block<ChatPageProps> {
   constructor() {
     super({
       chats: new Chats({
+        chatLink,
         searchChat,
         existingChats: new AvailableChats({
           chatArray: testChatsArray.map(
@@ -135,9 +145,3 @@ class ChatPage extends Block<ChatPageProps> {
     return this.compile(template, this.props);
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const chatPage = new ChatPage();
-
-  render('#app', chatPage);
-});

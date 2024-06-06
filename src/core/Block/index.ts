@@ -260,4 +260,8 @@ export abstract class Block<
       getElement.style.display = 'none';
     }
   }
+
+  remove() {
+    this.element?.remove();
+  }
 }

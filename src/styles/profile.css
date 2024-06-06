@@ -1,5 +1,7 @@
 .profile-page {
   width: 510px;
+  margin: 0 auto;
+  align-self: center;
 
   .avatar-wrapper {
     position: relative;

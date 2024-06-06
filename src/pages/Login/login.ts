@@ -1,5 +1,6 @@
 import '@/styles/login.css';
 import { LoginPageProps } from '@/components/form';
+import Link from '@/components/link';
 import TitleWithText from '@/components/titleWithText';
 import { Block } from '@/core/Block';
 import Button from '@/templates/button';
@@ -8,17 +9,22 @@ import { FormProps } from '@/templates/form/type';
 import { getDataFromForm } from '@/templates/form/utils';
 import InputWrapper from '@/templates/input';
 import { checkInput } from '@/templates/input/utils';
-import { render } from '@/utils/render';
+import { router } from '../router';
 import { template } from './template';
 
-class LoginPage extends Block<LoginPageProps> {
+export class LoginPage extends Block<LoginPageProps> {
   constructor() {
     super({
       formTitle: new TitleWithText({
         formTitle: 'Вход',
         formText: 'Новый участник? ',
-        linkHref: '/signup',
-        linkText: 'Зарегистрируйся бесплатно',
+        link: new Link({
+          linkClass: 'login-link',
+          linkText: 'Зарегистрироваться',
+          events: {
+            click: () => router.go('/signup'),
+          },
+        }),
       }),
       form: new Form({
         type: 'login',
@@ -66,9 +72,3 @@ class LoginPage extends Block<LoginPageProps> {
     return this.compile(template, this.props);
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const loginPage = new LoginPage();
-
-  render('#app', loginPage);
-});

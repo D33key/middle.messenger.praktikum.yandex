@@ -2,6 +2,12 @@
 
 .login-link {
   color: #111;
+  display: inline;
+  cursor: pointer;
+}
+
+.form-text {
+  display: inline;
 }
 
 .form-wrapper:has(.email-error:empty):has(.password-error:empty):has(

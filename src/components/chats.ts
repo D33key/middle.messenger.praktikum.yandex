@@ -2,15 +2,17 @@ import { Block } from '@/core/Block';
 import { EventsProps } from '@/templates/button';
 import InputWrapper from '@/templates/input';
 import Chat from './availableChats';
+import Link from './link';
 
 export interface ChatsProps extends EventsProps {
+  chatLink: Link;
   searchChat: InputWrapper;
   existingChats?: Chat | string;
 }
 
 const template = /*html*/ `
   <div class='chats-wrapper'>
-    <a class="chat-link" href="/profile">Профиль ></a>
+    {{ chatLink }}
     {{ searchChat }}
 		{{ existingChats }}
   </div>`;

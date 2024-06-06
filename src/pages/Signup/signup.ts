@@ -1,14 +1,15 @@
 import '@/styles/login.css';
 import { LoginPageProps } from '@/components/form';
+import Link from '@/components/link';
 import TitleWithText from '@/components/titleWithText';
 import { Block } from '@/core/Block';
 import Button from '@/templates/button';
 import Form from '@/templates/form';
 import { getDataFromForm } from '@/templates/form/utils';
 import { checkInput } from '@/templates/input/utils';
-import { render } from '../../utils/render';
 import { signupInputObj } from '../../utils/signupInputArray';
 import { template } from '../Login/template';
+import { router } from '../router';
 
 const form = new Form({
   type: 'signup',
@@ -27,14 +28,19 @@ const form = new Form({
   },
 });
 
-class SingupPage extends Block<LoginPageProps> {
+export class SingupPage extends Block<LoginPageProps> {
   constructor() {
     super({
       formTitle: new TitleWithText({
         formTitle: 'Регистрация',
         formText: 'Или у вас есть логин? ',
-        linkHref: '/login',
-        linkText: 'Войти в систему',
+        link: new Link({
+          linkClass: 'login-link',
+          linkText: 'Войти в систему',
+          events: {
+            click: () => router.go('/login'),
+          },
+        }),
       }),
       form,
     });
@@ -44,8 +50,3 @@ class SingupPage extends Block<LoginPageProps> {
     return this.compile(template, this.props);
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const signupPage = new SingupPage();
-  render('#app', signupPage);
-});

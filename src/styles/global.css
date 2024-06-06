@@ -29,8 +29,6 @@
   width: 100dvw;
   height: 100dvh;
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .button {
@@ -69,11 +67,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-self: center;
   margin: 0 auto;
   padding: 46px 42px;
   max-width: 564px;
   min-width: 564px;
-  min-height: 400px;
+  height: fit-content;
   border-radius: 24px;
   border: 1px solid #888;
 }
@@ -118,4 +117,11 @@
 .submit-button {
   opacity: 0.5;
   pointer-events: none;
+}
+
+.error-wrapper {
+  width: 100dvw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

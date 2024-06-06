@@ -5,51 +5,36 @@ type HTTPMethod = (url: string, options?: Options) => Promise<XMLHttpRequest>;
 
 export class HTTPTransport {
   get: HTTPMethod = (url, options = {}) => {
-    return this.request(
-      url,
-      { ...options, method: METHOD.GET },
-      options.timeout,
-    );
+    return this.request(url, { ...options, method: METHOD.GET });
   };
 
   post: HTTPMethod = (url, options = {}) => {
-    return this.request(
-      url,
-      { ...options, method: METHOD.POST },
-      options.timeout,
-    );
+    return this.request(url, { ...options, method: METHOD.POST });
   };
 
   put: HTTPMethod = (url, options = {}) => {
-    return this.request(
-      url,
-      { ...options, method: METHOD.PUT },
-      options.timeout,
-    );
+    return this.request(url, { ...options, method: METHOD.PUT });
   };
 
   patch: HTTPMethod = (url, options = {}) => {
-    return this.request(
-      url,
-      { ...options, method: METHOD.PATCH },
-      options.timeout,
-    );
+    return this.request(url, { ...options, method: METHOD.PATCH });
   };
 
   delete: HTTPMethod = (url, options = {}) => {
-    return this.request(
-      url,
-      { ...options, method: METHOD.DELETE },
-      options.timeout,
-    );
+    return this.request(url, { ...options, method: METHOD.DELETE });
   };
 
   private request(
     url: string,
     options: Options = { method: METHOD.GET },
-    timeout: number = 5000 as number,
   ): Promise<XMLHttpRequest> {
-    const { method, data, headers = {} } = options;
+    const {
+      method,
+      data,
+      headers = {},
+      timeout = 5000,
+      withCredentials = false,
+    } = options;
 
     const isGet = method === METHOD.GET;
 
@@ -57,7 +42,12 @@ export class HTTPTransport {
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
+
       xhr.open(method!, url + query);
+
+      if (withCredentials) {
+        xhr.withCredentials = withCredentials;
+      }
 
       Object.entries(headers).forEach(([key, value]) => {
         xhr.setRequestHeader(key, value);
@@ -68,8 +58,7 @@ export class HTTPTransport {
       });
 
       xhr.addEventListener('abort', reject);
-      // eslint-disable-next-line unicorn/prefer-add-event-listener
-      xhr.onerror = reject;
+      xhr.addEventListener('error', reject);
       xhr.timeout = timeout;
       xhr.ontimeout = reject;
 
