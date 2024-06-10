@@ -2,6 +2,8 @@ import '@/styles/login.css';
 import { LoginPageProps } from '@/components/form';
 import Link from '@/components/link';
 import TitleWithText from '@/components/titleWithText';
+import { Toaster } from '@/components/Toaster';
+import authControl from '@/core/api/Auth';
 import { Block } from '@/core/Block';
 import Button from '@/templates/button';
 import Form from '@/templates/form';
@@ -29,16 +31,17 @@ export class LoginPage extends Block<LoginPageProps> {
       form: new Form({
         type: 'login',
         emailInput: new InputWrapper({
-          className: 'email',
-          labelFor: 'email',
-          inputType: 'email',
-          labelText: 'Email',
-          placeholder: 'Введите почту',
+          className: 'login',
+          labelFor: 'login',
+          inputType: 'text',
+          labelText: 'Логин',
+          placeholder: 'Введите логин',
           required: true,
           validationPattern: new RegExp(
-            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            /^(?=.*[a-zA-Z])(?!^\d+$)[a-zA-Z0-9-_]{3,20}$/,
           ),
-          validationErrorText: 'Не валидная почта',
+          validationErrorText:
+            'Логин должен содержать от 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, без пробелов, без спецсимволов (допустимы дефис и нижнее подчёркивание)',
         }),
         passwordInput: new InputWrapper({
           className: 'password',
@@ -62,7 +65,24 @@ export class LoginPage extends Block<LoginPageProps> {
               .children;
             checkInput(event, formChildren);
           },
-          submit: getDataFromForm,
+          submit: async (event) => {
+            const formData = getDataFromForm(event);
+
+            if (!formData) return;
+
+            try {
+              const isAllowed = await authControl.logIn<{ ok: true }>(formData);
+
+              if (isAllowed.ok) {
+                router.go('/');
+              }
+            } catch (error) {
+              new Toaster({
+                title: 'Ошибка',
+                text: 'Вы ввели неверные пароль и логин!',
+              }).renderInRoot();
+            }
+          },
         },
       }),
     });

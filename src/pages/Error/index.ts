@@ -6,7 +6,7 @@ import { template } from './tmpl';
 interface Error {
   link: Link;
 }
-console.log(router.history.length);
+
 export class ErrorPage extends Block<Error> {
   constructor() {
     super({

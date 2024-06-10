@@ -4,6 +4,15 @@ import { queryStringify } from './utils';
 type HTTPMethod = (url: string, options?: Options) => Promise<XMLHttpRequest>;
 
 export class HTTPTransport {
+  private corePath: string;
+
+  constructor(
+    corePath: string,
+    baseUrl: string = import.meta.env.VITE_HOST_URL,
+  ) {
+    this.corePath = baseUrl + corePath;
+  }
+
   get: HTTPMethod = (url, options = {}) => {
     return this.request(url, { ...options, method: METHOD.GET });
   };
@@ -38,19 +47,23 @@ export class HTTPTransport {
 
     const isGet = method === METHOD.GET;
 
-    const query = ((isGet && queryStringify(data)) as string) ?? '';
+    let query = '';
+
+    if (isGet) {
+      query = queryStringify(data);
+    }
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
 
-      xhr.open(method!, url + query);
+      xhr.open(method!, this.corePath + url + query);
 
       if (withCredentials) {
         xhr.withCredentials = withCredentials;
       }
 
       Object.entries(headers).forEach(([key, value]) => {
-        xhr.setRequestHeader(key, value);
+        xhr.setRequestHeader(key, String(value));
       });
 
       xhr.addEventListener('load', () => {

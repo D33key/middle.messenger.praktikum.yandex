@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import path, { resolve } from 'path';
 import { defineConfig } from 'vite';
 

@@ -26,6 +26,7 @@
 }
 
 #app {
+  position: relative;
   width: 100dvw;
   height: 100dvh;
   display: flex;
@@ -124,4 +125,32 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.toaster {
+  position: absolute;
+  border: 1px solid gray;
+  padding: 20px;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 5px;
+  color: black;
+
+  &.error {
+    border-color: red;
+    background-color: rgb(247 170 170 / 30%);
+  }
+
+  &.info {
+    border-color: blue;
+    background-color: rgb(164 164 244 / 30%);
+  }
+
+  .toaster-title {
+    font-size: 24px;
+  }
+
+  .toaster-text {
+    font-size: 14px;
+  }
 }

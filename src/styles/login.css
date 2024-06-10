@@ -10,8 +10,8 @@
   display: inline;
 }
 
-.form-wrapper:has(.email-error:empty):has(.password-error:empty):has(
-    .email:not(:placeholder-shown)
+.form-wrapper:has(.login-error:empty):has(.password-error:empty):has(
+    .login:not(:placeholder-shown)
   ):has(.password:not(:placeholder-shown))
   .submit-button {
   opacity: 1;

@@ -11,9 +11,7 @@ export function getDataFromForm(event: SubmitEvent) {
       }
     }
 
-    for (const [name, value] of filteredFormData) {
-      console.log(name, value);
-    }
+    return filteredFormData;
   }
 }
 

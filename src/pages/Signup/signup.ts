@@ -2,6 +2,7 @@ import '@/styles/login.css';
 import { LoginPageProps } from '@/components/form';
 import Link from '@/components/link';
 import TitleWithText from '@/components/titleWithText';
+import authControl from '@/core/api/Auth';
 import { Block } from '@/core/Block';
 import Button from '@/templates/button';
 import Form from '@/templates/form';
@@ -24,7 +25,21 @@ const form = new Form({
       const formChildren = form.children;
       checkInput(event, formChildren);
     },
-    submit: getDataFromForm,
+    submit: async (event) => {
+      const formData = getDataFromForm(event);
+
+      if (!formData) return;
+
+      try {
+        const response = await authControl.signup<{ id: number }>(formData);
+
+        if (response.id) {
+          router.go('/');
+        }
+      } catch (error) {
+        console.log('heeeeloooo', error);
+      }
+    },
   },
 });
 
