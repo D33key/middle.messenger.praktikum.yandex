@@ -23,7 +23,6 @@ async function createServer() {
 
   app.use('*', async (req, res) => {
     const url = req.originalUrl;
-    console.log(url);
     const htmlName = url === '/' ? 'login.html' : url.slice(1) + '.html';
     try {
       let template = fs.readFileSync(

@@ -1,33 +1,77 @@
+import { Loader } from '@/components/Loader';
 import { Block } from '../Block';
 import Route from './Route';
 
 class Router {
   private static instance: Router;
-  public routes: Route[];
-  public history: History;
-  private currentRoute: Route | null;
-  private rootQuery: string;
-  private allowedPaths: `/${string}`[];
-  private pathnames: string[];
+  public routes: Route[] = [];
+  public history: History = window.history;
+  public loader: Loader = new Loader();
+  private currentRoute: Route | null = null;
+  private rootQuery: string = '' as string;
+  private protectedPaths: `/${string}`[] = [];
+  private pathnames: string[] = [];
+  private checkAccessForPath: (() => Promise<unknown>) | null = null;
+  private defaultPath: string = '' as string;
 
   constructor(rootQuery: string) {
     if (Router.instance) {
       // eslint-disable-next-line no-constructor-return
       return Router.instance;
     }
-    this.routes = [];
-    this.history = window.history;
-    this.currentRoute = null;
-    this.rootQuery = rootQuery;
-    this.allowedPaths = [];
-    this.pathnames = [];
 
+    this.rootQuery = rootQuery;
     Router.instance = this;
   }
 
-  public allowPaths(paths: `/${string}`[]) {
-    this.allowedPaths = paths;
+  public setProtectedPaths(paths: `/${string}`[]) {
+    this.protectedPaths = paths;
     return this;
+  }
+
+  public setDefaultPath(path: string) {
+    this.defaultPath = path;
+    return this;
+  }
+
+  public getDefaultPath() {
+    const isExistInPaths = this.pathnames.includes(this.defaultPath);
+
+    if (isExistInPaths) {
+      return this.defaultPath;
+    }
+
+    return '/login';
+  }
+
+  public setAccessFunCheck<User>(callback: () => Promise<User>) {
+    this.checkAccessForPath = callback;
+    return this;
+  }
+
+  private async checkAccess() {
+    if (
+      this.protectedPaths.includes(window.location.pathname as `/${string}`)
+    ) {
+      if (this.checkAccessForPath) {
+        this.loader.renderInRoot();
+        try {
+          return await this.checkAccessForPath();
+        } catch (error) {
+          console.error('Error! Access denied', error);
+
+          return false;
+        } finally {
+          this.loader.remove();
+        }
+      } else {
+        throw new Error(
+          'You should set function for check access, if you set protected paths.',
+        );
+      }
+    }
+
+    return true;
   }
 
   private hasRoute(pathname: string) {
@@ -57,7 +101,7 @@ class Router {
     this.onRoute(pathname);
   }
 
-  private onRoute(pathname: string) {
+  private async onRoute(pathname: string) {
     const route = this.getRoute(pathname);
 
     if (!route) {
@@ -70,7 +114,13 @@ class Router {
 
     this.currentRoute = route;
 
-    route.render();
+    const isAllowed = await this.checkAccess();
+
+    if (isAllowed) {
+      route.render();
+    } else {
+      this.go(this.defaultPath);
+    }
   }
 
   back() {

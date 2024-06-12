@@ -108,6 +108,7 @@ export abstract class Block<
 
   protected addEvents() {
     const { events = {} } = this.props;
+
     Object.keys(events).forEach((eventName) => {
       const eventHandler = events[eventName as keyof typeof events];
       // TODO Костыль
@@ -152,7 +153,6 @@ export abstract class Block<
 
   private _componentDidUpdate<T>(newProps?: T) {
     const isUpdated = this.componentDidUpdate(newProps);
-
     if (isUpdated) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
@@ -221,7 +221,7 @@ export abstract class Block<
         if (getElement) {
           stub?.replaceWith(getElement);
         } else {
-          throw new Error('Cannot create child element');
+          throw new Error('Cannot create child element or element = null');
         }
       }
     });

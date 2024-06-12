@@ -1,16 +1,18 @@
 import { Block } from '@/core/Block';
 import Avatar from '@/templates/avatar';
 import { EventsProps } from '@/templates/button';
+import InputWrapper from '@/templates/input';
 
 interface AvatarWithNameProps extends EventsProps {
   avatar: Avatar;
   username: string;
+  inputFile: InputWrapper;
 }
 
 const template = /*html*/ `<div class='avatar-wrapper'>
 {{ avatar }}
 <p class='username'>{{ username }}</p>
-<input name="avatar" type='file' class='avatar-input'/>
+{{ inputFile }}
 </div>`;
 
 export default class AvatarWithName extends Block<AvatarWithNameProps> {

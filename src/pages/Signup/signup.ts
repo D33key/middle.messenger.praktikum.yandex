@@ -37,7 +37,7 @@ const form = new Form({
           router.go('/');
         }
       } catch (error) {
-        console.log('heeeeloooo', error);
+        console.log('Cannot create user. Error:', error);
       }
     },
   },

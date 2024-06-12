@@ -5,6 +5,7 @@ import TitleWithText from '@/components/titleWithText';
 import { Toaster } from '@/components/Toaster';
 import authControl from '@/core/api/Auth';
 import { Block } from '@/core/Block';
+import { OKResponse } from '@/core/HTTPTransport/BaseAPI';
 import Button from '@/templates/button';
 import Form from '@/templates/form';
 import { FormProps } from '@/templates/form/type';
@@ -71,7 +72,7 @@ export class LoginPage extends Block<LoginPageProps> {
             if (!formData) return;
 
             try {
-              const isAllowed = await authControl.logIn<{ ok: true }>(formData);
+              const isAllowed = await authControl.logIn<OKResponse>(formData);
 
               if (isAllowed.ok) {
                 router.go('/');
@@ -79,7 +80,7 @@ export class LoginPage extends Block<LoginPageProps> {
             } catch (error) {
               new Toaster({
                 title: 'Ошибка',
-                text: 'Вы ввели неверные пароль и логин!',
+                text: error as string,
               }).renderInRoot();
             }
           },

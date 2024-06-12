@@ -1,6 +1,10 @@
 import { ErrorAPI } from './BaseAPI';
 
-export function queryStringify(data?: { [k: string]: FormDataEntryValue }) {
+export interface FormDataEntries {
+  [k: string]: FormDataEntryValue | number;
+}
+
+export function queryStringify(data?: FormDataEntries) {
   if (typeof data !== 'object') {
     throw new TypeError('Data must be object');
   }

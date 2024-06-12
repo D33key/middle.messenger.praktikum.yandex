@@ -1,5 +1,5 @@
 import { METHOD, Options } from './type';
-import { queryStringify } from './utils';
+import { FormDataEntries, queryStringify } from './utils';
 
 type HTTPMethod = (url: string, options?: Options) => Promise<XMLHttpRequest>;
 
@@ -39,10 +39,11 @@ export class HTTPTransport {
   ): Promise<XMLHttpRequest> {
     const {
       method,
-      data,
+      data = {},
       headers = {},
-      timeout = 5000,
+      timeout = 10000,
       withCredentials = false,
+      isFileAttached = false,
     } = options;
 
     const isGet = method === METHOD.GET;
@@ -50,7 +51,7 @@ export class HTTPTransport {
     let query = '';
 
     if (isGet) {
-      query = queryStringify(data);
+      query = queryStringify(data as FormDataEntries);
     }
 
     return new Promise((resolve, reject) => {
@@ -78,7 +79,8 @@ export class HTTPTransport {
       if (method === METHOD.GET || !data) {
         xhr.send();
       } else {
-        xhr.send(JSON.stringify(data));
+        const dataToSend = isFileAttached ? data : JSON.stringify(data);
+        xhr.send(dataToSend as any);
       }
     });
   }

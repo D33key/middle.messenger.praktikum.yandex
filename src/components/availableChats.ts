@@ -3,14 +3,14 @@ import { EventsProps } from '@/templates/button';
 import Chat from './chat';
 
 export interface AvailableChatsProps extends EventsProps {
-  chatArray: Chat[];
+  chatArray: Chat[] | null;
 }
 
 const template = /*html*/ `
   <div class='available-chats'>
-		{{each chatArray}}
-			{{ chatArray }}
-		{{endeach}}
+    {{each chatArray}}
+      {{ chatArray }}
+    {{endeach}}
   </div>`;
 
 export default class AvailableChats extends Block<AvailableChatsProps> {

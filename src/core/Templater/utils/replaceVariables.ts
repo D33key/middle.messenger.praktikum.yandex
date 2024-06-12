@@ -25,7 +25,6 @@ export default function replaceVariables<T extends object>(
               return innerArray.join('');
             },
           );
-
           template = template.replace(item[0], mapedValue.join(''));
         } else {
           template = template.replace(item[0], String(value[valueFromReg]));
@@ -37,6 +36,7 @@ export default function replaceVariables<T extends object>(
       template = template.replace(regex, mapedValue.join(''));
       continue;
     }
+    // console.log(template + ' | ', value)
     template = template.replace(regex, String(value));
   }
 
