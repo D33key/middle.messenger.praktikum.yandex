@@ -1,5 +1,4 @@
 import DefaultImg from '@/assets/defaultUserImg.png';
-import SettingIcon from '@/assets/settings.svg';
 import chatControl, { Chat } from '@/core/api/Chat';
 import { Block } from '@/core/Block';
 import { displayUsersOfChat } from '@/pages/Chat/utils';
@@ -46,7 +45,7 @@ export default class ChatInfo extends Block<Partial<ChatInfoProps>> {
 
     this.setChildren({
       addButton: new Button({
-        child: `<img src='${SettingIcon}' alt='Настройки'/>`,
+        child: ``,
         type: 'button',
         className: 'chat-settings',
         events: {
