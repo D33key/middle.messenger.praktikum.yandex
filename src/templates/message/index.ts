@@ -2,7 +2,7 @@ import { Block } from '@/core/Block';
 import { EventsProps } from '../button';
 
 interface MessageProps extends EventsProps {
-  className: string;
+  className: 'user' | 'other';
   text: string;
 }
 

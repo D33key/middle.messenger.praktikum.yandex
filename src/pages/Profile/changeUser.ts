@@ -146,7 +146,7 @@ export class ProfilePage extends Block<ProfilePageProps> {
         click: async () => {
           await authControl.logout();
           window.userInfo = {};
-          router.go('/login');
+          router.go('/');
         },
       },
     }),

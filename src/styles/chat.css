@@ -131,15 +131,6 @@
         margin: 5px 0;
         color: white;
         border-radius: 5px;
-
-        &.user {
-          margin-left: auto;
-          background-color: green;
-        }
-
-        &.other {
-          background-color: blue;
-        }
       }
     }
 
@@ -230,13 +221,38 @@
     }
   }
 
-  .chat-add {
+  .messages-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     height: 100%;
-    background: transparent;
-    color: black;
-    border: 1px solid gray;
-    outline: none;
-    border-radius: 6px;
-    flex: 0 0 30px;
+    margin: 10px 0;
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    .message-text {
+      width: fit-content;
+      color: white;
+      padding: 5px;
+      border-radius: 10px;
+    }
+
+    .message-text.user {
+      margin-left: auto;
+      background-color: green;
+    }
+
+    .message-text.other {
+      background-color: blue;
+    }
   }
+}
+
+button.chat-add {
+  height: 100%;
+  background: transparent;
+  color: black;
+  border: 1px solid gray;
+  outline: none;
+  border-radius: 6px;
+  flex: 0 0 30px;
 }

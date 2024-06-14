@@ -25,7 +25,7 @@ export class LoginPage extends Block<LoginPageProps> {
           linkClass: 'login-link',
           linkText: 'Зарегистрироваться',
           events: {
-            click: () => router.go('/signup'),
+            click: () => router.go('/sign-up'),
           },
         }),
       }),

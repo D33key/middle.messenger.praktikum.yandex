@@ -33,6 +33,18 @@ class ChatAPI extends BaseAPI {
     });
   }
 
+  async getTwoUserChatInfo(chatId: number) {
+    const response = (await this.get(`/${chatId}/common`, {
+      withCredentials: true,
+    })) as Chat | ErrorAPI;
+
+    if (isErrorAPI(response)) {
+      throw new Error(response.reason);
+    }
+
+    return response;
+  }
+
   async getChats(data?: Partial<Restriction> & { title?: string }) {
     const response = (await this.get('', {
       data,
@@ -112,6 +124,18 @@ class ChatAPI extends BaseAPI {
       data,
       withCredentials: true,
     })) as (UserInfo & Role)[] | ErrorAPI;
+
+    if (isErrorAPI(response)) {
+      throw new Error(response.reason);
+    }
+
+    return response;
+  }
+
+  async getUserToken(chatId: number) {
+    const response = (await this.post(`/token/${chatId}`, {
+      withCredentials: true,
+    })) as { token: string } | ErrorAPI;
 
     if (isErrorAPI(response)) {
       throw new Error(response.reason);

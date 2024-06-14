@@ -4,6 +4,7 @@ import { render } from '@/utils/render';
 import { template } from './tmpl';
 
 interface ModalProps extends EventsProps {
+  wrapperType?: 'div' | 'form';
   title: string;
   inputs: unknown[];
 }
@@ -12,6 +13,7 @@ export class Modal extends Block<ModalProps> {
   static instance: Modal;
 
   constructor(props: ModalProps) {
+    props.wrapperType = props.wrapperType ?? 'form';
     super(props);
 
     Modal.instance = this;
@@ -31,8 +33,8 @@ export class Modal extends Block<ModalProps> {
     Modal.instance.element?.remove();
   }
 
-  renderInRoot() {
-    const element = this.compile(template, this.props);
+  renderInRoot(props: ModalProps = this.props) {
+    const element = this.compile(template, props);
 
     render('#app', element);
   }

@@ -12,7 +12,9 @@ export interface Options {
   method?: MethodKeys;
   timeout?: number;
   headers?: Record<string, string>;
-  data?: { [k: string]: FormDataEntryValue | number } | FormData;
+  data?:
+    | { [k: string]: FormDataEntryValue | number | Array<unknown> }
+    | FormData;
   withCredentials?: boolean;
   isFileAttached?: boolean;
 }

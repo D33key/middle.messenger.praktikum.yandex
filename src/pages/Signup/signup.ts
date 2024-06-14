@@ -53,7 +53,7 @@ export class SingupPage extends Block<LoginPageProps> {
           linkClass: 'login-link',
           linkText: 'Войти в систему',
           events: {
-            click: () => router.go('/login'),
+            click: () => router.go('/'),
           },
         }),
       }),

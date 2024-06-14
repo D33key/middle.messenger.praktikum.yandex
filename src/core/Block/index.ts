@@ -32,7 +32,7 @@ export abstract class Block<
   constructor(rawProps: Meta<Props>['props'] = {} as Props) {
     const eventBus = new EventBus();
 
-    const { children, props } = this.getChildren(rawProps);
+    const { children, props } = this.getChildrenAndProps(rawProps);
 
     this.children = this.makePropsProxy(children);
 
@@ -49,7 +49,7 @@ export abstract class Block<
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  protected getChildren(propsAndChildren: Meta<Props>['props']) {
+  protected getChildrenAndProps(propsAndChildren: Meta<Props>['props']) {
     const children: Record<string, Block<any> | Block<any>[]> = {};
     const props = {} as Record<string, any>;
 
@@ -149,6 +149,10 @@ export abstract class Block<
     });
   }
 
+  forceUpdate<T>(props?: T) {
+    this._componentDidUpdate(props);
+  }
+
   componentDidMount() {}
 
   private _componentDidUpdate<T>(newProps?: T) {
@@ -158,11 +162,11 @@ export abstract class Block<
     }
   }
 
-  componentDidUpdate<T>(newProps?: T) {
+  componentDidUpdate(newProps?: unknown) {
     if (newProps) {
       return true;
     }
-    return true;
+    return false;
   }
 
   dispatchComponentDidMount() {
@@ -182,6 +186,10 @@ export abstract class Block<
 
   getProps() {
     return this.props;
+  }
+
+  getChildren() {
+    return this.children;
   }
 
   compile(template: string, props: Record<string, any>) {

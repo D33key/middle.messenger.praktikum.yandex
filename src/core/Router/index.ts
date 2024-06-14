@@ -41,7 +41,7 @@ class Router {
       return this.defaultPath;
     }
 
-    return '/login';
+    return '/';
   }
 
   public setAccessFunCheck<User>(callback: () => Promise<User>) {

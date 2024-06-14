@@ -1,5 +1,5 @@
 import authControl, { UserInfo } from '@/core/api/Auth';
-import { Chat } from './core/api/Chat';
+import { Chat, LastMessage } from './core/api/Chat';
 import { ChatPage } from './pages/Chat/chatPage';
 import { ErrorPage } from './pages/Error';
 import { LoginPage } from './pages/Login/login';
@@ -11,16 +11,19 @@ declare global {
   interface Window {
     userInfo: UserInfo;
     chats: Chat[];
+    currentChatId: number;
+    token: string;
+    currentChatMessages: LastMessage[];
   }
 }
 
 router
-  .setProtectedPaths(['/profile', '/', '/chat'])
+  .setProtectedPaths(['/settings', '/messenger', '/chat'])
   .setAccessFunCheck(authControl.checkAccess.bind(authControl))
-  .setDefaultPath('/login')
+  .setDefaultPath('/')
   .use('/404', ErrorPage)
-  .use('/', ChatPage)
-  .use('/profile', ProfilePage)
-  .use('/login', LoginPage)
-  .use('/signup', SingupPage)
+  .use('/messenger', ChatPage)
+  .use('/settings', ProfilePage)
+  .use('/', LoginPage)
+  .use('/sign-up', SingupPage)
   .start();
