@@ -184,6 +184,10 @@ export abstract class Block<
     Object.assign(this.children, nextChild);
   };
 
+  getMeta() {
+    return this.meta;
+  }
+
   getProps() {
     return this.props;
   }

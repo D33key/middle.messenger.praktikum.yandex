@@ -1,6 +1,7 @@
 import '@/styles/chat.css';
 import '@/styles/global.css';
 import AvailableChats from '@/components/availableChats';
+import ChatComponent from '@/components/chat';
 import ChatInfo from '@/components/ChatInfo';
 import ChatMessages from '@/components/ChatMessages';
 import Chats from '@/components/chats';
@@ -13,12 +14,10 @@ import { template } from './tmpl';
 import { ChatPageProps } from './types';
 
 export class ChatPage extends Block<ChatPageProps> {
+  curentChatComp: ChatComponent | null = null;
   private chatMessages = new ChatMessages();
-
   private chatInfo = new ChatInfo();
-
-  private messageForm = new MessageForm();
-
+  private messageForm = new MessageForm(this);
   private conversation = new Conversation({
     render: false,
     chatInfo: this.chatInfo,
@@ -30,6 +29,7 @@ export class ChatPage extends Block<ChatPageProps> {
     chatInfo: this.chatInfo,
     chatMessages: this.chatMessages,
     conversation: this.conversation,
+    chatPage: this,
   });
 
   private chats = new Chats({
