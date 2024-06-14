@@ -14,14 +14,21 @@ export default async function submitAuth(
   try {
     if (type === 'login') {
       await authControl.logIn(formData);
+    } else {
+      await authControl.signup(formData);
     }
-    await authControl.signup(formData);
 
-    router.go('/');
+    router.go('/messenger');
   } catch (error) {
-    new Toaster({
-      title: 'Ошибка',
-      text: error as string,
-    }).renderInRoot();
+    if ((error as Error).message.includes('User already in system')) {
+      await authControl.logout();
+
+      submitAuth(event, type);
+    } else {
+      new Toaster({
+        title: 'Ошибка',
+        text: error as string,
+      }).renderInRoot();
+    }
   }
 }

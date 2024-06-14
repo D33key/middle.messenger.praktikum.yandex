@@ -9,7 +9,7 @@ type BaseFormProps = {
 type LoginFormProps = {
   type: 'login';
   passwordInput: InputWrapper;
-  emailInput: InputWrapper;
+  loginInput: InputWrapper;
 } & BaseFormProps;
 
 type Signup = {

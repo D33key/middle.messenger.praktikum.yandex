@@ -9,12 +9,19 @@ interface ToasterProps {
 }
 
 export class Toaster extends Block<ToasterProps> {
+  static instance: Toaster;
+
   constructor(props: ToasterProps) {
     super({
+      ...props,
       reason: props.reason ?? 'error',
-      title: props.title,
-      text: props.text,
     });
+
+    if (Toaster.instance) {
+      Toaster.instance.remove();
+    }
+
+    Toaster.instance = this;
   }
 
   renderInRoot(timeout = 5000) {
