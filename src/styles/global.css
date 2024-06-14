@@ -26,11 +26,11 @@
 }
 
 #app {
+  overflow-x: hidden;
+  position: relative;
   width: 100dvw;
   height: 100dvh;
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .button {
@@ -69,11 +69,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-self: center;
   margin: 0 auto;
   padding: 46px 42px;
   max-width: 564px;
   min-width: 564px;
-  min-height: 400px;
+  height: fit-content;
   border-radius: 24px;
   border: 1px solid #888;
 }
@@ -118,4 +119,147 @@
 .submit-button {
   opacity: 0.5;
   pointer-events: none;
+}
+
+.error-wrapper {
+  width: 100dvw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toaster {
+  position: absolute;
+  border: 1px solid gray;
+  padding: 20px;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 5px;
+  z-index: 11;
+
+  &.error {
+    border-color: red;
+    background-color: rgb(247 170 170);
+  }
+
+  &.info {
+    border-color: blue;
+    background-color: rgb(164 164 244);
+  }
+
+  .toaster-title {
+    font-size: 24px;
+    color: white;
+  }
+
+  .toaster-text {
+    font-size: 14px;
+    color: white;
+  }
+}
+
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+  min-width: 100%;
+  pointer-events: none;
+  border-radius: 22px;
+  background: transparent;
+  transition: 0.3s ease;
+
+  .lds-ring {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+
+  .lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    margin: 8px;
+    border: 5px solid #1150cc;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #1150cc transparent transparent;
+  }
+
+  .lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+
+  .lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+
+  .lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+}
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.modal-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 20%);
+  position: absolute;
+  z-index: 9;
+
+  .modal {
+    min-width: 520px;
+    height: fit-content;
+    padding: 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: white;
+
+    .modal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-title {
+      font-size: 32px;
+      text-align: center;
+    }
+
+    .chat-user {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+
+      .chat-user-name {
+        margin-right: auto;
+      }
+
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+      }
+    }
+  }
 }

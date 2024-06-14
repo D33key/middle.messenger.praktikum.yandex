@@ -1,5 +1,6 @@
-import { defineConfig } from 'vite';
+import 'dotenv/config';
 import path, { resolve } from 'path';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: resolve(__dirname, 'src'),
@@ -9,12 +10,7 @@ export default defineConfig({
     outDir: resolve(__dirname, 'dist'),
     rollupOptions: {
       input: {
-        login: resolve(__dirname, 'src/login.html'),
-        signup: resolve(__dirname, 'src/signup.html'),
-        notFound: resolve(__dirname, 'src/404.html'),
-        serverError: resolve(__dirname, 'src/505.html'),
-        profile: resolve(__dirname, 'src/profile.html'),
-        chat: resolve(__dirname, 'src/chat.html'),
+        main: resolve(__dirname, 'src/index.html'),
       },
     },
   },

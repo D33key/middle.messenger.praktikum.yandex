@@ -27,12 +27,16 @@ export const checkInput = <T extends Record<string, any>>(
           errorText,
           value: inputValue,
         });
-      } else {
-        formChild.setProps({
-          errorText: '',
-          value: inputValue,
-        });
+
+        return true;
       }
+      formChild.setProps({
+        errorText: '',
+        value: inputValue,
+      });
+
+      return false;
     }
   }
+  return true;
 };

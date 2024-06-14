@@ -32,7 +32,7 @@ export abstract class Block<
   constructor(rawProps: Meta<Props>['props'] = {} as Props) {
     const eventBus = new EventBus();
 
-    const { children, props } = this.getChildren(rawProps);
+    const { children, props } = this.getChildrenAndProps(rawProps);
 
     this.children = this.makePropsProxy(children);
 
@@ -49,7 +49,7 @@ export abstract class Block<
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  protected getChildren(propsAndChildren: Meta<Props>['props']) {
+  protected getChildrenAndProps(propsAndChildren: Meta<Props>['props']) {
     const children: Record<string, Block<any> | Block<any>[]> = {};
     const props = {} as Record<string, any>;
 
@@ -108,6 +108,7 @@ export abstract class Block<
 
   protected addEvents() {
     const { events = {} } = this.props;
+
     Object.keys(events).forEach((eventName) => {
       const eventHandler = events[eventName as keyof typeof events];
       // TODO Костыль
@@ -148,21 +149,24 @@ export abstract class Block<
     });
   }
 
+  forceUpdate<T>(props?: T) {
+    this._componentDidUpdate(props);
+  }
+
   componentDidMount() {}
 
   private _componentDidUpdate<T>(newProps?: T) {
     const isUpdated = this.componentDidUpdate(newProps);
-
     if (isUpdated) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   }
 
-  componentDidUpdate<T>(newProps?: T) {
+  componentDidUpdate(newProps?: unknown) {
     if (newProps) {
       return true;
     }
-    return true;
+    return false;
   }
 
   dispatchComponentDidMount() {
@@ -180,8 +184,16 @@ export abstract class Block<
     Object.assign(this.children, nextChild);
   };
 
+  getMeta() {
+    return this.meta;
+  }
+
   getProps() {
     return this.props;
+  }
+
+  getChildren() {
+    return this.children;
   }
 
   compile(template: string, props: Record<string, any>) {
@@ -221,7 +233,7 @@ export abstract class Block<
         if (getElement) {
           stub?.replaceWith(getElement);
         } else {
-          throw new Error('Cannot create child element');
+          throw new Error('Cannot create child element or element = null');
         }
       }
     });
@@ -259,5 +271,9 @@ export abstract class Block<
     if (getElement && getElement instanceof HTMLElement) {
       getElement.style.display = 'none';
     }
+  }
+
+  remove() {
+    this.element?.remove();
   }
 }

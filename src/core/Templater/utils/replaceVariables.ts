@@ -25,7 +25,6 @@ export default function replaceVariables<T extends object>(
               return innerArray.join('');
             },
           );
-
           template = template.replace(item[0], mapedValue.join(''));
         } else {
           template = template.replace(item[0], String(value[valueFromReg]));

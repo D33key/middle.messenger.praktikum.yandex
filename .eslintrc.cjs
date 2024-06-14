@@ -17,5 +17,6 @@ module.exports = configure({
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unnecessary-condition': 'off',
     },
+    ignorePatterns: ['"vite.config.ts", ".eslintrc.cjs"'],
   },
 });

@@ -15,7 +15,7 @@ const templateSignup = /*html*/ `
 
 const templateLogin = /*html*/ `
 <form class='form-wrapper'>
-	{{ emailInput }}
+	{{ loginInput }}
 	{{ passwordInput }}
 	{{ submitButton }}
 </form>

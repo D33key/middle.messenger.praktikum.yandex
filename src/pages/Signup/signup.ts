@@ -1,42 +1,53 @@
 import '@/styles/login.css';
 import { LoginPageProps } from '@/components/form';
+import Link from '@/components/link';
 import TitleWithText from '@/components/titleWithText';
 import { Block } from '@/core/Block';
 import Button from '@/templates/button';
 import Form from '@/templates/form';
-import { getDataFromForm } from '@/templates/form/utils';
 import { checkInput } from '@/templates/input/utils';
-import { render } from '../../utils/render';
-import { signupInputObj } from '../../utils/signupInputArray';
+import submitAuth from '@/utils/submit/submitAuth';
+import { signupInputObj } from '../../components/Inputs/signupInputArray';
 import { template } from '../Login/template';
 
-const form = new Form({
-  type: 'signup',
-  ...signupInputObj,
-  submitButton: new Button({
-    child: 'Регистрация',
-    type: 'submit',
-    className: 'submit-button',
-  }),
-  events: {
-    blur: (event) => {
-      const formChildren = form.children;
-      checkInput(event, formChildren);
-    },
-    submit: getDataFromForm,
-  },
-});
+export class SingupPage extends Block<LoginPageProps> {
+  private isErrorExist = true;
 
-class SingupPage extends Block<LoginPageProps> {
   constructor() {
     super({
       formTitle: new TitleWithText({
         formTitle: 'Регистрация',
         formText: 'Или у вас есть логин? ',
-        linkHref: '/login',
-        linkText: 'Войти в систему',
+        link: new Link({
+          linkClass: 'login-link',
+          linkText: 'Войти в систему',
+          linkHref: '/',
+        }),
       }),
-      form,
+      form: new Form({
+        type: 'signup',
+        ...signupInputObj,
+        submitButton: new Button({
+          child: 'Регистрация',
+          type: 'submit',
+          className: 'submit-button',
+        }),
+        events: {
+          blur: (event) => {
+            const formChildren = (this.children.form as Form).children;
+            const isErrorExist = checkInput(event, formChildren);
+
+            this.isErrorExist = isErrorExist;
+          },
+          submit: async (event) => {
+            if (!this.isErrorExist) {
+              await submitAuth(event, 'login');
+            } else {
+              event.preventDefault();
+            }
+          },
+        },
+      }),
     });
   }
 
@@ -44,8 +55,3 @@ class SingupPage extends Block<LoginPageProps> {
     return this.compile(template, this.props);
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const signupPage = new SingupPage();
-  render('#app', signupPage);
-});

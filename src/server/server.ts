@@ -23,25 +23,13 @@ async function createServer() {
 
   app.use('*', async (req, res) => {
     const url = req.originalUrl;
-    console.log(url);
-    const htmlName = url === '/' ? 'login.html' : url.slice(1) + '.html';
-    try {
-      let template = fs.readFileSync(
-        path.resolve(_rootname, htmlName),
-        'utf-8',
-      );
+    let template = fs.readFileSync(
+      path.resolve(_rootname, 'index.html'),
+      'utf-8',
+    );
+    template = await vite.transformIndexHtml(url, template);
 
-      template = await vite.transformIndexHtml(url, template);
-
-      res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
-    } catch (error) {
-      let template = fs.readFileSync(
-        path.resolve(_rootname, '404.html'),
-        'utf-8',
-      );
-      template = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
-    }
+    res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
   });
 
   app.listen(PORT);

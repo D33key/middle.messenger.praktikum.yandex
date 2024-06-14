@@ -1,43 +1,70 @@
 import { METHOD, Options } from './type';
-import { queryStringify } from './utils';
+import { FormDataEntries, queryStringify } from './utils';
+
+type HTTPMethod = (url: string, options?: Options) => Promise<XMLHttpRequest>;
 
 export class HTTPTransport {
-  get(url: string, options: Options['data'] = {}): Promise<XMLHttpRequest> {
+  private corePath: string;
+
+  constructor(
+    corePath: string,
+    baseUrl: string = import.meta.env.VITE_HOST_URL,
+  ) {
+    this.corePath = baseUrl + corePath;
+  }
+
+  get: HTTPMethod = (url, options = {}) => {
     return this.request(url, { ...options, method: METHOD.GET });
-  }
+  };
 
-  post(url: string, options: Options['data'] = {}): Promise<XMLHttpRequest> {
+  post: HTTPMethod = (url, options = {}) => {
     return this.request(url, { ...options, method: METHOD.POST });
-  }
+  };
 
-  put(url: string, options: Options['data'] = {}): Promise<XMLHttpRequest> {
+  put: HTTPMethod = (url, options = {}) => {
     return this.request(url, { ...options, method: METHOD.PUT });
-  }
+  };
 
-  patch(url: string, options: Options['data'] = {}): Promise<XMLHttpRequest> {
+  patch: HTTPMethod = (url, options = {}) => {
     return this.request(url, { ...options, method: METHOD.PATCH });
-  }
+  };
 
-  delete(url: string, options: Options['data'] = {}): Promise<XMLHttpRequest> {
+  delete: HTTPMethod = (url, options = {}) => {
     return this.request(url, { ...options, method: METHOD.DELETE });
-  }
+  };
 
   private request(
     url: string,
     options: Options = { method: METHOD.GET },
   ): Promise<XMLHttpRequest> {
-    const { method, data, headers = {}, timeout = 5000 } = options;
+    const {
+      method,
+      data = {},
+      headers = {},
+      timeout = 10000,
+      withCredentials = false,
+      isFileAttached = false,
+    } = options;
 
     const isGet = method === METHOD.GET;
 
-    const query = ((isGet && queryStringify(data)) as string) ?? '';
+    let query = '';
+
+    if (isGet) {
+      query = queryStringify(data as FormDataEntries);
+    }
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open(method, url + query);
+
+      xhr.open(method!, this.corePath + url + query);
+
+      if (withCredentials) {
+        xhr.withCredentials = withCredentials;
+      }
 
       Object.entries(headers).forEach(([key, value]) => {
-        xhr.setRequestHeader(key, value);
+        xhr.setRequestHeader(key, String(value));
       });
 
       xhr.addEventListener('load', () => {
@@ -45,15 +72,15 @@ export class HTTPTransport {
       });
 
       xhr.addEventListener('abort', reject);
-      // eslint-disable-next-line unicorn/prefer-add-event-listener
-      xhr.onerror = reject;
+      xhr.addEventListener('error', reject);
       xhr.timeout = timeout;
       xhr.ontimeout = reject;
 
       if (method === METHOD.GET || !data) {
         xhr.send();
       } else {
-        xhr.send(JSON.stringify(data));
+        const dataToSend = isFileAttached ? data : JSON.stringify(data);
+        xhr.send(dataToSend as any);
       }
     });
   }
