@@ -13,14 +13,15 @@
   }
 
   .chats-wrapper {
-    overflow: hidden auto;
     width: 310px;
+    overflow: hidden auto;
     padding: 0 10px;
     height: 100%;
     background-color: #faf9f9;
     border-right: 1px solid #e1dcdc;
     display: flex;
     flex-direction: column;
+    flex: 0 0 auto;
   }
 
   .clear-result {
@@ -64,28 +65,35 @@
   }
 
   .chat {
+    max-width: 290px;
+    max-height: 72px;
+    overflow: hidden;
     display: flex;
     justify-content: space-between;
     padding: 12px 0;
     border-top: 1px solid #e1dcdc;
     cursor: pointer;
+    margin-bottom: 12px;
   }
 
   .chat-username {
     color: #1e1e1e;
+    font-size: 16px;
+    width: fit-content;
     font-weight: 600;
   }
 
   .user-info {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    margin-right: auto;
     margin-left: 10px;
   }
 
-  .chat-username,
   .last-message {
-    font-size: 13px;
+    font-size: 12px;
+    word-break: break-all;
+    text-overflow: ellipsis;
   }
 
   .user-message-info {
@@ -111,11 +119,11 @@
   }
 
   .conversation {
+    width: 100%;
     padding: 10px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    flex: 1 0 auto;
 
     .chat-tape {
       display: flex;
@@ -124,14 +132,6 @@
       flex: 1 0 auto;
       border-top: 1px solid #e1dcdc;
       border-bottom: 1px solid #e1dcdc;
-
-      .message-text {
-        width: max-content;
-        padding: 5px;
-        margin: 5px 0;
-        color: white;
-        border-radius: 5px;
-      }
     }
 
     .message-input {
@@ -228,12 +228,17 @@
     height: 100%;
     margin: 10px 0;
 
-    /* stylelint-disable-next-line no-descending-specificity */
     .message-text {
-      width: fit-content;
-      color: white;
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      width: 30%;
+      max-width: fit-content;
       padding: 5px;
+      margin: 5px 0;
+      color: white;
       border-radius: 10px;
+      word-break: break-all;
     }
 
     .message-text.user {
@@ -243,6 +248,11 @@
 
     .message-text.other {
       background-color: blue;
+    }
+
+    .message-time {
+      color: inherit;
+      word-break: keep-all;
     }
   }
 }

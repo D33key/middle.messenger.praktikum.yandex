@@ -1,3 +1,4 @@
+import { LastMessage } from '@/core/api/Chat';
 import { Block } from '@/core/Block';
 import messageControl, { ConnectionOptions } from '@/core/WebSocket/Message';
 import MessageSpan from '@/templates/message';
@@ -11,29 +12,14 @@ interface ChatMessagesProps extends EventsProps {
 export interface NewMessageSpan {
   text: string;
   fromWho: 'user' | 'other';
+  time: string;
 }
 
 export default class ChatMessages extends Block<Partial<ChatMessagesProps>> {
-  private ping?: NodeJS.Timeout;
-  private isConnected = false;
-
-  constructor(props: Partial<ChatMessagesProps>) {
-    super(props);
-
-    // this.waitForGettingMessages();
-  }
-
-  componentDidUpdate() {
-    if (!this.isConnected) {
-      this.createConnection({
-        userId: window.userInfo.id,
-        chatId: window.currentChatId,
-        token: window.token,
-      });
-
-      this.isConnected = true;
-    }
-    return true;
+  constructor() {
+    super({
+      messages: [],
+    });
   }
 
   private createConnection(options: ConnectionOptions) {
@@ -41,24 +27,29 @@ export default class ChatMessages extends Block<Partial<ChatMessagesProps>> {
     messageControl.setBlock(this);
   }
 
-  waitForGettingMessages() {
-    this.ping = setInterval(() => {
-      if (window.currentChatMessages?.length > 0) {
-        console.log(window.currentChatMessages);
-        this.setChildren({
-          messages: window.currentChatMessages.map(
-            (chatMessage) =>
-              new MessageSpan({
-                text: chatMessage.content,
-                className:
-                  chatMessage?.user.login === window.userInfo.login
-                    ? 'user'
-                    : 'other',
-              }),
-          ),
-        });
-      }
-    }, 1000);
+  showChoosenChat(messages: LastMessage[]) {
+    const nonNullMessages = messages.filter(Boolean);
+    this.createConnection({
+      userId: window.userInfo.id,
+      chatId: window.currentChatId,
+      token: window.token,
+    });
+    if (nonNullMessages.length > 0) {
+      this.setChildren({
+        messages: messages.map((chat) => {
+          return new MessageSpan({
+            text: chat?.content,
+            time: chat.time,
+            className:
+              chat?.user.login === window.userInfo.login ? 'user' : 'other',
+          });
+        }),
+      });
+    } else {
+      this.setChildren({
+        messages: [],
+      });
+    }
   }
 
   updateArray(type: 'add' | 'clear', newItem?: NewMessageSpan) {
@@ -66,6 +57,7 @@ export default class ChatMessages extends Block<Partial<ChatMessagesProps>> {
       (this.getChildren().messages as MessageSpan[]).push(
         new MessageSpan({
           text: newItem.text as string,
+          time: newItem.time,
           className: newItem.fromWho,
         }),
       );
@@ -74,11 +66,6 @@ export default class ChatMessages extends Block<Partial<ChatMessagesProps>> {
         messages: this.getChildren().messages,
       });
     }
-  }
-
-  remove() {
-    this.isConnected = false;
-    super.remove();
   }
 
   render() {

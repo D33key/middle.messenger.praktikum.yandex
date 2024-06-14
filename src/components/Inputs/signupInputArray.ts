@@ -1,5 +1,5 @@
 import InputWrapper from '@/templates/input';
-import { inputsVariation } from './inputsVariation/inputsVariation';
+import { inputsVariation } from '../../utils/inputsVariation/inputsVariation';
 
 export const signupInputObj = {
   emailInput: new InputWrapper(inputsVariation.email),

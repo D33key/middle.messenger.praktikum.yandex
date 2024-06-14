@@ -1,6 +1,6 @@
+import defaultUseravatar from '@/assets/defaultUserImg.png';
 import userControl from '@/core/api/User';
 import { Block } from '@/core/Block';
-import defaultUseravatar from '@/public/defaultUserImg.png';
 import Avatar from '@/templates/avatar';
 import { EventsProps } from '@/templates/button';
 import InputWrapper from '@/templates/input';
@@ -59,6 +59,12 @@ export default class AvatarWithName extends Block<AvatarWithNameProps> {
                   avatar:
                     import.meta.env.VITE_HOST_URL_RESOURCE + userInfo.avatar,
                 });
+
+                new Toaster({
+                  title: 'Инфо',
+                  text: 'Вы успешно поменяли фото!',
+                  reason: 'info',
+                }).renderInRoot(3000);
               } catch (error) {
                 new Toaster({
                   title: 'Ошибка',

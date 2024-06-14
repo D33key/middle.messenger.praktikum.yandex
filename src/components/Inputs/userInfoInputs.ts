@@ -1,4 +1,4 @@
-import { inputsVariation } from './inputsVariation/inputsVariation';
+import { inputsVariation } from '../../utils/inputsVariation/inputsVariation';
 
 export const userInfoInputsObj = {
   emailInput: {

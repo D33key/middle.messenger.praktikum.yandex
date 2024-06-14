@@ -2,11 +2,12 @@ import '@/styles/global.css';
 import '@/styles/profile.css';
 import AvatarWithName from '@/components/avatarWithName';
 import ButtonsWrapper from '@/components/changeButtons';
+import Link from '@/components/link';
 import UserInfo from '@/components/userInfo';
 import authControl from '@/core/api/Auth';
 import { Block } from '@/core/Block';
 import Button from '@/templates/button';
-import submitProfileChange from '@/utils/inputsVariation/submitProfileChange';
+import submitProfileChange from '@/utils/submit/submitProfileChange';
 import { router } from '../router';
 import { template } from './tmpl';
 import { ProfilePageProps } from './types';
@@ -15,6 +16,11 @@ export class ProfilePage extends Block<ProfilePageProps> {
   private typeOfChange: 'userInfo' | 'password' = 'userInfo';
   constructor() {
     super({
+      backLink: new Link({
+        linkClass: 'profile-link',
+        linkHref: '/messenger',
+        linkText: '<',
+      }),
       userAvatar: new AvatarWithName(),
       userInfo: new UserInfo({
         events: {

@@ -26,6 +26,7 @@
 }
 
 #app {
+  overflow-x: hidden;
   position: relative;
   width: 100dvw;
   height: 100dvh;
@@ -134,27 +135,26 @@
   bottom: 20px;
   right: 20px;
   border-radius: 5px;
-  color: black;
   z-index: 11;
 
   &.error {
     border-color: red;
-    background-color: rgb(247 170 170 / 70%);
+    background-color: rgb(247 170 170);
   }
 
   &.info {
     border-color: blue;
-    background-color: rgb(164 164 244 / 30%);
+    background-color: rgb(164 164 244);
   }
 
   .toaster-title {
     font-size: 24px;
-    color: black;
+    color: white;
   }
 
   .toaster-text {
     font-size: 14px;
-    color: black;
+    color: white;
   }
 }
 

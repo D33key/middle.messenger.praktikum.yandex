@@ -6,11 +6,13 @@ import { Block } from '@/core/Block';
 import Button from '@/templates/button';
 import Form from '@/templates/form';
 import { checkInput } from '@/templates/input/utils';
-import submitAuth from '@/utils/submitAuth';
-import { signupInputObj } from '../../utils/signupInputArray';
+import submitAuth from '@/utils/submit/submitAuth';
+import { signupInputObj } from '../../components/Inputs/signupInputArray';
 import { template } from '../Login/template';
 
 export class SingupPage extends Block<LoginPageProps> {
+  private isErrorExist = true;
+
   constructor() {
     super({
       formTitle: new TitleWithText({
@@ -33,10 +35,16 @@ export class SingupPage extends Block<LoginPageProps> {
         events: {
           blur: (event) => {
             const formChildren = (this.children.form as Form).children;
-            checkInput(event, formChildren);
+            const isErrorExist = checkInput(event, formChildren);
+
+            this.isErrorExist = isErrorExist;
           },
           submit: async (event) => {
-            await submitAuth(event, 'signup');
+            if (!this.isErrorExist) {
+              await submitAuth(event, 'login');
+            } else {
+              event.preventDefault();
+            }
           },
         },
       }),

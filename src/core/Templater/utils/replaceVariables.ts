@@ -36,7 +36,6 @@ export default function replaceVariables<T extends object>(
       template = template.replace(regex, mapedValue.join(''));
       continue;
     }
-    // console.log(template + ' | ', value)
     template = template.replace(regex, String(value));
   }
 

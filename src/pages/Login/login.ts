@@ -5,14 +5,14 @@ import TitleWithText from '@/components/titleWithText';
 import { Block } from '@/core/Block';
 import Button from '@/templates/button';
 import Form from '@/templates/form';
-import { FormProps } from '@/templates/form/type';
 import InputWrapper from '@/templates/input';
 import { checkInput } from '@/templates/input/utils';
 import { inputsVariation } from '@/utils/inputsVariation/inputsVariation';
-import submitAuth from '@/utils/submitAuth';
+import submitAuth from '@/utils/submit/submitAuth';
 import { template } from './template';
 
 export class LoginPage extends Block<LoginPageProps> {
+  private isErrorExist = true;
   constructor() {
     super({
       formTitle: new TitleWithText({
@@ -35,12 +35,17 @@ export class LoginPage extends Block<LoginPageProps> {
         }),
         events: {
           blur: (event) => {
-            const formChildren = (this.children.form as Block<FormProps>)
-              .children;
-            checkInput(event, formChildren);
+            const formChildren = (this.children.form as Form).children;
+            const isErrorExist = checkInput(event, formChildren);
+
+            this.isErrorExist = isErrorExist;
           },
           submit: async (event) => {
-            await submitAuth(event, 'login');
+            if (!this.isErrorExist) {
+              await submitAuth(event, 'login');
+            } else {
+              event.preventDefault();
+            }
           },
         },
       }),

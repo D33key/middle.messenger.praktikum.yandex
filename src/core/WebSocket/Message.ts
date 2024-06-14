@@ -1,5 +1,6 @@
 import ChatMessages, { NewMessageSpan } from '@/components/ChatMessages';
 import { Toaster } from '@/components/Toaster';
+import formatDateTime from '@/utils/formatDateTime';
 
 export interface ConnectionOptions {
   userId: number;
@@ -42,11 +43,14 @@ class MessageControl {
 
     if (data.user_id) {
       window.currentChatMessages.push(data);
+
+      const convertedData = formatDateTime(data.time);
+
       this.triggerBlock({
         text: data.content,
+        time: convertedData,
         fromWho: data.user_id === window.userInfo.id ? 'user' : 'other',
       });
-      console.log('updated', window.currentChatMessages);
     }
   }
 

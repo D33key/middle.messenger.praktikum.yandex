@@ -1,6 +1,5 @@
 import Link from '@/components/link';
 import { Block } from '@/core/Block';
-import { router } from '../router';
 import { template } from './tmpl';
 
 interface Error {
@@ -13,15 +12,7 @@ export class ErrorPage extends Block<Error> {
       link: new Link({
         linkClass: '',
         linkText: 'Упс, что-то пошло не так. Вернуться назад',
-        events: {
-          click: () => {
-            if (router.history.length === 1) {
-              router.go('/');
-            } else {
-              router.back();
-            }
-          },
-        },
+        linkHref: '/messenger',
       }),
     });
   }
