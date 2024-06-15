@@ -1,7 +1,7 @@
+import { userInfoInputsObj } from '@/components/Inputs/userInfoInputs';
 import { Block } from '@/core/Block';
 import { EventsProps } from '@/templates/button';
 import InputWrapper from '@/templates/input';
-import { userInfoInputsObj } from '@/components/Inputs/userInfoInputs';
 
 interface ChangePasswordProps extends EventsProps {
   emailInput: InputWrapper;
