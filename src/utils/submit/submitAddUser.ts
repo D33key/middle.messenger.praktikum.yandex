@@ -9,7 +9,6 @@ export default async function submitAddUser(
   event: SubmitEvent,
   chatInfo: ChatInfo,
   chatId: number,
-  userInChat: number,
 ) {
   const formData = getDataFromForm(event);
 
@@ -30,8 +29,10 @@ export default async function submitAddUser(
 
     await chatControl.addUsersToChat(userExist.id, chatId);
 
+    const userInChat = await chatControl.getChatUsers(chatId);
+
     chatInfo.setProps({
-      count: userInChat,
+      count: userInChat.length,
     });
   } catch (error) {
     new Toaster({

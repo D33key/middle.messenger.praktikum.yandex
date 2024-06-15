@@ -67,7 +67,7 @@ export default class ChatInfo extends Block<Partial<ChatInfoProps>> {
               ],
               events: {
                 submit: async (event) => {
-                  await submitAddUser(event, this, chatId, userInChat);
+                  await submitAddUser(event, this, chatId);
                 },
               },
             }).renderInRoot();
