@@ -41,7 +41,7 @@ export class SingupPage extends Block<LoginPageProps> {
           },
           submit: async (event) => {
             if (!this.isErrorExist) {
-              await submitAuth(event, 'login');
+              await submitAuth(event, 'signup');
             } else {
               event.preventDefault();
             }
