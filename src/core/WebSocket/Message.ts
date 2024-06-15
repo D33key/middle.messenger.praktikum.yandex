@@ -1,5 +1,7 @@
 import ChatMessages, { NewMessageSpan } from '@/components/ChatMessages';
 import { Toaster } from '@/components/Toaster';
+import { MessageProps } from '@/templates/message';
+import convertOldMessages from '@/utils/convertOldMessages';
 import formatDateTime from '@/utils/formatDateTime';
 
 export interface ConnectionOptions {
@@ -7,6 +9,22 @@ export interface ConnectionOptions {
   chatId: number;
   token: string;
 }
+
+export interface OldMessagesFromSocket {
+  content: string;
+  id: number;
+  time: string;
+  type: 'message' | 'file';
+  user_id: number;
+  chat_id: number;
+  file: unknown;
+  is_read: boolean;
+}
+
+export type NewMessagesFromSocket = Omit<
+  OldMessagesFromSocket,
+  'chat_id' | 'file' | 'is_read'
+>;
 
 class MessageControl {
   private socket?: WebSocket;
@@ -39,18 +57,45 @@ class MessageControl {
   }
 
   private onMessage(event: MessageEvent) {
-    const data = JSON.parse(event.data);
+    try {
+      const data = JSON.parse(event.data) as
+        | NewMessagesFromSocket
+        | OldMessagesFromSocket[];
+      if (Array.isArray(data)) {
+        if (data.length === 0) {
+          const lastMessage = window.currentChatMessages[0];
+          if (lastMessage) {
+            const convertedData = formatDateTime(lastMessage.time);
 
-    if (data.user_id) {
-      window.currentChatMessages.push(data);
+            this.triggerBlock({
+              text: lastMessage.content,
+              time: convertedData,
+              fromWho:
+                lastMessage.user.login === window.userInfo.login
+                  ? 'user'
+                  : 'other',
+            });
+          }
+        } else {
+          const convertMessages = convertOldMessages(data);
+          this.triggerBlock(convertMessages, 'array');
+        }
+      } else if ('user_id' in data) {
+        window.currentChatMessages.push(data as any);
 
-      const convertedData = formatDateTime(data.time);
+        const convertedData = formatDateTime(data.time);
 
-      this.triggerBlock({
-        text: data.content,
-        time: convertedData,
-        fromWho: data.user_id === window.userInfo.id ? 'user' : 'other',
-      });
+        this.triggerBlock({
+          text: data.content,
+          time: convertedData,
+          fromWho: data.user_id === window.userInfo.id ? 'user' : 'other',
+        });
+      }
+    } catch (error) {
+      new Toaster({
+        title: 'Что-то пошло не так...',
+        text: error as string,
+      }).renderInRoot();
     }
   }
 
@@ -131,8 +176,11 @@ class MessageControl {
     this.chatBlock = block;
   }
 
-  private triggerBlock(newItem: NewMessageSpan) {
-    this.chatBlock?.updateArray('add', newItem);
+  private triggerBlock(
+    newItem: NewMessageSpan | MessageProps[],
+    type: 'add' | 'array' = 'add',
+  ) {
+    this.chatBlock?.updateArray(type, newItem);
   }
 }
 

@@ -1,6 +1,6 @@
-import { Block } from '@/core/Block';
+import { Block, TypeOfProps } from '@/core/Block';
 
-export function render<T extends Block<any> | Element>(
+export function render<T extends Block<TypeOfProps> | Element>(
   query: string,
   block: T,
 ) {
@@ -13,9 +13,9 @@ export function render<T extends Block<any> | Element>(
     return root;
   }
 
-  root.append((block as Block<any>).getContent()!);
+  root.append((block as Block<TypeOfProps>).getContent()!);
 
-  (block as Block<any>).dispatchComponentDidMount();
+  (block as Block<TypeOfProps>).dispatchComponentDidMount();
 
   return root;
 }

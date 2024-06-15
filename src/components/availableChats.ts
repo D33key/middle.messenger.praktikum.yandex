@@ -64,6 +64,8 @@ export default class AvailableChats extends Block<AvailableChatsProps> {
       reason: 'info',
     }).renderInRoot(1000);
 
+    this.refBlocks.chatMessages?.removeAllMessages();
+
     messageControl.leave();
     window.currentChatId = chatId;
     const currentChatComp = (this.children.chatArray as ChatComponent[]).find(
@@ -88,8 +90,7 @@ export default class AvailableChats extends Block<AvailableChatsProps> {
       chatId,
       userInChat.length,
     );
-
-    this.refBlocks.chatMessages?.showChoosenChat(window.currentChatMessages);
+    this.refBlocks.chatMessages?.triggerCreateConnection();
   }
 
   async requestExtistingChats(

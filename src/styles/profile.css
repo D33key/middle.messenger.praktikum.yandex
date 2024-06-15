@@ -17,7 +17,6 @@
     justify-content: center;
     align-items: center;
     background-color: #3369f3;
-    cursor: pointer;
     transition: 0.3s ease;
     border-right: 0 solid #3369f3;
 
@@ -31,6 +30,7 @@
       color: black;
       border-radius: 50%;
       transition: 0.3s ease;
+      cursor: pointer;
 
       &:hover {
         background-color: #3369f3;

@@ -1,8 +1,8 @@
-import { Block } from '@/core/Block';
+import { Block, TypeOfProps } from '@/core/Block';
 import { render } from '@/utils/render';
 import { template } from './tmpl';
 
-export class Loader extends Block<any> {
+export class Loader extends Block<TypeOfProps> {
   constructor() {
     super();
   }
