@@ -33,29 +33,31 @@ export function displayUsersOfChat(
         : DefaultImg,
       login: user.login,
       name: user.display_name ?? user.first_name + ' ' + user.second_name,
-      removeBtn: new Button({
-        child: 'X',
-        type: 'button',
-        className: 'chat-add',
-        events: {
-          click: async () => {
-            await chatControl.deleteUsersFromChat({
-              users: [user.id],
-              chatId: window.currentChatId,
-            });
+      removeBtn:
+        user.id !== window.userInfo.id &&
+        new Button({
+          child: 'X',
+          type: 'button',
+          className: 'chat-add',
+          events: {
+            click: async () => {
+              await chatControl.deleteUsersFromChat({
+                users: [user.id],
+                chatId: window.currentChatId,
+              });
 
-            const userInChat = await chatControl.getChatUsers(
-              window.currentChatId,
-            );
+              const userInChat = await chatControl.getChatUsers(
+                window.currentChatId,
+              );
 
-            userOfChat.remove();
+              userOfChat.remove();
 
-            chatInfo.setProps({
-              count: userInChat.length,
-            });
+              chatInfo.setProps({
+                count: userInChat.length,
+              });
+            },
           },
-        },
-      }),
+        }),
     });
 
     return userOfChat;

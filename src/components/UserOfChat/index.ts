@@ -6,7 +6,7 @@ interface UserOfChatProps extends EventsProps {
   avatar: string;
   login: string;
   name: string;
-  removeBtn: Button;
+  removeBtn: Button | false;
 }
 
 export default class UserOfChat extends Block<UserOfChatProps> {
