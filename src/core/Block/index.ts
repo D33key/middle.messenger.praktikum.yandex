@@ -2,7 +2,7 @@ import { v4 as uniqueKey } from 'uuid';
 import { EventBus } from '@/core/EventBus';
 import Shaft from '../Templater';
 
-export type TypeOfProps = Record<string, unknown>;
+export type TypeOfProps = Record<string, any>;
 interface Meta<Props extends TypeOfProps> {
   props: Props & { events?: BlockEvents };
 }
@@ -198,7 +198,7 @@ export abstract class Block<
     return this.children;
   }
 
-  compile(template: string, props: Record<string, unknown>) {
+  compile(template: string, props: TypeOfProps) {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {

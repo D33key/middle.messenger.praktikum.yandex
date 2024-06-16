@@ -39,7 +39,9 @@ export default class ChatInfo extends Block<Partial<ChatInfoProps>> {
   triggerUpdateBlock(choosenChat: Chat, chatId: number, userInChat: number) {
     this.setProps({
       ...choosenChat,
-      avatar: choosenChat.avatar ?? DefaultImg,
+      avatar: choosenChat.avatar
+        ? import.meta.env.VITE_HOST_URL_RESOURCE + choosenChat.avatar
+        : DefaultImg,
       count: userInChat,
     });
 

@@ -29,7 +29,7 @@ const template = /*html*/ `
   </div>`;
 
 export default class AvailableChats extends Block<AvailableChatsProps> {
-  private refBlocks: RefBlocks = {
+  public refBlocks: RefBlocks = {
     chatInfo: null,
     chatMessages: null,
     conversation: null,

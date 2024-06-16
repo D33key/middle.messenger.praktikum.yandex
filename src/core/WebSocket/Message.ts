@@ -65,11 +65,9 @@ class MessageControl {
         if (data.length === 0) {
           const lastMessage = window.currentChatMessages[0];
           if (lastMessage) {
-            const convertedData = formatDateTime(lastMessage.time);
-
             this.triggerBlock({
               text: lastMessage.content,
-              time: convertedData,
+              time: lastMessage.time,
               fromWho:
                 lastMessage.user.login === window.userInfo.login
                   ? 'user'
@@ -100,7 +98,7 @@ class MessageControl {
   }
 
   private onOpen() {
-    this.getMessages('10');
+    this.getMessages('0');
     this.ping = setInterval(() => this.socket?.send(''), 5_000);
   }
 
