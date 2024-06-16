@@ -105,6 +105,13 @@ export default class AvailableChats extends Block<AvailableChatsProps> {
     return chats;
   }
 
+  async triggerRefreshIfChatDelete() {
+    messageControl.leave();
+    this.refBlocks.conversation?.setProps({
+      render: false,
+    });
+  }
+
   render() {
     return this.compile(template, this.props);
   }

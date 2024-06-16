@@ -61,6 +61,8 @@ export default class ChatComponent extends Block<ChatProps> {
 
             this.remove();
 
+            props.availableChatRef.triggerRefreshIfChatDelete();
+
             new Toaster({
               title: 'Инфо',
               text: 'Чат успешно удален',

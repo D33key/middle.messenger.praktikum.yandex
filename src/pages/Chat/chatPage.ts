@@ -7,7 +7,6 @@ import ChatMessages from '@/components/ChatMessages';
 import Chats from '@/components/chats';
 import { Conversation } from '@/components/conversation';
 import { MessageForm } from '@/components/MessageForm';
-import chatControl from '@/core/api/Chat';
 import { Block } from '@/core/Block';
 import messageControl from '@/core/WebSocket/Message';
 import { template } from './tmpl';
@@ -46,12 +45,6 @@ export class ChatPage extends Block<ChatPageProps> {
       chats: this.chats,
       conversation: this.conversation,
     });
-  }
-
-  async deleteChat(chatId: number) {
-    const deletedChat = await chatControl.deleteChat({ chatId });
-
-    return deletedChat;
   }
 
   remove() {
