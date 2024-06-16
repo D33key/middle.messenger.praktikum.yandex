@@ -51,7 +51,7 @@ export default class AvailableChats extends Block<AvailableChatsProps> {
         chatArray: creatingChat(chats, this),
       });
     } catch (error) {
-      this.setChildren({
+      this.setProps({
         chatArray: 'Нет доступных чатов',
       });
     }
@@ -99,7 +99,9 @@ export default class AvailableChats extends Block<AvailableChatsProps> {
     const chats = await chatControl.getChats(data);
 
     window.chats = chats;
-
+    if (chats.length === 0) {
+      throw new Error('No chats');
+    }
     return chats;
   }
 
