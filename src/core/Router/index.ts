@@ -1,5 +1,5 @@
 import { Loader } from '@/components/Loader';
-import { Block } from '../Block';
+import { Block, TypeOfProps } from '../Block';
 import Route from './Route';
 
 class Router {
@@ -81,7 +81,7 @@ class Router {
     return pathname;
   }
 
-  use(pathname: string, block: new () => Block<any>) {
+  use(pathname: string, block: new () => Block<TypeOfProps>) {
     const route = new Route(pathname, block, { rootQuery: this.rootQuery });
 
     this.routes.push(route);

@@ -1,7 +1,7 @@
 import checkValidity from '@/utils/checkValidity';
 import InputWrapper from '.';
 
-export const checkInput = <T extends Record<string, any>>(
+export const checkInput = <T extends Record<string, unknown>>(
   event: FocusEvent,
   formChildren: T,
 ) => {

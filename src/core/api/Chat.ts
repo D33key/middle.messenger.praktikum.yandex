@@ -1,3 +1,4 @@
+import { ChatProps } from '@/components/chat';
 import { BaseAPI, ErrorAPI, OKResponse } from '../HTTPTransport/BaseAPI';
 import { isErrorAPI } from '../HTTPTransport/utils';
 import { UserInfo } from './Auth';
@@ -49,7 +50,7 @@ class ChatAPI extends BaseAPI {
     const response = (await this.get('', {
       data,
       withCredentials: true,
-    })) as Chat[] | ErrorAPI;
+    })) as ChatProps[] | ErrorAPI;
 
     if (isErrorAPI(response)) {
       throw new Error(response.reason);
@@ -136,6 +137,21 @@ class ChatAPI extends BaseAPI {
     const response = (await this.post(`/token/${chatId}`, {
       withCredentials: true,
     })) as { token: string } | ErrorAPI;
+
+    if (isErrorAPI(response)) {
+      throw new Error(response.reason);
+    }
+
+    return response;
+  }
+
+  async uploadChatAvatar(data: FormData) {
+    const response = (await this.put(`/avatar`, {
+      data,
+      headers: {},
+      isFileAttached: true,
+      withCredentials: true,
+    })) as Chat | ErrorAPI;
 
     if (isErrorAPI(response)) {
       throw new Error(response.reason);

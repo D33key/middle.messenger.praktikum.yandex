@@ -42,6 +42,7 @@
   }
 
   .chat-link {
+    cursor: pointer;
     margin: 20px 0;
     align-self: flex-end;
   }
@@ -64,16 +65,71 @@
     flex-direction: column;
   }
 
+  .chat-actions {
+    display: flex;
+    height: 30px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 5px;
+    margin-bottom: 20px;
+
+    .input-wrapper {
+      height: 100%;
+      margin-bottom: 0;
+      flex: 0 1 auto;
+
+      & > div {
+        height: 100%;
+      }
+    }
+  }
+
   .chat {
+    position: relative;
     max-width: 290px;
     max-height: 72px;
-    overflow: hidden;
     display: flex;
     justify-content: space-between;
     padding: 12px 0;
     border-top: 1px solid #e1dcdc;
     cursor: pointer;
     margin-bottom: 12px;
+
+    .delete-chat,
+    .change-photo {
+      width: 0;
+      height: 72px;
+      position: relative;
+      top: -12px;
+      right: -10px;
+      z-index: 2;
+      background-color: red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.3s ease;
+
+      > div {
+        color: white;
+        visibility: hidden;
+      }
+    }
+
+    .change-photo {
+      background-color: #3369f3;
+    }
+
+    &:hover {
+      .delete-chat,
+      .change-photo {
+        width: 50px;
+
+        > div {
+          visibility: visible;
+        }
+      }
+    }
   }
 
   .chat-username {
@@ -99,6 +155,7 @@
   .user-message-info {
     display: flex;
     flex-direction: column;
+    flex: 1 0 auto;
   }
 
   .new-messsage {
@@ -114,6 +171,7 @@
   }
 
   .chat-avatar {
+    border-radius: 50%;
     width: 47px;
     height: 47px;
   }
@@ -170,6 +228,10 @@
       align-items: center;
       gap: 10px;
       flex: 0 1 fit-content;
+
+      img {
+        border-radius: 50%;
+      }
     }
 
     .chat-settings {
@@ -214,32 +276,13 @@
     margin: 0 auto;
   }
 
-  .chat-actions {
-    display: flex;
-    height: 30px;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap: 5px;
-    margin-bottom: 20px;
-
-    .input-wrapper {
-      height: 100%;
-      margin-bottom: 0;
-      flex: 0 1 auto;
-
-      & > div {
-        height: 100%;
-      }
-    }
-  }
-
   .messages-wrapper {
     display: flex;
     flex-direction: column;
     gap: 10px;
     height: 100%;
     margin: 10px 0;
+    overflow-y: auto;
 
     .message-text {
       display: flex;
@@ -264,6 +307,7 @@
     }
 
     .message-time {
+      flex: 1 0 auto;
       color: inherit;
       word-break: keep-all;
     }

@@ -12,7 +12,10 @@ export function creatingChat(chats: ChatProps[], chatPage: AvailableChats) {
     (props) =>
       new Chat({
         ...props,
-        avatar: props.avatar ?? DefaultImg,
+        availableChatRef: chatPage,
+        avatar: props.avatar
+          ? import.meta.env.VITE_HOST_URL_RESOURCE + props.avatar
+          : DefaultImg,
         events: {
           click: async () => {
             await chatPage.displayChat(props.id);

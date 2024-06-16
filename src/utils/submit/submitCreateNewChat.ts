@@ -1,7 +1,7 @@
 import AvailableChats from '@/components/availableChats';
+import { ChatProps } from '@/components/chat';
 import { Modal } from '@/components/Modal';
 import { Toaster } from '@/components/Toaster';
-import { Chat } from '@/core/api/Chat';
 import { creatingChat } from '@/pages/Chat/utils';
 import { getDataFromForm } from '@/templates/form/utils';
 
@@ -10,7 +10,7 @@ export default async function submitCreateNewChat(
   createChatCb: (data: FormData) => Promise<{
     id: number;
   }>,
-  requestExtistingChatsCb: () => Promise<Chat[]>,
+  requestExtistingChatsCb: () => Promise<ChatProps[]>,
   existingChat: AvailableChats,
 ) {
   const formData = getDataFromForm(event);

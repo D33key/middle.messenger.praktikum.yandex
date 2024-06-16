@@ -1,7 +1,7 @@
 import { Block } from '@/core/Block';
 import { EventsProps } from '../button';
 
-interface MessageProps extends EventsProps {
+export interface MessageProps extends EventsProps {
   className: 'user' | 'other';
   text: string;
   time: string;
