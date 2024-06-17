@@ -2,10 +2,16 @@
 
 .login-link {
   color: #111;
+  display: inline;
+  cursor: pointer;
 }
 
-.form-wrapper:has(.email-error:empty):has(.password-error:empty):has(
-    .email:not(:placeholder-shown)
+.form-text {
+  display: inline;
+}
+
+.form-wrapper:has(.login-error:empty):has(.password-error:empty):has(
+    .login:not(:placeholder-shown)
   ):has(.password:not(:placeholder-shown))
   .submit-button {
   opacity: 1;

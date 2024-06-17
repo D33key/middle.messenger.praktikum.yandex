@@ -1,50 +1,33 @@
 import '@/styles/login.css';
 import { LoginPageProps } from '@/components/form';
+import Link from '@/components/link';
 import TitleWithText from '@/components/titleWithText';
 import { Block } from '@/core/Block';
 import Button from '@/templates/button';
 import Form from '@/templates/form';
-import { FormProps } from '@/templates/form/type';
-import { getDataFromForm } from '@/templates/form/utils';
 import InputWrapper from '@/templates/input';
 import { checkInput } from '@/templates/input/utils';
-import { render } from '@/utils/render';
+import { inputsVariation } from '@/utils/inputsVariation/inputsVariation';
+import submitAuth from '@/utils/submit/submitAuth';
 import { template } from './template';
 
-class LoginPage extends Block<LoginPageProps> {
+export class LoginPage extends Block<LoginPageProps> {
+  private isErrorExist = true;
   constructor() {
     super({
       formTitle: new TitleWithText({
         formTitle: 'Вход',
         formText: 'Новый участник? ',
-        linkHref: '/signup',
-        linkText: 'Зарегистрируйся бесплатно',
+        link: new Link({
+          linkClass: 'login-link',
+          linkText: 'Зарегистрироваться',
+          linkHref: '/sign-up',
+        }),
       }),
       form: new Form({
         type: 'login',
-        emailInput: new InputWrapper({
-          className: 'email',
-          labelFor: 'email',
-          inputType: 'email',
-          labelText: 'Email',
-          placeholder: 'Введите почту',
-          required: true,
-          validationPattern: new RegExp(
-            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-          ),
-          validationErrorText: 'Не валидная почта',
-        }),
-        passwordInput: new InputWrapper({
-          className: 'password',
-          labelFor: 'password',
-          placeholder: 'Введите пароль',
-          inputType: 'password',
-          labelText: 'Пароль',
-          required: true,
-          validationPattern: new RegExp(/^(?=.*[A-Z])(?=.*\d).{8,40}$/),
-          validationErrorText:
-            'Пароль должен содержать от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
-        }),
+        loginInput: new InputWrapper(inputsVariation.login),
+        passwordInput: new InputWrapper(inputsVariation.password),
         submitButton: new Button({
           child: 'Вход',
           type: 'submit',
@@ -52,11 +35,18 @@ class LoginPage extends Block<LoginPageProps> {
         }),
         events: {
           blur: (event) => {
-            const formChildren = (this.children.form as Block<FormProps>)
-              .children;
-            checkInput(event, formChildren);
+            const formChildren = (this.children.form as Form).children;
+            const isErrorExist = checkInput(event, formChildren);
+
+            this.isErrorExist = isErrorExist;
           },
-          submit: getDataFromForm,
+          submit: async (event) => {
+            if (!this.isErrorExist) {
+              await submitAuth(event, 'login');
+            } else {
+              event.preventDefault();
+            }
+          },
         },
       }),
     });
@@ -66,9 +56,3 @@ class LoginPage extends Block<LoginPageProps> {
     return this.compile(template, this.props);
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const loginPage = new LoginPage();
-
-  render('#app', loginPage);
-});

@@ -1,143 +1,58 @@
 import '@/styles/chat.css';
 import '@/styles/global.css';
 import AvailableChats from '@/components/availableChats';
-import Chat from '@/components/chat';
+import ChatComponent from '@/components/chat';
+import ChatInfo from '@/components/ChatInfo';
+import ChatMessages from '@/components/ChatMessages';
 import Chats from '@/components/chats';
 import { Conversation } from '@/components/conversation';
+import { MessageForm } from '@/components/MessageForm';
 import { Block } from '@/core/Block';
-import DefaultImg from '@/public/defaultUserImg.png';
-import Button from '@/templates/button';
-import InputWrapper from '@/templates/input';
-import MessageSpan from '@/templates/message';
-import { render } from '@/utils/render';
-import { conversationWithUser, testChatsArray } from './testChats';
+import messageControl from '@/core/WebSocket/Message';
 import { template } from './tmpl';
 import { ChatPageProps } from './types';
 
-const conversation = new Conversation({
-  dialog: false,
-  events: {
-    submit: (event) => {
-      event.preventDefault();
+export class ChatPage extends Block<ChatPageProps> {
+  curentChatComp: ChatComponent | null = null;
+  private chatMessages = new ChatMessages();
+  private chatInfo = new ChatInfo();
+  private messageForm = new MessageForm(this);
+  private conversation = new Conversation({
+    render: false,
+    chatInfo: this.chatInfo,
+    messageForm: this.messageForm,
+    chatMessages: this.chatMessages,
+  });
 
-      if (event.target && event.target instanceof HTMLFormElement) {
-        console.log(event.target.querySelector('input')?.getAttribute('value'));
-      }
-    },
-    input: (event) => {
-      (event.target as HTMLInputElement).setAttribute(
-        'value',
-        (event.target as HTMLInputElement).value,
-      );
-    },
-  },
-});
+  private existingChats = new AvailableChats({
+    chatInfo: this.chatInfo,
+    chatMessages: this.chatMessages,
+    conversation: this.conversation,
+    chatPage: this,
+  });
 
-const searchChat = new InputWrapper({
-  classNameInput: 'chat-search-input',
-  placeholder: 'Поиск...',
-  labelFor: 'search',
-  className: 'search-input',
-  inputType: 'text',
-  addResetBtn: true,
+  private chats = new Chats({
+    existingChats: this.existingChats,
+  });
 
-  button: new Button({
-    className: 'clear-result',
-    child: 'X',
-    type: 'button',
-    events: {
-      click: () => {
-        searchChat.setProps({
-          value: '',
-        });
-      },
-    },
-  }),
-});
-
-class ChatPage extends Block<ChatPageProps> {
   constructor() {
     super({
-      chats: new Chats({
-        searchChat,
-        existingChats: new AvailableChats({
-          chatArray: testChatsArray.map(
-            ({
-              chatId,
-              lastMessageDate,
-              userImg,
-              userLastMessage,
-              userName,
-              isNewMessage,
-            }) =>
-              new Chat({
-                chatId,
-                userImg: userImg ?? DefaultImg,
-                userName,
-                userLastMessage,
-                lastMessageDate,
-                isNewMessage,
-                events: {
-                  click: () => {
-                    this.displayChat(chatId);
-                  },
-                },
-              }),
-          ),
-        }),
-      }),
-      conversation,
+      chats: null,
+      conversation: null,
+    });
+
+    this.setChildren({
+      chats: this.chats,
+      conversation: this.conversation,
     });
   }
 
-  displayChat(chatId: number) {
-    const getChatInfo = conversationWithUser.find(
-      (item) => item.chatId === chatId,
-    );
-
-    if (!getChatInfo) return;
-
-    const getMessages = getChatInfo.messages;
-    const displayMessages = getMessages.map((message) => {
-      let addClass = '';
-      if (message.user) {
-        addClass = 'user';
-        const messagesArray = message.user.map(
-          (span) =>
-            new MessageSpan({
-              className: addClass,
-              text: span,
-            }),
-        );
-        return messagesArray;
-      }
-      addClass = 'other';
-      const messagesArray = message.other.map(
-        (span) =>
-          new MessageSpan({
-            className: addClass,
-            text: span,
-          }),
-      );
-      return messagesArray;
-    });
-
-    conversation.setProps({
-      dialog: {
-        userImg: getChatInfo.userImg ?? DefaultImg,
-        userName: getChatInfo.userName,
-        messages: displayMessages,
-      },
-    });
+  remove() {
+    messageControl.leave();
+    super.remove();
   }
 
   render() {
     return this.compile(template, this.props);
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const chatPage = new ChatPage();
-
-  render('#app', chatPage);
-});

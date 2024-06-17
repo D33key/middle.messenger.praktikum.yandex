@@ -24,8 +24,9 @@ export default class InputWrapper extends Block<InputWrapperProps> {
     props.value = props.value ?? '';
     props.required = props.required ?? false;
     props.classNameInput = props.classNameInput ?? '';
+    props.className = props.className ?? '';
     props.addResetBtn = props.addResetBtn ?? false;
-
+    props.placeholder = props.placeholder ?? '';
     super(props);
   }
 

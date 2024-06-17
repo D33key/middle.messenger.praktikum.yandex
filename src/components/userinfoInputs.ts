@@ -1,3 +1,4 @@
+import { userInfoInputsObj } from '@/components/Inputs/userInfoInputs';
 import { Block } from '@/core/Block';
 import { EventsProps } from '@/templates/button';
 import InputWrapper from '@/templates/input';
@@ -21,8 +22,36 @@ const template = /*html*/ `<div class='inputs-wrapper userinfo-inputs'>
 </div>`;
 
 export default class UserInfoInputs extends Block<ChangePasswordProps> {
-  constructor(props: ChangePasswordProps) {
-    super(props);
+  constructor(props: EventsProps) {
+    const propsWithInputs = {
+      ...props,
+      emailInput: new InputWrapper({
+        ...userInfoInputsObj.emailInput,
+        value: window.userInfo?.email,
+      }),
+      loginInput: new InputWrapper({
+        ...userInfoInputsObj.loginInput,
+        value: window.userInfo?.login,
+      }),
+      firstNameInput: new InputWrapper({
+        ...userInfoInputsObj.firstNameInput,
+        value: window.userInfo?.first_name,
+      }),
+      secondNameInput: new InputWrapper({
+        ...userInfoInputsObj.secondNameInput,
+        value: window.userInfo?.second_name,
+      }),
+      nicknameInput: new InputWrapper({
+        ...userInfoInputsObj.nicknameInput,
+        value: window.userInfo?.display_name,
+      }),
+      phoneInput: new InputWrapper({
+        ...userInfoInputsObj.phoneInput,
+        value: window.userInfo?.phone,
+      }),
+    };
+
+    super(propsWithInputs);
   }
 
   render() {

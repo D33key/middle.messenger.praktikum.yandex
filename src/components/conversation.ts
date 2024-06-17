@@ -1,36 +1,22 @@
 import { Block } from '@/core/Block';
-import SendFileIcon from '@/public/sendFile.png';
 import { EventsProps } from '@/templates/button';
-import MessageSpan from '@/templates/message';
+import ChatInfo from './ChatInfo';
+import ChatMessages from './ChatMessages';
+import { MessageForm } from './MessageForm';
 
 export interface ConversationProps extends EventsProps {
-  dialog:
-    | {
-        userImg: string;
-        userName: string;
-        messages: MessageSpan[][];
-      }
-    | false;
+  render: boolean;
+  chatInfo: ChatInfo;
+  messageForm: MessageForm;
+  chatMessages: ChatMessages;
 }
 
 const template = /*html*/ `
-    {{if dialog}}
+    {{if render}}
       <div class='conversation'>
-        <div class='user-info-chat'>
-          <img src="{{dialog.userImg}}" alt="Аватар {{dialog.userName}}"/>
-          <p class="user-fullname">{{dialog.userName}}</p>
-          <span>*</span>
-        </div>
-        <div class='chat-tape'>
-        {{each dialog.messages}}
-          {{dialog.messages}}
-        {{endeach}}
-        </div>
-        <form class='message-input'>
-          <img src="${SendFileIcon}" alt='choose file'/>
-          <input name='message' type='text' placeholder='Введите сообщение...'/>
-          <button type='submit'>Отправка</button>
-        </form>
+        {{ chatInfo }}
+        {{ chatMessages }}
+        {{ messageForm }}
       </div>
     {{else}}
       <div class='empty-conversation'>

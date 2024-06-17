@@ -14,12 +14,14 @@
 
   .chats-wrapper {
     width: 310px;
+    overflow: hidden auto;
     padding: 0 10px;
     height: 100%;
     background-color: #faf9f9;
     border-right: 1px solid #e1dcdc;
     display: flex;
     flex-direction: column;
+    flex: 0 0 auto;
   }
 
   .clear-result {
@@ -40,6 +42,7 @@
   }
 
   .chat-link {
+    cursor: pointer;
     margin: 20px 0;
     align-self: flex-end;
   }
@@ -62,34 +65,97 @@
     flex-direction: column;
   }
 
+  .chat-actions {
+    display: flex;
+    height: 30px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 5px;
+    margin-bottom: 20px;
+
+    .input-wrapper {
+      height: 100%;
+      margin-bottom: 0;
+      flex: 0 1 auto;
+
+      & > div {
+        height: 100%;
+      }
+    }
+  }
+
   .chat {
+    position: relative;
+    max-width: 290px;
+    max-height: 72px;
     display: flex;
     justify-content: space-between;
     padding: 12px 0;
     border-top: 1px solid #e1dcdc;
     cursor: pointer;
+    margin-bottom: 12px;
+
+    .delete-chat,
+    .change-photo {
+      width: 0;
+      height: 72px;
+      position: relative;
+      top: -12px;
+      right: -10px;
+      z-index: 2;
+      background-color: red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.3s ease;
+
+      > div {
+        color: white;
+        visibility: hidden;
+      }
+    }
+
+    .change-photo {
+      background-color: #3369f3;
+    }
+
+    &:hover {
+      .delete-chat,
+      .change-photo {
+        width: 50px;
+
+        > div {
+          visibility: visible;
+        }
+      }
+    }
   }
 
   .chat-username {
     color: #1e1e1e;
+    font-size: 16px;
+    width: fit-content;
     font-weight: 600;
   }
 
   .user-info {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    margin-right: auto;
     margin-left: 10px;
   }
 
-  .chat-username,
   .last-message {
-    font-size: 13px;
+    font-size: 12px;
+    word-break: break-all;
+    text-overflow: ellipsis;
   }
 
   .user-message-info {
     display: flex;
     flex-direction: column;
+    flex: 1 0 auto;
   }
 
   .new-messsage {
@@ -105,16 +171,17 @@
   }
 
   .chat-avatar {
+    border-radius: 50%;
     width: 47px;
     height: 47px;
   }
 
   .conversation {
+    width: 100%;
     padding: 10px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    flex: 1 0 auto;
 
     .chat-tape {
       display: flex;
@@ -123,26 +190,10 @@
       flex: 1 0 auto;
       border-top: 1px solid #e1dcdc;
       border-bottom: 1px solid #e1dcdc;
-
-      .message-text {
-        width: max-content;
-        padding: 5px;
-        margin: 5px 0;
-        color: white;
-        border-radius: 5px;
-
-        &.user {
-          margin-left: auto;
-          background-color: green;
-        }
-
-        &.other {
-          background-color: blue;
-        }
-      }
     }
 
     .message-input {
+      margin-top: auto;
       display: flex;
 
       input {
@@ -156,14 +207,65 @@
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+    border-bottom: 1px solid #e1dcdc;
+    padding-bottom: 12px;
 
     img {
       width: 50px;
       height: 50px;
     }
 
-    .user-fullname {
+    .chat-info {
       margin-right: auto;
+      font-weight: bold;
+    }
+
+    .user-info {
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex: 0 1 fit-content;
+
+      img {
+        border-radius: 50%;
+      }
+    }
+
+    .chat-settings {
+      flex: 0 0 auto;
+      height: 30px;
+      width: 30px;
+      background: transparent;
+      background-color: #3369f3;
+      border: none;
+      outline: none;
+      transform: rotate(0);
+      transition: 0.5s ease;
+      clip-path: polygon(
+        50% 0%,
+        65% 15%,
+        85% 20%,
+        100% 35%,
+        85% 50%,
+        100% 65%,
+        85% 80%,
+        65% 85%,
+        50% 100%,
+        35% 85%,
+        15% 80%,
+        0% 65%,
+        15% 50%,
+        0% 35%,
+        15% 20%,
+        35% 15%
+      );
+
+      &:hover {
+        transform: rotate(360deg);
+      }
     }
   }
 
@@ -173,4 +275,51 @@
     line-height: 100dvh;
     margin: 0 auto;
   }
+
+  .messages-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    margin: 10px 0;
+    overflow-y: auto;
+
+    .message-text {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      width: 30%;
+      max-width: fit-content;
+      padding: 5px;
+      margin: 5px 0;
+      color: white;
+      border-radius: 10px;
+      word-break: break-all;
+    }
+
+    .message-text.user {
+      margin-left: auto;
+      background-color: green;
+    }
+
+    .message-text.other {
+      background-color: blue;
+    }
+
+    .message-time {
+      flex: 1 0 auto;
+      color: inherit;
+      word-break: keep-all;
+    }
+  }
+}
+
+button.chat-add {
+  height: 100%;
+  background: transparent;
+  color: black;
+  border: 1px solid gray;
+  outline: none;
+  border-radius: 6px;
+  flex: 0 0 30px;
 }

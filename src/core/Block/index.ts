@@ -2,7 +2,8 @@ import { v4 as uniqueKey } from 'uuid';
 import { EventBus } from '@/core/EventBus';
 import Shaft from '../Templater';
 
-interface Meta<Props extends Record<string, any>> {
+export type TypeOfProps = Record<string, any>;
+interface Meta<Props extends TypeOfProps> {
   props: Props & { events?: BlockEvents };
 }
 
@@ -13,7 +14,7 @@ export type BlockEvents = Partial<{
 }>;
 
 export abstract class Block<
-  Props extends Record<string, any> & { events?: BlockEvents },
+  Props extends TypeOfProps & { events?: BlockEvents },
 > {
   static EVENTS = {
     INIT: 'init',
@@ -27,12 +28,12 @@ export abstract class Block<
   protected meta: Meta<Props> | null = null;
   protected props: Meta<Props>['props'];
   protected eventBus: () => EventBus;
-  public children: Record<string, Block<any> | Block<any>[]>;
+  public children: Record<string, Block<TypeOfProps> | Block<TypeOfProps>[]>;
 
   constructor(rawProps: Meta<Props>['props'] = {} as Props) {
     const eventBus = new EventBus();
 
-    const { children, props } = this.getChildren(rawProps);
+    const { children, props } = this.getChildrenAndProps(rawProps);
 
     this.children = this.makePropsProxy(children);
 
@@ -49,14 +50,15 @@ export abstract class Block<
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  protected getChildren(propsAndChildren: Meta<Props>['props']) {
-    const children: Record<string, Block<any> | Block<any>[]> = {};
-    const props = {} as Record<string, any>;
+  protected getChildrenAndProps(propsAndChildren: Meta<Props>['props']) {
+    const children: Record<string, Block<TypeOfProps> | Block<TypeOfProps>[]> =
+      {};
+    const props = {} as Record<string, unknown>;
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         const propsFromArray: Props[] = [];
-        const childrenFromArray: Block<object>[] = [];
+        const childrenFromArray: Block<TypeOfProps>[] = [];
         value.forEach((val) => {
           if (val instanceof Block) {
             childrenFromArray.push(val);
@@ -74,7 +76,7 @@ export abstract class Block<
     });
 
     return { children, props } as {
-      children: Record<string, Block<any> | Block<any>[]>;
+      children: Record<string, Block<TypeOfProps> | Block<TypeOfProps>[]>;
       props: Meta<Props>['props'];
     };
   }
@@ -108,6 +110,7 @@ export abstract class Block<
 
   protected addEvents() {
     const { events = {} } = this.props;
+
     Object.keys(events).forEach((eventName) => {
       const eventHandler = events[eventName as keyof typeof events];
       // TODO Костыль
@@ -148,21 +151,24 @@ export abstract class Block<
     });
   }
 
+  forceUpdate<T>(props?: T) {
+    this._componentDidUpdate(props);
+  }
+
   componentDidMount() {}
 
   private _componentDidUpdate<T>(newProps?: T) {
     const isUpdated = this.componentDidUpdate(newProps);
-
     if (isUpdated) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   }
 
-  componentDidUpdate<T>(newProps?: T) {
+  componentDidUpdate(newProps?: unknown) {
     if (newProps) {
       return true;
     }
-    return true;
+    return false;
   }
 
   dispatchComponentDidMount() {
@@ -173,18 +179,26 @@ export abstract class Block<
     Object.assign(this.props, nextProps);
   };
 
-  setChildren = (nextChild: any) => {
+  setChildren = (nextChild: unknown) => {
     if (!nextChild) {
       return;
     }
     Object.assign(this.children, nextChild);
   };
 
+  getMeta() {
+    return this.meta;
+  }
+
   getProps() {
     return this.props;
   }
 
-  compile(template: string, props: Record<string, any>) {
+  getChildren() {
+    return this.children;
+  }
+
+  compile(template: string, props: TypeOfProps) {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {
@@ -221,7 +235,7 @@ export abstract class Block<
         if (getElement) {
           stub?.replaceWith(getElement);
         } else {
-          throw new Error('Cannot create child element');
+          throw new Error('Cannot create child element or element = null');
         }
       }
     });
@@ -259,5 +273,9 @@ export abstract class Block<
     if (getElement && getElement instanceof HTMLElement) {
       getElement.style.display = 'none';
     }
+  }
+
+  remove() {
+    this.element?.remove();
   }
 }
