@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      ".@/*": ["./src/*"]
     },
 
     "moduleResolution": "Node",
@@ -26,7 +26,13 @@
     "noImplicitAny": true
   },
 
-  "include": ["src", "src/server/server.ts", "vite.config.ts", ".eslintrc.cjs"],
+  "include": [
+    "src",
+    "src/server/server.ts",
+    "vite.config.ts",
+    ".eslintrc.cjs",
+    "test"
+  ],
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node",

@@ -1,7 +1,7 @@
 {
   "name": "yandex-middle",
   "private": false,
-  "version": "0.0.5",
+  "version": "0.8.0",
   "type": "module",
   "engines": {
     "node": ">=12.0.0"
@@ -18,7 +18,8 @@
     "preview": "vite preview",
     "lint": "eslint \"src/**/*.{js,mjs,cjs,ts,mts}\"",
     "lint:style": "stylelint ./src/styles",
-    "lint:fix": "eslint \"src/**/*.{js,mjs,cjs,ts,mts}\" --fix"
+    "lint:fix": "eslint \"src/**/*.{js,mjs,cjs,ts,mts}\" --fix",
+    "test": "mocha"
   },
   "dependencies": {
     "express": "^4.19.2",
@@ -26,12 +27,18 @@
     "vite-express": "^0.16.0"
   },
   "devDependencies": {
+    "@rollup/plugin-alias": "^5.1.0",
+    "@types/chai": "^4.3.16",
     "@types/express": "^4.17.21",
+    "@types/mocha": "^10.0.7",
     "@types/node": "^20.12.7",
     "@types/uuid": "^9.0.8",
+    "chai": "^5.1.1",
     "dotenv": "^16.4.5",
     "eslint": "^8.41.0",
     "eslint-kit": "^10.0.0",
+    "jsdom": "^24.1.0",
+    "mocha": "^10.5.1",
     "nodemon": "^3.1.0",
     "postcss": "^8.4.38",
     "postcss-cli": "^11.0.0",
@@ -39,6 +46,7 @@
     "stylelint": "^16.5.0",
     "stylelint-config-standard": "^36.0.0",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   }
