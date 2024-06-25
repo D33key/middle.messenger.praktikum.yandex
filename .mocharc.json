@@ -1,9 +1,18 @@
 {
+  "exit": true,
+  "color": true,
+  "ignore": "node_modules",
   "extension": ["ts"],
-  "spec": "src/**/*.test.ts",
-  "require": ["ts-node/register", "./mochaSetup.js"],
+  "spec": "src/**/*.spec.ts",
+  "require": [
+    "@babel/register",
+    "ts-node/register",
+    "tsconfig-paths/register",
+    "./mochaSetup.js"
+  ],
   "node-option": [
     "experimental-specifier-resolution=node",
     "loader=ts-node/esm"
-  ]
+  ],
+  "loader": "ts-node/esm"
 }

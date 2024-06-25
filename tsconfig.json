@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      ".@/*": ["./src/*"]
+      "@/*": ["./src/*"]
     },
 
     "moduleResolution": "Node",
@@ -31,11 +31,13 @@
     "src/server/server.ts",
     "vite.config.ts",
     ".eslintrc.cjs",
-    "test"
+    "test",
+    ".mocharc.json"
   ],
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node",
-    "transpileOnly": true
+    "transpileOnly": true,
+    "files": true
   }
 }

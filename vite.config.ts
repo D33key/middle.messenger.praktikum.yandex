@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import path, { resolve } from 'path';
 import { defineConfig } from 'vite';
+import babel from 'vite-plugin-babel';
 
 export default defineConfig({
   root: resolve(__dirname, 'src'),
@@ -25,4 +26,18 @@ export default defineConfig({
       },
     ],
   },
+  plugins: [
+    babel({
+      babelConfig: {
+        plugins: [
+          '@babel/preset-env',
+          '@babel/preset-typescript',
+          {
+            corejs: '3.26',
+            useBuiltIns: 'usage',
+          },
+        ],
+      },
+    }),
+  ],
 });
