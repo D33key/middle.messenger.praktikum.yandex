@@ -1,5 +1,5 @@
-import { isEqual } from '@/utils/isEqual';
-import { render } from '@/utils/render';
+import { isEqual } from '../../utils/isEqual';
+import { render } from '../../utils/render';
 import { Block, TypeOfProps } from '../Block';
 
 export default class Route {

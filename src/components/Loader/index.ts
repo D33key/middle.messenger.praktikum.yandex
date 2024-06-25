@@ -1,5 +1,5 @@
-import { Block, TypeOfProps } from '@/core/Block';
-import { render } from '@/utils/render';
+import { Block, TypeOfProps } from '../../core/Block/index';
+import { render } from '../../utils/render';
 import { template } from './tmpl';
 
 export class Loader extends Block<TypeOfProps> {

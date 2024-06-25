@@ -1,4 +1,4 @@
-import { Loader } from '@/components/Loader';
+import { Loader } from '../../components/Loader/index';
 import { Block, TypeOfProps } from '../Block';
 import Route from './Route';
 
