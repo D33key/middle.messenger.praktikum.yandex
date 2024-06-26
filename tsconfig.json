@@ -26,10 +26,18 @@
     "noImplicitAny": true
   },
 
-  "include": ["src", "src/server/server.ts", "vite.config.ts", ".eslintrc.cjs"],
+  "include": [
+    "src",
+    "src/server/server.ts",
+    "vite.config.ts",
+    ".eslintrc.cjs",
+    "test",
+    ".mocharc.json"
+  ],
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node",
-    "transpileOnly": true
+    "transpileOnly": true,
+    "files": true
   }
 }

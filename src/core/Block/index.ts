@@ -1,5 +1,5 @@
 import { v4 as uniqueKey } from 'uuid';
-import { EventBus } from '@/core/EventBus';
+import { EventBus } from '../EventBus';
 import Shaft from '../Templater';
 
 export type TypeOfProps = Record<string, any>;
