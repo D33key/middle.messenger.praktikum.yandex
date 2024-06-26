@@ -19,7 +19,8 @@
     "lint": "eslint \"src/**/*.{js,mjs,cjs,ts,mts}\"",
     "lint:style": "stylelint ./src/styles",
     "lint:fix": "eslint \"src/**/*.{js,mjs,cjs,ts,mts}\" --fix",
-    "test": "mocha"
+    "test": "mocha",
+    "prepare": "husky"
   },
   "dependencies": {
     "express": "^4.19.2",
