@@ -5,7 +5,6 @@
   "extension": ["ts", "js"],
   "spec": "src/**/*.spec.ts",
   "require": [
-    "@babel/register",
     "ts-node/register",
     "tsconfig-paths/register",
     "./mochaSetup.js"
