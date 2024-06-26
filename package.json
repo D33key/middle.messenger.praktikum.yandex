@@ -59,5 +59,8 @@
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vite-plugin-babel": "^1.2.0"
+  },
+  "resolutions": {
+    "braces": "^3.0.3"
   }
 }
