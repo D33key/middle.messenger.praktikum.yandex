@@ -3,7 +3,7 @@ import { render } from '../../utils/render';
 import { Block, TypeOfProps } from '../Block';
 
 export default class Route {
-  protected pathname: string;
+  public pathname: string;
   protected blockClass: { new (): Block<TypeOfProps> };
   protected block: Block<TypeOfProps> | null;
   protected props;
