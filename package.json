@@ -20,7 +20,7 @@
     "lint:style": "stylelint ./src/styles",
     "lint:fix": "eslint \"src/**/*.{js,mjs,cjs,ts,mts}\" --fix",
     "test": "mocha",
-    "prepare": "husky"
+    "prepare": "husky install"
   },
   "dependencies": {
     "express": "^4.19.2",
@@ -44,7 +44,7 @@
     "dotenv": "^16.4.5",
     "eslint": "^8.41.0",
     "eslint-kit": "^10.0.0",
-    "husky": "7.0.0",
+    "husky": "8.0.0",
     "jsdom": "^24.1.0",
     "mocha": "^10.5.1",
     "nodemon": "^3.1.0",
