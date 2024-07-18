@@ -1,4 +1,4 @@
-import { Loader } from '@/components/Loader';
+import { Loader } from '../../components/Loader/index';
 import { Block, TypeOfProps } from '../Block';
 import Route from './Route';
 
@@ -7,7 +7,7 @@ class Router {
   public routes: Route[] = [];
   public history: History = window.history;
   public loader: Loader = new Loader();
-  private currentRoute: Route | null = null;
+  public currentRoute: Route | null = null;
   private rootQuery: string = '' as string;
   private protectedPaths: `/${string}`[] = [];
   private pathnames: string[] = [];

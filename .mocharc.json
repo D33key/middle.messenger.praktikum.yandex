@@ -1,0 +1,13 @@
+{
+  "exit": true,
+  "color": true,
+  "ignore": "node_modules",
+  "extension": ["ts", "js"],
+  "spec": "src/**/*.spec.ts",
+  "require": [
+    "ts-node/register",
+    "tsconfig-paths/register",
+    "./mochaSetup.js"
+  ],
+  "loader": "ts-node/esm"
+}
